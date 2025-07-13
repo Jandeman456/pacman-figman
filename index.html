@@ -14,15 +14,24 @@
       #pacman {
         height:450px;
         width:342px;
-        margin:20px auto;
+        margin: 0 auto;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
       }
       #shim { 
         font-family: BDCartoonShoutRegular; 
         position:absolute;
         visibility:hidden
       }
-      h1 { font-family: BDCartoonShoutRegular; text-align:center; }
-      body { width:342px; margin:0px auto; font-family:sans-serif; }
+      body { 
+        margin: 0; 
+        padding: 0; 
+        font-family: sans-serif; 
+        height: 100vh;
+        overflow: hidden;
+      }
       a { text-decoration:none; }
     </style>
 
