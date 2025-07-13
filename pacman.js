@@ -916,7 +916,7 @@ var PACMAN = (function () {
     }
     
     function dialog(text) {
-        ctx.fillStyle = "#FFFF00";
+        ctx.fillStyle = "#f65b21";
         ctx.font      = "14px BDCartoonShoutRegular";
         var width = ctx.measureText(text).width,
             x     = ((map.width * map.blockSize) - width) / 2;        
@@ -1031,6 +1031,7 @@ var PACMAN = (function () {
 
         ctx.fillStyle = "#FFFF00";
         ctx.font      = "14px BDCartoonShoutRegular";
+        ctx.fillStyle = "#f65b21";
         ctx.fillText("Score: " + user.theScore(), 30, textBase);
         ctx.fillText("Level: " + level, 260, textBase);
     }
