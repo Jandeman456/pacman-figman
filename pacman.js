@@ -490,7 +490,8 @@ Pacman.User = function (game, map) {
             
             ctx.save();
             ctx.globalAlpha = 1 - amount; // Fade out effect
-            ctx.drawImage(dogImage, x, y, size, size);
+            var dogSize = size * 1.2; // 20% bigger
+            ctx.drawImage(dogImage, x - (dogSize - size)/2, y - (dogSize - size)/2, dogSize, dogSize);
             ctx.restore();
         } else {
             // Fallback to original death animation
@@ -528,6 +529,10 @@ Pacman.User = function (game, map) {
             // RIGHT direction needs no rotation (default)
             
             ctx.drawImage(dogImage, -s/2, -s/2, s, s);
+            
+            // Make dog slightly bigger
+            var dogSize = s * 1.2; // 20% bigger
+            ctx.drawImage(dogImage, -dogSize/2, -dogSize/2, dogSize, dogSize);
             ctx.restore();
         } else {
             // Fallback to original Pacman if image not loaded
