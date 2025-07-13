@@ -40,7 +40,8 @@ Pacman.Ghost = function (game, map, colour) {
     
     function getNewCoord(dir, current) { 
         
-        var speed = isVunerable() ? 1 : isHidden() ? 4 : baseSpeed,
+        var levelSpeedMultiplier = getLevelSpeedMultiplier();
+        var speed = isVunerable() ? 1 : isHidden() ? 4 : baseSpeed * levelSpeedMultiplier,
             xSpeed = (dir === LEFT && -speed || dir === RIGHT && speed || 0),
             ySpeed = (dir === DOWN && speed || dir === UP && -speed || 0);
     
@@ -48,6 +49,27 @@ Pacman.Ghost = function (game, map, colour) {
             "x": addBounded(current.x, xSpeed),
             "y": addBounded(current.y, ySpeed)
         };
+    };
+    
+    function getLevelSpeedMultiplier() {
+        var currentLevel = game.getLevel();
+        
+        if (currentLevel <= 8) {
+            // Levels 1-8: start at 100%, increase 5% per level
+            return 1.0 + ((currentLevel - 1) * 0.05);
+        } else if (currentLevel <= 13) {
+            // Levels 9-13: start at 140%, increase 4% per level
+            return 1.35 + ((currentLevel - 8) * 0.04);
+        } else if (currentLevel <= 21) {
+            // Levels 14-21: start at 155%, increase 3% per level
+            return 1.55 + ((currentLevel - 13) * 0.03);
+        } else if (currentLevel <= 26) {
+            // Levels 22-26: start at 179%, increase 2% per level
+            return 1.79 + ((currentLevel - 21) * 0.02);
+        } else {
+            // Level 26+: stay at 200%
+            return 2.0;
+        }
     };
 
     /* Collision detection(walls) is done when a ghost lands on an
@@ -343,7 +365,7 @@ Pacman.User = function (game, map) {
 
     function addScore(nScore) { 
         score += nScore;
-        if (score >= 10000 && score - nScore < 10000) { 
+        if (score >= 10000 && score - nScore < 10000) {
             lives += 1;
         }
     };
@@ -1152,11 +1174,24 @@ var PACMAN = (function () {
     };
     
     function completedLevel() {
-        setState(WAITING);
         level += 1;
+        
+        if (level > 26) {
+            // Game won!
+            setState(WAITING);
+            map.draw(ctx);
+            dialog("🎉 CONGRATULATIONS! YOU WON BONKING PUMP.FUN! 🎉");
+            return;
+        }
+        
+        setState(WAITING);
         map.reset();
         user.newLevel();
         startLevel();
+    };
+    
+    function getLevel() {
+        return level;
     };
 
     function keyPress(e) { 
@@ -1183,11 +1218,12 @@ var PACMAN = (function () {
         map   = new Pacman.Map(blockSize);
         user  = new Pacman.User({ 
             "completedLevel" : completedLevel, 
-            "eatenPill"      : eatenPill
+            "eatenPill"      : eatenPill,
+            "getLevel"       : getLevel
         }, map);
 
         for (i = 0, len = ghostSpecs.length; i < len; i += 1) {
-            ghost = new Pacman.Ghost({"getTick": getTick}, map, ghostSpecs[i]);
+            ghost = new Pacman.Ghost({"getTick": getTick, "getLevel": getLevel}, map, ghostSpecs[i]);
             ghosts.push(ghost);
         }
         
