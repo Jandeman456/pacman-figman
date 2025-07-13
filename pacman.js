@@ -284,12 +284,18 @@ Pacman.User = function (game, map) {
         due       = null, 
         lives     = null,
         score     = 5,
-        keyMap    = {};
+        keyMap    = {},
+        dogImage  = null;
     
     keyMap[KEY.ARROW_LEFT]  = LEFT;
     keyMap[KEY.ARROW_UP]    = UP;
     keyMap[KEY.ARROW_RIGHT] = RIGHT;
     keyMap[KEY.ARROW_DOWN]  = DOWN;
+
+    function loadDogImage() {
+        dogImage = new Image();
+        dogImage.src = './public/Ontwerp zonder titel (35) (1).png';
+    };
 
     function addScore(nScore) { 
         score += nScore;
@@ -472,46 +478,74 @@ Pacman.User = function (game, map) {
 
     function drawDead(ctx, amount) { 
 
-        var size = map.blockSize, 
-            half = size / 2;
+        var size = map.blockSize;
 
         if (amount >= 1) { 
             return;
         }
 
-        ctx.fillStyle = "#FFFF00";
-        ctx.beginPath();        
-        ctx.moveTo(((position.x/10) * size) + half, 
-                   ((position.y/10) * size) + half);
-        
-        ctx.arc(((position.x/10) * size) + half, 
-                ((position.y/10) * size) + half,
-                half, 0, Math.PI * 2 * amount, true); 
-        
-        ctx.fill();    
+        if (dogImage && dogImage.complete) {
+            var x = (position.x/10) * size;
+            var y = (position.y/10) * size;
+            
+            ctx.save();
+            ctx.globalAlpha = 1 - amount; // Fade out effect
+            ctx.drawImage(dogImage, x, y, size, size);
+            ctx.restore();
+        } else {
+            // Fallback to original death animation
+            var half = size / 2;
+            ctx.fillStyle = "#FFFF00";
+            ctx.beginPath();        
+            ctx.moveTo(((position.x/10) * size) + half, 
+                       ((position.y/10) * size) + half);
+            ctx.arc(((position.x/10) * size) + half, 
+                    ((position.y/10) * size) + half,
+                    half, 0, Math.PI * 2 * amount, true); 
+            ctx.fill();
+        }
     };
 
     function draw(ctx) { 
 
-        var s     = map.blockSize, 
-            angle = calcAngle(direction, position);
-
-        ctx.fillStyle = "#FFFF00";
-
-        ctx.beginPath();        
-
-        ctx.moveTo(((position.x/10) * s) + s / 2,
-                   ((position.y/10) * s) + s / 2);
+        var s = map.blockSize;
         
-        ctx.arc(((position.x/10) * s) + s / 2,
-                ((position.y/10) * s) + s / 2,
-                s / 2, Math.PI * angle.start, 
-                Math.PI * angle.end, angle.direction); 
-        
-        ctx.fill();    
+        if (dogImage && dogImage.complete) {
+            var x = (position.x/10) * s;
+            var y = (position.y/10) * s;
+            
+            ctx.save();
+            ctx.translate(x + s/2, y + s/2);
+            
+            // Rotate based on direction
+            if (direction === LEFT) {
+                ctx.scale(-1, 1); // Flip horizontally for left
+            } else if (direction === UP) {
+                ctx.rotate(-Math.PI/2);
+            } else if (direction === DOWN) {
+                ctx.rotate(Math.PI/2);
+            }
+            // RIGHT direction needs no rotation (default)
+            
+            ctx.drawImage(dogImage, -s/2, -s/2, s, s);
+            ctx.restore();
+        } else {
+            // Fallback to original Pacman if image not loaded
+            var angle = calcAngle(direction, position);
+            ctx.fillStyle = "#FFFF00";
+            ctx.beginPath();        
+            ctx.moveTo(((position.x/10) * s) + s / 2,
+                       ((position.y/10) * s) + s / 2);
+            ctx.arc(((position.x/10) * s) + s / 2,
+                    ((position.y/10) * s) + s / 2,
+                    s / 2, Math.PI * angle.start, 
+                    Math.PI * angle.end, angle.direction); 
+            ctx.fill();
+        }
     };
     
     initUser();
+    loadDogImage();
 
     return {
         "draw"          : draw,
