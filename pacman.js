@@ -30,7 +30,8 @@ Pacman.Ghost = function (game, map, colour) {
         eatable   = null,
         eaten     = null,
         due       = null,
-        ghostImage = null;
+        ghostImage = null,
+        baseSpeed = 2;
     
     function loadGhostImage() {
         ghostImage = new Image();
@@ -39,7 +40,15 @@ Pacman.Ghost = function (game, map, colour) {
     
     function getNewCoord(dir, current) { 
         
-        var speed  = isVunerable() ? 1 : isHidden() ? 4 : 2,
+        var level = game.getLevel ? game.getLevel() : 1;
+        var ghostSpeed = game.getGhostSpeed ? game.getGhostSpeed(level) : 1;
+        var tunnelSpeed = game.getTunnelSpeed ? game.getTunnelSpeed(level) : 1;
+        
+        // Check if ghost is in tunnel area (y = 100, x near edges)
+        var inTunnel = (current.y === 100 && (current.x <= 20 || current.x >= 170));
+        var tunnelMultiplier = inTunnel ? tunnelSpeed : 1;
+        
+        var speed = isVunerable() ? 1 : isHidden() ? 4 : Math.round(baseSpeed * ghostSpeed * tunnelMultiplier),
             xSpeed = (dir === LEFT && -speed || dir === RIGHT && speed || 0),
             ySpeed = (dir === DOWN && speed || dir === UP && -speed || 0);
     
@@ -78,6 +87,19 @@ Pacman.Ghost = function (game, map, colour) {
     function getRandomDirection() {
         var moves = (direction === LEFT || direction === RIGHT) 
             ? [UP, DOWN] : [LEFT, RIGHT];
+        
+        // In scatter mode, prefer directions toward corners
+        // In chase mode, use random or target-seeking behavior
+        var scatterMode = game.getScatterMode ? game.getScatterMode() : false;
+        if (scatterMode) {
+            // Simple scatter behavior - prefer moving toward corners
+            if (position.x < 95) {
+                return moves.indexOf(LEFT) !== -1 ? LEFT : moves[0];
+            } else {
+                return moves.indexOf(RIGHT) !== -1 ? RIGHT : moves[0];
+            }
+        }
+        
         return moves[Math.floor(Math.random() * 2)];
     };
     
@@ -101,9 +123,9 @@ Pacman.Ghost = function (game, map, colour) {
             dir === UP && DOWN || UP;
     };
 
-    function makeEatable() {
+    function makeEatable(frightTime) {
         direction = oppositeDirection(direction);
-        eatable = game.getTick();
+        eatable = game.getTick() + (frightTime || 6) * Pacman.FPS;
     };
 
     function eat() { 
@@ -136,7 +158,8 @@ Pacman.Ghost = function (game, map, colour) {
 
     function getColour() { 
         if (eatable) { 
-            if (secondsAgo(eatable) > 5) { 
+            var timeLeft = (eatable - game.getTick()) / Pacman.FPS;
+            if (timeLeft < 2) { 
                 return game.getTick() % 20 > 10 ? "#FFFFFF" : "#0000BB";
             } else { 
                 return "#0000BB";
@@ -153,7 +176,8 @@ Pacman.Ghost = function (game, map, colour) {
             top  = (position.y/10) * s,
             left = (position.x/10) * s;
     
-        if (eatable && secondsAgo(eatable) > 8) {
+        // Check if fright time has expired
+        if (eatable && game.getTick() >= eatable) {
             eatable = null;
         }
         
@@ -166,7 +190,8 @@ Pacman.Ghost = function (game, map, colour) {
             
             // Apply color tint based on ghost state
             if (eatable) {
-                if (secondsAgo(eatable) > 5) {
+                var timeLeft = (eatable - game.getTick()) / Pacman.FPS;
+                if (timeLeft < 2) {
                     ctx.globalCompositeOperation = 'multiply';
                     ctx.fillStyle = game.getTick() % 20 > 10 ? "#FFFFFF" : "#0000BB";
                 } else {
@@ -901,10 +926,59 @@ var PACMAN = (function () {
         timer        = null,
         map          = null,
         user         = null,
-        stored       = null;
+        stored       = null,
+        scatterTimer = 0,
+        chaseTimer   = 0,
+        scatterMode  = true,
+        modeChangeTime = 0;
 
     function getTick() { 
         return tick;
+    };
+    
+    function getGhostSpeed(level) {
+        if (level <= 4) return 0.75;      // 75% speed
+        if (level <= 9) return 0.9;       // 90% speed  
+        if (level <= 20) return 1.0;      // 100% speed
+        return 1.1;                       // 110% speed for levels 21-255
+    };
+    
+    function getTunnelSpeed(level) {
+        if (level < 10) return 1.0;       // Normal speed in tunnels before level 10
+        return 1.2;                       // Faster in tunnels from level 10+
+    };
+    
+    function getFrightTime(level) {
+        if (level <= 4) return 6 + Math.random() * 2;  // 6-8 seconds
+        if (level <= 9) return 4;                       // 4 seconds
+        if (level <= 13) return 2;                      // 2 seconds
+        if (level <= 18) return 1;                      // 1 second
+        return 0;                                        // No fright mode from level 19+
+    };
+    
+    function getScatterChaseTimings(level) {
+        if (level <= 4) {
+            return { scatter: 7 * Pacman.FPS, chase: 20 * Pacman.FPS };
+        } else if (level <= 9) {
+            return { scatter: 5 * Pacman.FPS, chase: 25 * Pacman.FPS };
+        } else if (level <= 18) {
+            return { scatter: 3 * Pacman.FPS, chase: 30 * Pacman.FPS };
+        } else {
+            return { scatter: 1 * Pacman.FPS, chase: 50 * Pacman.FPS }; // Almost permanent chase
+        }
+    };
+    
+    function updateGhostMode() {
+        var timings = getScatterChaseTimings(level);
+        var currentTime = tick - modeChangeTime;
+        
+        if (scatterMode && currentTime >= timings.scatter) {
+            scatterMode = false;
+            modeChangeTime = tick;
+        } else if (!scatterMode && currentTime >= timings.chase) {
+            scatterMode = true;
+            modeChangeTime = tick;
+        }
     };
 
     function drawScore(text, position) {
@@ -932,6 +1006,9 @@ var PACMAN = (function () {
         for (var i = 0; i < ghosts.length; i += 1) { 
             ghosts[i].reset();
         }
+        // Reset scatter/chase mode timing
+        scatterMode = true;
+        modeChangeTime = tick;
         audio.play("start");
         timerStart = tick;
         setState(COUNTDOWN);
@@ -1096,6 +1173,7 @@ var PACMAN = (function () {
 
         if (state === PLAYING) {
             mainDraw();
+            updateGhostMode(); // Update scatter/chase mode
         } else if (state === WAITING && stateChanged) {            
             stateChanged = false;
             map.draw(ctx);
@@ -1135,20 +1213,34 @@ var PACMAN = (function () {
     }
 
     function eatenPill() {
-        audio.play("eatpill");
-        timerStart = tick;
-        eatenCount = 0;
-        for (i = 0; i < ghosts.length; i += 1) {
-            ghosts[i].makeEatable(ctx);
-        }        
+        var frightTime = getFrightTime(level);
+        if (frightTime > 0) {
+            audio.play("eatpill");
+            timerStart = tick;
+            eatenCount = 0;
+            for (i = 0; i < ghosts.length; i += 1) {
+                ghosts[i].makeEatable(ctx, frightTime);
+            }
+        } else {
+            // No fright mode, just play sound and add score
+            audio.play("eatpill");
+            user.addScore(50);
+        }
     };
     
     function completedLevel() {
-        setState(WAITING);
-        level += 1;
-        map.reset();
-        user.newLevel();
-        startLevel();
+        if (level < 255) {
+            setState(WAITING);
+            level += 1;
+            map.reset();
+            user.newLevel();
+            startLevel();
+        } else {
+            // Game completed at level 255
+            setState(WAITING);
+            map.draw(ctx);
+            dialog("CONGRATULATIONS! YOU COMPLETED ALL 255 LEVELS!");
+        }
     };
 
     function keyPress(e) { 
@@ -1175,11 +1267,21 @@ var PACMAN = (function () {
         map   = new Pacman.Map(blockSize);
         user  = new Pacman.User({ 
             "completedLevel" : completedLevel, 
-            "eatenPill"      : eatenPill 
+            "eatenPill"      : eatenPill,
+            "getLevel"       : function() { return level; },
+            "getGhostSpeed"  : getGhostSpeed,
+            "getTunnelSpeed" : getTunnelSpeed,
+            "getScatterMode" : function() { return scatterMode; }
         }, map);
 
         for (i = 0, len = ghostSpecs.length; i < len; i += 1) {
-            ghost = new Pacman.Ghost({"getTick":getTick}, map, ghostSpecs[i]);
+            ghost = new Pacman.Ghost({
+                "getTick": getTick,
+                "getLevel": function() { return level; },
+                "getGhostSpeed": getGhostSpeed,
+                "getTunnelSpeed": getTunnelSpeed,
+                "getScatterMode": function() { return scatterMode; }
+            }, map, ghostSpecs[i]);
             ghosts.push(ghost);
         }
         
