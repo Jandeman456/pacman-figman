@@ -34,11 +34,7 @@ Pacman.Ghost = function (game, map, colour) {
     
     function loadGhostImage() {
         ghostImage = new Image();
-        ghostImage.src = './public/Ontwerp zonder titel (48) copy copy copy.png';
-        ghostImage.onerror = function() {
-            console.log('Failed to load ghost image, using fallback');
-            ghostImage = null;
-        };
+        ghostImage.src = 'https://i.ibb.co/wrgT768M/Ontwerp-zonder-titel-49.png';
     };
     
     function getNewCoord(dir, current) { 
@@ -163,7 +159,7 @@ Pacman.Ghost = function (game, map, colour) {
             eaten = null;
         }
         
-        if (ghostImage && ghostImage.complete && ghostImage.naturalWidth > 0) {
+        if (ghostImage && ghostImage.complete) {
             ctx.save();
             
             // Apply color tint based on ghost state
