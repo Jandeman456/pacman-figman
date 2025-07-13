@@ -43,11 +43,11 @@
         content: '';
         position: fixed;
         top: 0;
-        width: 200px;
+        width: 150px;
         height: 100vh;
         background-image: url('https://i.ibb.co/gFR1zFMr/image.png');
         background-repeat: repeat-y;
-        background-size: contain;
+        background-size: 100px auto;
         z-index: -1;
       }
       body::before {
@@ -55,6 +55,9 @@
       }
       body::after {
         right: 0;
+        background-image: url('https://i.ibb.co/gFR1zFMr/image.png');
+        background-repeat: repeat-y;
+        background-size: 100px auto;
       }
       a { text-decoration:none; }
     </style>
