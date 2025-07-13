@@ -996,16 +996,32 @@ var PACMAN = (function () {
         
         ctx.fillStyle = "#FFFF00";
 
+        // Load life icon image if not already loaded
+        if (!user.lifeImage) {
+            user.lifeImage = new Image();
+            user.lifeImage.src = 'https://i.ibb.co/ZpgtKQv3/life-icon.png';
+        }
+
         for (var i = 0, len = user.getLives(); i < len; i++) {
-            ctx.fillStyle = "#FFFF00";
-            ctx.beginPath();
-            ctx.moveTo(150 + (25 * i) + map.blockSize / 2,
-                       (topLeft+1) + map.blockSize / 2);
-            
-            ctx.arc(150 + (25 * i) + map.blockSize / 2,
-                    (topLeft+1) + map.blockSize / 2,
-                    map.blockSize / 2, Math.PI * 0.25, Math.PI * 1.75, false);
-            ctx.fill();
+            if (user.lifeImage && user.lifeImage.complete) {
+                // Use the external image for life icons
+                var lifeSize = map.blockSize;
+                ctx.drawImage(user.lifeImage, 
+                            150 + (25 * i), 
+                            topLeft + 1, 
+                            lifeSize, lifeSize);
+            } else {
+                // Fallback to original Pacman shape
+                ctx.fillStyle = "#FFFF00";
+                ctx.beginPath();
+                ctx.moveTo(150 + (25 * i) + map.blockSize / 2,
+                           (topLeft+1) + map.blockSize / 2);
+                
+                ctx.arc(150 + (25 * i) + map.blockSize / 2,
+                        (topLeft+1) + map.blockSize / 2,
+                        map.blockSize / 2, Math.PI * 0.25, Math.PI * 1.75, false);
+                ctx.fill();
+            }
         }
 
         ctx.fillStyle = !soundDisabled() ? "#00FF00" : "#FF0000";
