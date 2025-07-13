@@ -179,10 +179,11 @@
       for (let row = 0; row < rows; row++) {
         for (let col = 0; col < cols; col++) {
           const x = col * tileSize;
-          const y = (row * tileSize) + animationOffset;
+          const y = (row * tileSize) + (animationOffset % tileSize);
           
           // Create checkerboard pattern
-          const isEven = (row + col) % 2 === 0;
+          const adjustedRow = row + Math.floor(animationOffset / tileSize);
+          const isEven = (adjustedRow + col) % 2 === 0;
           const img = isEven ? img1 : img2;
           
           ctx.drawImage(img, x, y, tileSize, tileSize);
@@ -191,12 +192,7 @@
     }
     
     function animate() {
-      animationOffset -= 0.3; // Move upward (slower for smoother effect)
-      
-      // Reset when a full tile has moved
-      if (animationOffset <= -50) {
-        animationOffset = 0;
-      }
+      animationOffset -= 0.3; // Move upward continuously
       
       drawCheckerboard();
       requestAnimationFrame(animate);
