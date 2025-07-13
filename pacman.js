@@ -294,7 +294,7 @@ Pacman.User = function (game, map) {
 
     function loadDogImage() {
         dogImage = new Image();
-        dogImage.src = 'https://images.pexels.com/photos/1805164/pexels-photo-1805164.jpeg?auto=compress&cs=tinysrgb&w=100&h=100&fit=crop';
+        dogImage.src = './public/Ontwerp zonder titel (35) (1).png';
     };
 
     function addScore(nScore) { 
