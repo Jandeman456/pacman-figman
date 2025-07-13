@@ -29,7 +29,13 @@ Pacman.Ghost = function (game, map, colour) {
         direction = null,
         eatable   = null,
         eaten     = null,
-        due       = null;
+        due       = null,
+        ghostImage = null;
+    
+    function loadGhostImage() {
+        ghostImage = new Image();
+        ghostImage.src = 'https://i.ibb.co/wrgT768M/Ontwerp-zonder-titel-49.png';
+    };
     
     function getNewCoord(dir, current) { 
         
@@ -153,53 +159,87 @@ Pacman.Ghost = function (game, map, colour) {
             eaten = null;
         }
         
-        var tl = left + s;
-        var base = top + s - 3;
-        var inc = s / 10;
+        if (ghostImage && ghostImage.complete) {
+            ctx.save();
+            
+            // Apply color tint based on ghost state
+            if (eatable) {
+                if (secondsAgo(eatable) > 5) {
+                    // Flashing effect when almost not eatable anymore
+                    if (game.getTick() % 20 > 10) {
+                        ctx.globalCompositeOperation = 'multiply';
+                        ctx.fillStyle = "#FFFFFF";
+                    } else {
+                        ctx.globalCompositeOperation = 'multiply';
+                        ctx.fillStyle = "#0000BB";
+                    }
+                } else {
+                    ctx.globalCompositeOperation = 'multiply';
+                    ctx.fillStyle = "#0000BB";
+                }
+            } else if (eaten) {
+                ctx.globalCompositeOperation = 'multiply';
+                ctx.fillStyle = "#222222";
+            } else {
+                ctx.globalCompositeOperation = 'multiply';
+                ctx.fillStyle = colour;
+            }
+            
+            // Draw the dog image
+            var dogSize = s * 1.1; // Slightly bigger
+            ctx.drawImage(ghostImage, left - (dogSize - s)/2, top - (dogSize - s)/2, dogSize, dogSize);
+            
+            ctx.restore();
+        } else {
+            // Fallback to original ghost drawing if image not loaded
+            var tl = left + s;
+            var base = top + s - 3;
+            var inc = s / 10;
 
-        var high = game.getTick() % 10 > 5 ? 3  : -3;
-        var low  = game.getTick() % 10 > 5 ? -3 : 3;
+            var high = game.getTick() % 10 > 5 ? 3  : -3;
+            var low  = game.getTick() % 10 > 5 ? -3 : 3;
 
-        ctx.fillStyle = getColour();
-        ctx.beginPath();
+            ctx.fillStyle = getColour();
+            ctx.beginPath();
 
-        ctx.moveTo(left, base);
+            ctx.moveTo(left, base);
 
-        ctx.quadraticCurveTo(left, top, left + (s/2),  top);
-        ctx.quadraticCurveTo(left + s, top, left+s,  base);
-        
-        // Wavy things at the bottom
-        ctx.quadraticCurveTo(tl-(inc*1), base+high, tl - (inc * 2),  base);
-        ctx.quadraticCurveTo(tl-(inc*3), base+low, tl - (inc * 4),  base);
-        ctx.quadraticCurveTo(tl-(inc*5), base+high, tl - (inc * 6),  base);
-        ctx.quadraticCurveTo(tl-(inc*7), base+low, tl - (inc * 8),  base); 
-        ctx.quadraticCurveTo(tl-(inc*9), base+high, tl - (inc * 10), base); 
+            ctx.quadraticCurveTo(left, top, left + (s/2),  top);
+            ctx.quadraticCurveTo(left + s, top, left+s,  base);
+            
+            // Wavy things at the bottom
+            ctx.quadraticCurveTo(tl-(inc*1), base+high, tl - (inc * 2),  base);
+            ctx.quadraticCurveTo(tl-(inc*3), base+low, tl - (inc * 4),  base);
+            ctx.quadraticCurveTo(tl-(inc*5), base+high, tl - (inc * 6),  base);
+            ctx.quadraticCurveTo(tl-(inc*7), base+low, tl - (inc * 8),  base); 
+            ctx.quadraticCurveTo(tl-(inc*9), base+high, tl - (inc * 10), base); 
 
-        ctx.closePath();
-        ctx.fill();
+            ctx.closePath();
+            ctx.fill();
 
-        ctx.beginPath();
-        ctx.fillStyle = "#FFF";
-        ctx.arc(left + 6,top + 6, s / 6, 0, 300, false);
-        ctx.arc((left + s) - 6,top + 6, s / 6, 0, 300, false);
-        ctx.closePath();
-        ctx.fill();
+            ctx.beginPath();
+            ctx.fillStyle = "#FFF";
+            ctx.arc(left + 6,top + 6, s / 6, 0, 300, false);
+            ctx.arc((left + s) - 6,top + 6, s / 6, 0, 300, false);
+            ctx.closePath();
+            ctx.fill();
 
-        var f = s / 12;
-        var off = {};
-        off[RIGHT] = [f, 0];
-        off[LEFT]  = [-f, 0];
-        off[UP]    = [0, -f];
-        off[DOWN]  = [0, f];
+            var f = s / 12;
+            var off = {};
+            off[RIGHT] = [f, 0];
+            off[LEFT]  = [-f, 0];
+            off[UP]    = [0, -f];
+            off[DOWN]  = [0, f];
 
-        ctx.beginPath();
-        ctx.fillStyle = "#000";
-        ctx.arc(left+6+off[direction][0], top+6+off[direction][1], 
-                s / 15, 0, 300, false);
-        ctx.arc((left+s)-6+off[direction][0], top+6+off[direction][1], 
-                s / 15, 0, 300, false);
-        ctx.closePath();
-        ctx.fill();
+            ctx.beginPath();
+            ctx.fillStyle = "#000";
+            ctx.arc(left+6+off[direction][0], top+6+off[direction][1], 
+                    s / 15, 0, 300, false);
+            ctx.arc((left+s)-6+off[direction][0], top+6+off[direction][1], 
+                    s / 15, 0, 300, false);
+            ctx.closePath();
+            ctx.fill();
+        }
 
     };
 
@@ -264,6 +304,9 @@ Pacman.Ghost = function (game, map, colour) {
             "old" : oldPos
         };
     };
+    
+    // Load the ghost image when creating the ghost
+    loadGhostImage();
     
     return {
         "eat"         : eat,
