@@ -615,11 +615,17 @@ Pacman.Map = function (size) {
         blockSize = size,
         pillSize  = 0,
         map       = null,
-        biscuitImage = null;
+        biscuitImage = null,
+        pillImage = null;
     
     function loadBiscuitImage() {
         biscuitImage = new Image();
         biscuitImage.src = 'https://i.ibb.co/cSrc0TMf/biscuit.png';
+    };
+    
+    function loadPillImage() {
+        pillImage = new Image();
+        pillImage.src = 'https://i.ibb.co/xSCYVhMt/pill.png';
     };
     
     function withinBounds(y, x) {
@@ -694,20 +700,30 @@ Pacman.Map = function (size) {
         for (i = 0; i < height; i += 1) {
 		    for (j = 0; j < width; j += 1) {
                 if (map[i][j] === Pacman.PILL) {
-                    ctx.beginPath();
-
                     ctx.fillStyle = "#000";
 		            ctx.fillRect((j * blockSize), (i * blockSize), 
                                  blockSize, blockSize);
 
-                    ctx.fillStyle = "#FFF";
-                    ctx.arc((j * blockSize) + blockSize / 2,
-                            (i * blockSize) + blockSize / 2,
-                            Math.abs(5 - (pillSize/3)), 
-                            0, 
-                            Math.PI * 2, false); 
-                    ctx.fill();
-                    ctx.closePath();
+                    if (pillImage && pillImage.complete) {
+                        var pillImageSize = blockSize * 0.8; // Make pill 80% of block size
+                        var offsetX = (blockSize - pillImageSize) / 2;
+                        var offsetY = (blockSize - pillImageSize) / 2;
+                        ctx.drawImage(pillImage, 
+                                    (j * blockSize) + offsetX, 
+                                    (i * blockSize) + offsetY, 
+                                    pillImageSize, pillImageSize);
+                    } else {
+                        // Fallback to original animated white circle
+                        ctx.beginPath();
+                        ctx.fillStyle = "#FFF";
+                        ctx.arc((j * blockSize) + blockSize / 2,
+                                (i * blockSize) + blockSize / 2,
+                                Math.abs(5 - (pillSize/3)), 
+                                0, 
+                                Math.PI * 2, false); 
+                        ctx.fill();
+                        ctx.closePath();
+                    }
                 }
 		    }
 	    }
@@ -769,6 +785,7 @@ Pacman.Map = function (size) {
 
     reset();
     loadBiscuitImage();
+    loadPillImage();
     
     return {
         "draw"         : draw,
