@@ -1099,7 +1099,7 @@ var PACMAN = (function () {
         } else if (state === WAITING && stateChanged) {            
             stateChanged = false;
             map.draw(ctx);
-            dialog("Press N to start a New game");            
+            dialog("Press N to start BONKING PUMP.FUN");            
         } else if (state === EATEN_PAUSE && 
                    (tick - timerStart) > (Pacman.FPS / 3)) {
             map.draw(ctx);
@@ -1212,7 +1212,7 @@ var PACMAN = (function () {
         
     function loaded() {
 
-        dialog("Press N to Start");
+        dialog("Press N to start BONKING PUMP.FUN");
         
         document.addEventListener("keydown", keyDown, true);
         document.addEventListener("keypress", keyPress, true); 
