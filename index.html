@@ -47,20 +47,14 @@
         right: 0;
         bottom: 0;
         background-image: 
-          url('https://i.ibb.co/ks1G0dnf/image.png'),
-          url('https://i.ibb.co/ks1G0dnf/image.png'),
-          url('https://i.ibb.co/ks1G0dnf/image.png'),
-          url('https://i.ibb.co/ks1G0dnf/image.png'),
-          url('https://i.ibb.co/ks1G0dnf/image.png');
-        background-position: 
-          20px 30px,
-          40px 70px,
-          90px 40px,
-          130px 80px,
-          160px 30px;
+          radial-gradient(2px 2px at 20px 30px, #00ff00, transparent),
+          radial-gradient(2px 2px at 40px 70px, #ffff00, transparent),
+          radial-gradient(1px 1px at 90px 40px, #00ff00, transparent),
+          radial-gradient(1px 1px at 130px 80px, #ffff00, transparent),
+          radial-gradient(2px 2px at 160px 30px, #00ff00, transparent);
         background-repeat: repeat;
-        background-size: 15px 15px, 12px 12px, 10px 10px, 14px 14px, 13px 13px;
-        animation: floatingImages 25s linear infinite;
+        background-size: 200px 100px;
+        animation: stars 20s linear infinite;
         opacity: 0.6;
       }
       
@@ -89,14 +83,6 @@
       @keyframes stars {
         0% { transform: translateY(0px); }
         100% { transform: translateY(-100px); }
-      }
-      
-      @keyframes floatingImages {
-        0% { transform: translateY(0px) translateX(0px); }
-        25% { transform: translateY(-50px) translateX(10px); }
-        50% { transform: translateY(-100px) translateX(-5px); }
-        75% { transform: translateY(-150px) translateX(15px); }
-        100% { transform: translateY(-200px) translateX(0px); }
       }
       
       @keyframes float {
