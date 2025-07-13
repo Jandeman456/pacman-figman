@@ -614,7 +614,13 @@ Pacman.Map = function (size) {
         width     = null, 
         blockSize = size,
         pillSize  = 0,
-        map       = null;
+        map       = null,
+        biscuitImage = null;
+    
+    function loadBiscuitImage() {
+        biscuitImage = new Image();
+        biscuitImage.src = 'https://i.ibb.co/cSrc0TMf/biscuit.png';
+    };
     
     function withinBounds(y, x) {
         return y >= 0 && y < height && x >= 0 && x < width;
@@ -741,16 +747,28 @@ Pacman.Map = function (size) {
                          blockSize, blockSize);
 
             if (layout === Pacman.BISCUIT) {
-                ctx.fillStyle = "#FFF";
-		        ctx.fillRect((x * blockSize) + (blockSize / 2.5), 
-                             (y * blockSize) + (blockSize / 2.5), 
-                             blockSize / 6, blockSize / 6);
+                if (biscuitImage && biscuitImage.complete) {
+                    var biscuitSize = blockSize * 0.6; // Make biscuit 60% of block size
+                    var offsetX = (blockSize - biscuitSize) / 2;
+                    var offsetY = (blockSize - biscuitSize) / 2;
+                    ctx.drawImage(biscuitImage, 
+                                (x * blockSize) + offsetX, 
+                                (y * blockSize) + offsetY, 
+                                biscuitSize, biscuitSize);
+                } else {
+                    // Fallback to original white square
+                    ctx.fillStyle = "#FFF";
+		            ctx.fillRect((x * blockSize) + (blockSize / 2.5), 
+                                 (y * blockSize) + (blockSize / 2.5), 
+                                 blockSize / 6, blockSize / 6);
+                }
 	        }
         }
         ctx.closePath();	 
     };
 
     reset();
+    loadBiscuitImage();
     
     return {
         "draw"         : draw,
