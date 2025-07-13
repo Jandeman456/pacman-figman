@@ -50,18 +50,37 @@
           url('https://i.ibb.co/ks1G0dnf/image.png'),
           url('https://i.ibb.co/ks1G0dnf/image.png'),
           url('https://i.ibb.co/ks1G0dnf/image.png'),
-          url('https://i.ibb.co/ks1G0dnf/image.png'),
-          url('https://i.ibb.co/ks1G0dnf/image.png');
-        background-position: 
-          20px 30px,
-          40px 70px,
-          90px 40px,
-          130px 80px,
-          160px 30px;
-        background-repeat: repeat;
-        background-size: 15px 15px, 12px 12px, 10px 10px, 14px 14px, 13px 13px;
-        animation: floatingImages 25s linear infinite;
-        opacity: 0.6;
+        pointer-events: none;
+      }
+      
+      .floating-image {
+        position: absolute;
+        width: 15px;
+        height: 15px;
+        background-image: url('https://i.ibb.co/ks1G0dnf/image.png');
+        background-size: contain;
+        background-repeat: no-repeat;
+        opacity: 0.4;
+        animation: floatingImages 20s linear infinite;
+        pointer-events: none;
+      }
+      
+      .floating-image:nth-child(1) {
+        top: 20%;
+        left: 15%;
+        animation-delay: 0s;
+      }
+      
+      .floating-image:nth-child(2) {
+        top: 60%;
+        right: 20%;
+        animation-delay: -7s;
+      }
+      
+      .floating-image:nth-child(3) {
+        top: 80%;
+        left: 70%;
+        animation-delay: -14s;
       }
       
       body::after {
@@ -92,11 +111,11 @@
       }
       
       @keyframes floatingImages {
-        0% { transform: translateY(0px) translateX(0px); }
-        25% { transform: translateY(-50px) translateX(10px); }
-        50% { transform: translateY(-100px) translateX(-5px); }
-        75% { transform: translateY(-150px) translateX(15px); }
-        100% { transform: translateY(-200px) translateX(0px); }
+        0% { transform: translateY(0px) translateX(0px) rotate(0deg); }
+        25% { transform: translateY(-30px) translateX(10px) rotate(90deg); }
+        50% { transform: translateY(-60px) translateX(-5px) rotate(180deg); }
+        75% { transform: translateY(-30px) translateX(15px) rotate(270deg); }
+        100% { transform: translateY(0px) translateX(0px) rotate(360deg); }
       }
       
       @keyframes float {
@@ -157,6 +176,9 @@
   <div id="shim">shim for font face</div>
 
   <div id="start-screen">
+    <div class="floating-image"></div>
+    <div class="floating-image"></div>
+    <div class="floating-image"></div>
     <h1 id="game-title">BONKMAN</h1>
     <button id="start-button">LETS BONKMAN</button>
   </div>
