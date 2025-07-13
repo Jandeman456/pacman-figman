@@ -312,7 +312,10 @@ Pacman.Ghost = function (game, map, colour) {
             })) {
             
             due = getRandomDirection();            
-            return move(ctx);
+            return {
+                "new" : position,
+                "old" : position
+            };
         }
 
         position = npos;        
