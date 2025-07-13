@@ -188,7 +188,7 @@
     img2.onload = imageLoaded;
     
     function drawCheckerboard() {
-      const tileSize = 30;
+      const tileSize = 50;
       const cols = Math.ceil(canvas.width / tileSize) + 1;
       const rows = Math.ceil(canvas.height / tileSize) + 2;
       
@@ -212,7 +212,7 @@
       animationOffset -= 0.5; // Move upward
       
       // Reset when a full tile has moved
-      if (animationOffset <= -30) {
+      if (animationOffset <= -50) {
         animationOffset = 0;
       }
       
