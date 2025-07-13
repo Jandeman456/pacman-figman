@@ -36,6 +36,25 @@
         background-repeat: no-repeat;
         background-position: center;
         background-color: #2d1b69;
+        position: relative;
+      }
+      body::before,
+      body::after {
+        content: '';
+        position: fixed;
+        top: 0;
+        width: 200px;
+        height: 100vh;
+        background-image: url('https://i.ibb.co/gFR1zFMr/image.png');
+        background-repeat: repeat-y;
+        background-size: contain;
+        z-index: -1;
+      }
+      body::before {
+        left: 0;
+      }
+      body::after {
+        right: 0;
       }
       a { text-decoration:none; }
     </style>
