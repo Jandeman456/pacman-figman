@@ -1340,7 +1340,6 @@ var PACMAN = (function () {
             ctx.fillStyle = "#f65b21";
             ctx.font = "12px BDCartoonShoutRegular";
             var escText = "Press ESC to return to home screen";
-            var escText = "Press BACKSPACE to return to home screen";
             var escWidth = ctx.measureText(escText).width;
             var escX = ((map.width * map.blockSize) - escWidth) / 2;
             ctx.fillText(escText, escX, (map.height * 10) + 25);
