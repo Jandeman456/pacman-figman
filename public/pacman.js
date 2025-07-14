@@ -1640,7 +1640,7 @@ var PACMAN = (function () {
 
         var audio_files = [
             ["start", root + "audio/opening_song." + extension],
-            ["die", root + "audio/custom-death." + extension],
+            ["die", root + "audio/die." + extension],
             ["eatghost", root + "audio/eatghost." + extension],
             ["eatpill", root + "audio/eatpill." + extension],
             ["eating", root + "audio/eating.short." + extension],
