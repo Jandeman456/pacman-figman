@@ -1153,13 +1153,7 @@ var PACMAN = (function () {
             return handleNameInput(e);
         }
         
-        if (e.keyCode === KEY.ESCAPE && state === WAITING) {
-            // Return to home screen
-            document.getElementById("pacman").style.display = "none";
-            document.getElementById("start-screen").style.display = "block";
-            document.getElementById("leaderboard-button").style.display = "block";
-            return false;
-        } else if (e.keyCode === KEY.ESCAPE && state === LEADERBOARD) {
+        if (e.keyCode === KEY.ESCAPE && state === LEADERBOARD) {
             setState(WAITING);
             map.draw(ctx);
             dialog("Press N to start BONKING PUMP.FUN");
@@ -1334,7 +1328,7 @@ var PACMAN = (function () {
         } else if (state === WAITING && stateChanged) {            
             stateChanged = false;
             map.draw(ctx);
-            dialog("Press N to start BONKING PUMP.FUN | Press ESC to return to home screen");            
+            dialog("Press N to start BONKING PUMP.FUN");            
         } else if (state === EATEN_PAUSE && 
                    (tick - timerStart) > (Pacman.FPS / 3)) {
             map.draw(ctx);
