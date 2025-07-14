@@ -42,13 +42,11 @@ Pacman.Ghost = function (game, map, colour) {
     function getNewCoord(dir, current) { 
         
         var levelSpeedMultiplier = getLevelSpeedMultiplier();
-        var speed = isVunerable() ? 1 : isHidden() ? 4 : baseSpeed * levelSpeedMultiplier,
-            xSpeed = (dir === LEFT && -speed || dir === RIGHT && speed || 0),
-            ySpeed = (dir === DOWN && speed || dir === UP && -speed || 0);
+        var speed = 1; // Always keep normal speed
     
         return {
-            "x": addBounded(current.x, xSpeed),
-            "y": addBounded(current.y, ySpeed)
+            "x": addBounded(current.x, (dir === LEFT && -speed || dir === RIGHT && speed || 0)),
+            "y": addBounded(current.y, (dir === DOWN && speed || dir === UP && -speed || 0))
         };
     };
     
