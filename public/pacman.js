@@ -852,10 +852,7 @@ Pacman.Map = function (size) {
                     ctx.fillStyle = "#FFF";
 		            ctx.fillRect((x * blockSize) + (blockSize / 2.5), 
                                  (y * blockSize) + (blockSize / 2.5), 
-                    ctx.fillText((i + 1).toString(), dialog.x + 60, y);
-                    ctx.fillText(entry.name || "ANON", dialog.x + 120, y);
-                    ctx.fillText(entry.score.toString(), dialog.x + 180, y);
-                    ctx.fillText(entry.level.toString(), dialog.x + 240, y);
+                    
         }
         ctx.closePath();	 
     };
@@ -1308,8 +1305,22 @@ var PACMAN = (function () {
         ctx.font = "14px BDCartoonShoutRegular";
         
         if (globalLeaderboard.length === 0) {
-            ctx.fillText("Loading global scores...", 200, 120);
-        } else {
+    ctx.fillText("Loading global scores...", 200, 120);
+} else {
+    for (var i = 0; i < globalLeaderboard.length; i++) {
+        var entry = globalLeaderboard[i];
+        var yPos = 110 + (i * 25);
+
+        ctx.fillStyle = i < 3 ? "#FFD700" : "#FFFFFF"; // Goud voor top 3
+        ctx.fillText((i + 1).toString(), 50, yPos);     // Rangnummer
+
+        ctx.fillStyle = "#FFFFFF";
+        ctx.fillText(entry.name || "ANON", 100, yPos);               // Naam
+        ctx.fillText(entry.score.toLocaleString(), 180, yPos);       // Score
+        ctx.fillText(entry.level.toString(), 260, yPos);             // Level
+    }
+}
+
             for (var i = 0; i < globalLeaderboard.length; i++) {
                 var entry = globalLeaderboard[i];
                 var yPos = 110 + (i * 25);
