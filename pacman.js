@@ -7,12 +7,10 @@ function isHidden() {
 }
 
 // Added missing closing bracket for map.isFloorSpace check in move() function
-if (onGrid &&
-    speed = 1; // Always use speed 1 for consistent movement
-    {
+if (onGrid && map.isFloorSpace({
         "y" : pointToCoord(nextSquare(npos.y, direction)),
         "x" : pointToCoord(nextSquare(npos.x, direction))
-    }) {
+    })) {
     
     due = getRandomDirection();            
     return move(ctx);
