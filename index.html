@@ -179,7 +179,7 @@
         const { error } = await supabase
           .from('leaderboard')
           .insert([
-            { score: score, level: level, name: name }
+            { score: score, level: level }
           ])
         
         if (error) {
@@ -200,7 +200,7 @@
         console.log('Fetching leaderboard...')
         const { data, error } = await supabase
           .from('leaderboard')
-          .select('score, level, created_at, name')
+          .select('score, level, created_at')
           .order('score', { ascending: false })
           .order('created_at', { ascending: false })
           .limit(10)
