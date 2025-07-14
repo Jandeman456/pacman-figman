@@ -6,6 +6,16 @@ function isHidden() {
     return npos;
 }
 
+// Added missing closing bracket for map.isFloorSpace check in move() function
+if (onGrid && map.isFloorSpace({
+        "y" : pointToCoord(nextSquare(npos.y, direction)),
+        "x" : pointToCoord(nextSquare(npos.x, direction))
+    })) {
+    
+    due = getRandomDirection();            
+    move(ctx);
+}
+
 // Added missing closing bracket for oppositeDirection() function
 function oppositeDirection(dir) { 
     return (dir === LEFT && RIGHT ||
