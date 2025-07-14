@@ -1008,6 +1008,17 @@ var PACMAN = (function () {
         ctx.fillText(text, x, (map.height * 10) + 8);
     }
 
+    function hideDialog() {
+        dialog(false);
+        
+        // Show game UI elements again when dialog is hidden
+        $("#panel").show();
+        $("#fruit").show();
+        $("#score").show();
+        $("#level").show();
+        $("#lives").show();
+    }
+
     function soundDisabled() {
         return localStorage["soundDisabled"] === "true";
     }
