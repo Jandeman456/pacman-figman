@@ -159,7 +159,7 @@
   <div id="pacman" style="display: none;"></div>
   
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="pacman.js"></script>
+  <script src="/pacman.js"></script>
   <script src="modernizr-1.5.min.js"></script>
   
   <script>
@@ -172,7 +172,6 @@
     // Make functions globally available
     window.saveScoreToLeaderboard = saveScoreToLeaderboard;
     window.getGlobalLeaderboard = getGlobalLeaderboard;
-    window.saveScoreToLeaderboardWithName = saveScoreToLeaderboardWithName;
     
     // Function to save score to global leaderboard
     async function saveScoreToLeaderboard(score, level) {
