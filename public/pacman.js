@@ -1379,10 +1379,11 @@ var PACMAN = (function () {
     function saveScoreGlobally() {
         var currentScore = user.theScore();
         var currentLevel = level;
+        var playerName = getPlayerName() || 'ANON';
         
         // Save to global Supabase leaderboard
-        if (window.saveScoreToLeaderboard) {
-            window.saveScoreToLeaderboard(currentScore, currentLevel, playerName || "ANON")
+        if (window.saveScoreToLeaderboardWithName) {
+            window.saveScoreToLeaderboardWithName(currentScore, currentLevel, playerName);
                 .then(function(success) {
                     if (success) {
                         console.log('Score saved successfully!');
