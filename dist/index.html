@@ -160,7 +160,7 @@
   
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="/pacman.js"></script>
-  <script src="modernizr-1.5.min.js"></script>
+  <script src="/modernizr-1.5.min.js"></script>
   
   <script>
     // Initialize Supabase client
@@ -175,16 +175,11 @@
     
     // Function to save score to global leaderboard
     async function saveScoreToLeaderboard(score, level) {
-      return saveScoreToLeaderboardWithName(score, level, 'ANON');
-    }
-    
-    // Function to save score with name to global leaderboard
-    async function saveScoreToLeaderboardWithName(score, level, name) {
       try {
         const { error } = await supabase
           .from('leaderboard')
           .insert([
-            { score: score, level: level, name: name || 'ANON' }
+            { score: score, level: level }
           ])
         
         if (error) {
@@ -205,7 +200,7 @@
         console.log('Fetching leaderboard...')
         const { data, error } = await supabase
           .from('leaderboard')
-          .select('score, level, created_at, name')
+          .select('score, level, created_at')
           .order('score', { ascending: false })
           .order('created_at', { ascending: false })
           .limit(10)
