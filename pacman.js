@@ -419,7 +419,7 @@ Pacman.User = function (game, map) {
 
     function getNewCoord(dir, current) {   
         var levelSpeedMultiplier = getPacmanLevelSpeedMultiplier();
-        var speed = 2 * levelSpeedMultiplier;
+        var speed = Math.round(2 * levelSpeedMultiplier);
         
         return {
             "x": current.x + (dir === LEFT && -speed || dir === RIGHT && speed || 0),
