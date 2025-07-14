@@ -1304,22 +1304,31 @@ var PACMAN = (function () {
         ctx.fillStyle = "#FFFFFF";
         ctx.font = "14px BDCartoonShoutRegular";
         
-        if (globalLeaderboard.length === 0) {
-    ctx.fillText("Loading global scores...", 200, 120);
-} else {
-    for (var i = 0; i < globalLeaderboard.length; i++) {
-        var entry = globalLeaderboard[i];
-        var yPos = 110 + (i * 25);
+        async function showLeaderboard() {
+    // ... setup code zoals ctx.fillStyle, fonts, etc.
 
-        ctx.fillStyle = i < 3 ? "#FFD700" : "#FFFFFF"; // Goud voor top 3
-        ctx.fillText((i + 1).toString(), 50, yPos);     // Rangnummer
+    if (globalLeaderboard.length === 0) {
+        ctx.fillText("Loading global scores...", 200, 120);
+    } else {
+        for (var i = 0; i < globalLeaderboard.length; i++) {
+            var entry = globalLeaderboard[i];
+            var yPos = 110 + (i * 25);
 
-        ctx.fillStyle = "#FFFFFF";
-        ctx.fillText(entry.name || "ANON", 100, yPos);               // Naam
-        ctx.fillText(entry.score.toLocaleString(), 180, yPos);       // Score
-        ctx.fillText(entry.level.toString(), 260, yPos);             // Level
+            ctx.fillStyle = i < 3 ? "#FFD700" : "#FFFFFF";
+            ctx.fillText((i + 1).toString(), 50, yPos);
+
+            ctx.fillStyle = "#FFFFFF";
+            ctx.fillText(entry.name || "ANON", 100, yPos);
+            ctx.fillText(entry.score.toLocaleString(), 180, yPos);
+            ctx.fillText(entry.level.toString(), 260, yPos);
+        }
     }
+
+    // extra tekst onderaan?
+    ctx.fillStyle = "#f65b21";
+    ctx.fillText("Press ESC to return to game", 200, map.height * map.blockSize - 20);
 }
+
 
             for (var i = 0; i < globalLeaderboard.length; i++) {
                 var entry = globalLeaderboard[i];
