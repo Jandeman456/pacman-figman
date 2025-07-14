@@ -1358,7 +1358,10 @@ var PACMAN = (function () {
             }
         } 
 
-        drawFooter();
+        // Only draw footer if not in leaderboard state
+        if (state !== LEADERBOARD) {
+            drawFooter();
+        }
     }
 
     function eatenPill() {
