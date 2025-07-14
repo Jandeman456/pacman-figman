@@ -769,6 +769,7 @@ Pacman.Map = function (size) {
     }
 
     function drawPills(ctx) { 
+        var i, j;
 
         if (++pillSize > 30) {
             pillSize = 0;
@@ -1132,6 +1133,10 @@ var PACMAN = (function () {
         return true;
     }
 
+    function getPlayerName() {
+        return playerName;
+    }
+
     function keyDown(e) {
         if (state === NAME_INPUT) {
             return handleNameInput(e);
@@ -1291,7 +1296,7 @@ var PACMAN = (function () {
 
     function mainLoop() {
 
-        var diff;
+        var diff, i, len;
 
         if (state !== PAUSE) { 
             ++tick;
@@ -1349,7 +1354,7 @@ var PACMAN = (function () {
         audio.play("eatpill");
         timerStart = tick;
         eatenCount = 0;
-        for (i = 0; i < ghosts.length; i += 1) {
+        for (var i = 0; i < ghosts.length; i += 1) {
             ghosts[i].makeEatable(ctx);
         }
     }
@@ -1379,11 +1384,11 @@ var PACMAN = (function () {
     function saveScoreGlobally() {
         var currentScore = user.theScore();
         var currentLevel = level;
-        var playerName = getPlayerName() || 'ANON';
+        var name = getPlayerName() || 'ANON';
         
         // Save to global Supabase leaderboard
         if (window.saveScoreToLeaderboardWithName) {
-            window.saveScoreToLeaderboardWithName(currentScore, currentLevel, playerName);
+            window.saveScoreToLeaderboardWithName(currentScore, currentLevel, name)
                 .then(function(success) {
                     if (success) {
                         console.log('Score saved successfully!');
