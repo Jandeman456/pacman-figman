@@ -962,7 +962,8 @@ var PACMAN = (function () {
         scatterTimer = 0,
         chaseTimer   = 0,
         scatterMode  = true,
-        modeChangeTime = 0;
+        modeChangeTime = 0,
+        globalLeaderboard = [];
 
     function getTick() { 
         return tick;
@@ -1045,8 +1046,8 @@ var PACMAN = (function () {
         if (user.getLives() > 0) {
             startLevel();
         } else {
-            // Game over - save score
-            saveScore();
+            // Game over - save score globally
+            saveScoreGlobally();
         }
     }
 
@@ -1221,8 +1222,8 @@ var PACMAN = (function () {
         level += 1;
         
         if (level > 30) {
-            // Game won!
-            saveScore();
+            // Game won! Save score globally
+            saveScoreGlobally();
             setState(WAITING);
             map.draw(ctx);
             dialog("🐶CONGRATULATIONS! YOU BONKED PUMP.FUN OUT OF THE TRENCHES!🐶");
@@ -1239,32 +1240,26 @@ var PACMAN = (function () {
         return level;
     };
     
-    function saveScore() {
+    function saveScoreGlobally() {
         var currentScore = user.theScore();
         var currentLevel = level;
         
-        // Get existing leaderboard
-        var leaderboard = JSON.parse(localStorage.getItem('bonkmanLeaderboard') || '[]');
-        
-        // Add new score
-        leaderboard.push({
-            score: currentScore,
-            level: currentLevel,
-            date: new Date().toLocaleDateString()
-        });
-        
-        // Sort by score (highest first)
-        leaderboard.sort(function(a, b) { return b.score - a.score; });
-        
-        // Keep only top 10
-        leaderboard = leaderboard.slice(0, 10);
-        
-        // Save back to localStorage
-        localStorage.setItem('bonkmanLeaderboard', JSON.stringify(leaderboard));
+        // Save to global Supabase leaderboard
+        if (window.saveScoreToLeaderboard) {
+            window.saveScoreToLeaderboard(currentScore, currentLevel);
+        }
     }
     
-    function showLeaderboard() {
-        var leaderboard = JSON.parse(localStorage.getItem('bonkmanLeaderboard') || '[]');
+    async function showLeaderboard() {
+        // Fetch global leaderboard
+        if (window.getGlobalLeaderboard) {
+            try {
+                globalLeaderboard = await window.getGlobalLeaderboard();
+            } catch (error) {
+                console.error('Error loading global leaderboard:', error);
+                globalLeaderboard = [];
+            }
+        }
         
         // Clear the game canvas
         ctx.fillStyle = "#000";
@@ -1273,7 +1268,7 @@ var PACMAN = (function () {
         // Title
         ctx.fillStyle = "#FFFF00";
         ctx.font = "24px BDCartoonShoutRegular";
-        var titleText = "🏆 TOP 10 LEADERBOARD 🏆";
+        var titleText = "🌍 GLOBAL TOP 10 🌍";
         var titleWidth = ctx.measureText(titleText).width;
         ctx.fillText(titleText, ((map.width * map.blockSize) - titleWidth) / 2, 40);
         
@@ -1283,17 +1278,16 @@ var PACMAN = (function () {
         ctx.fillText("RANK", 50, 80);
         ctx.fillText("SCORE", 150, 80);
         ctx.fillText("LEVEL", 280, 80);
-        ctx.fillText("DATE", 380, 80);
         
         // Leaderboard entries
         ctx.fillStyle = "#FFFFFF";
         ctx.font = "14px BDCartoonShoutRegular";
         
-        if (leaderboard.length === 0) {
-            ctx.fillText("No scores yet! Play to set a record!", 150, 120);
+        if (globalLeaderboard.length === 0) {
+            ctx.fillText("Loading global scores...", 200, 120);
         } else {
-            for (var i = 0; i < leaderboard.length; i++) {
-                var entry = leaderboard[i];
+            for (var i = 0; i < globalLeaderboard.length; i++) {
+                var entry = globalLeaderboard[i];
                 var yPos = 110 + (i * 25);
                 
                 // Rank
@@ -1306,9 +1300,6 @@ var PACMAN = (function () {
                 
                 // Level
                 ctx.fillText(entry.level, 280, yPos);
-                
-                // Date
-                ctx.fillText(entry.date, 380, yPos);
             }
         }
         

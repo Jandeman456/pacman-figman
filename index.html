@@ -158,6 +158,7 @@
   
   <div id="pacman" style="display: none;"></div>
   
+  <script type="module" src="src/supabase.js"></script>
   <script src="pacman.js"></script>
   <script src="modernizr-1.5.min.js"></script>
 
@@ -257,7 +258,17 @@
       leaderboardButton.style.display = "none";
       el.style.display = "block";
       
-      window.setTimeout(function () { PACMAN.init(el, "./"); PACMAN.showLeaderboard(); }, 100);
+      if (Modernizr.canvas && Modernizr.localstorage && 
+          Modernizr.audio && (Modernizr.audio.ogg || Modernizr.audio.mp3)) {
+        window.setTimeout(function () { 
+          PACMAN.init(el, "./"); 
+          // Wait a bit for initialization then show leaderboard
+          setTimeout(function() { PACMAN.showLeaderboard(); }, 200);
+        }, 0);
+      } else { 
+        el.innerHTML = "Sorry, needs a decent browser<br /><small>" + 
+          "(firefox 3.6+, Chrome 4+, Opera 10+ and Safari 4+)</small>";
+      }
     });
   </script>
 
