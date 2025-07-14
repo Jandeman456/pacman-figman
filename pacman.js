@@ -286,41 +286,6 @@ Pacman.Ghost = function (game, map, colour) {
         return false;
     };
     
-    function handleNameInput(e) {
-        e.preventDefault();
-        
-        if (e.keyCode === 13) { // Enter key
-            if (playerName.length > 0) {
-                confirmName();
-            }
-        } else if (e.keyCode === 8) { // Backspace
-            playerName = playerName.slice(0, -1);
-        } else if (e.keyCode >= 32 && e.keyCode <= 126) { // Printable characters
-            var char = String.fromCharCode(e.keyCode);
-            if (playerName.length < 6) {
-                playerName += char.toUpperCase();
-            }
-        }
-    }
-    
-    function confirmName() {
-        if (playerName.length > 0) {
-            nameInputActive = false;
-            
-            // Save score with name to leaderboard
-            if (window.saveScoreToLeaderboard) {
-                window.saveScoreToLeaderboard(score, level, playerName).then(function(success) {
-                    if (success) {
-                        console.log('Score saved successfully with name:', playerName);
-                    }
-                    showScores();
-                });
-            } else {
-                showScores();
-            }
-        }
-    }
-    
     function move(ctx) {
         
         // If ghost is eaten (dead), don't move
@@ -887,9 +852,10 @@ Pacman.Map = function (size) {
                     ctx.fillStyle = "#FFF";
 		            ctx.fillRect((x * blockSize) + (blockSize / 2.5), 
                                  (y * blockSize) + (blockSize / 2.5), 
-                                 blockSize / 6, blockSize / 6);
-                }
-	        }
+                    ctx.fillText((i + 1).toString(), dialog.x + 60, y);
+                    ctx.fillText(entry.name || "ANON", dialog.x + 120, y);
+                    ctx.fillText(entry.score.toString(), dialog.x + 180, y);
+                    ctx.fillText(entry.level.toString(), dialog.x + 240, y);
         }
         ctx.closePath();	 
     };
@@ -1303,10 +1269,11 @@ var PACMAN = (function () {
         
         // Save to global Supabase leaderboard
         if (window.saveScoreToLeaderboard) {
-            window.saveScoreToLeaderboard(currentScore, currentLevel);
-        }
-    }
-    
+        ctx.fillText("RANK", dialog.x + 60, dialog.y + 40);
+        ctx.fillText("NAME", dialog.x + 120, dialog.y + 40);
+        ctx.fillText("SCORE", dialog.x + 180, dialog.y + 40);
+        ctx.fillText("LEVEL", dialog.x + 240, dialog.y + 40);
+        ctx.fillText("DATE", dialog.x + 320, dialog.y + 40);
     async function showLeaderboard() {
         // Fetch global leaderboard
         if (window.getGlobalLeaderboard) {

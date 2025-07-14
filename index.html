@@ -200,7 +200,7 @@
         console.log('Fetching leaderboard...')
         const { data, error } = await supabase
           .from('leaderboard')
-          .select('score, level, created_at')
+          .select('score, level, created_at, name')
           .order('score', { ascending: false })
           .order('created_at', { ascending: false })
           .limit(10)
