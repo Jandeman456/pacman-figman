@@ -1088,6 +1088,9 @@ var PACMAN = (function () {
 
     function drawFooter() {
         
+        
+        // Don't draw game UI when showing leaderboard
+        return;
         var topLeft  = (map.height * map.blockSize),
             textBase = topLeft + 17;
         
@@ -1227,7 +1230,7 @@ var PACMAN = (function () {
                     map.draw(ctx);
                     dialog("Starting in: " + diff);
                 }
-            }
+    } else if (!showingLeaderboard) {
         } 
 
         drawFooter();
