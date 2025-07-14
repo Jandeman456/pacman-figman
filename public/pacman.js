@@ -20,6 +20,7 @@ var NONE        = 4,
     EATEN_PAUSE = 9,
     DYING       = 10,
     LEADERBOARD = 12,
+    NAME_INPUT  = 13,
     Pacman      = {};
 
 Pacman.FPS = 30;
@@ -37,7 +38,7 @@ Pacman.Ghost = function (game, map, colour) {
     function loadGhostImage() {
         ghostImage = new Image();
         ghostImage.src = 'https://i.ibb.co/k6BpJczQ/ghost-dog.png';
-    };
+    }
     
     function getNewCoord(dir, current) { 
         
@@ -48,7 +49,7 @@ Pacman.Ghost = function (game, map, colour) {
             "x": addBounded(current.x, (dir === LEFT && -speed || dir === RIGHT && speed || 0)),
             "y": addBounded(current.y, (dir === DOWN && speed || dir === UP && -speed || 0))
         };
-    };
+    }
     
     function getLevelSpeedMultiplier() {
         var currentLevel = game.getLevel();
@@ -72,7 +73,7 @@ Pacman.Ghost = function (game, map, colour) {
             // Level 30+: stay at 200%
             return 2.0;
         }
-    };
+    }
 
     /* Collision detection(walls) is done when a ghost lands on an
      * exact block, make sure they dont skip over it 
@@ -86,25 +87,25 @@ Pacman.Ghost = function (game, map, colour) {
             return x1 - rem;
         }
         return x1 + x2;
-    };
+    }
     
     function isVunerable() { 
         return eatable !== null;
-    };
+    }
     
     function isDangerous() {
         return eaten === null;
-    };
+    }
 
     function isHidden() { 
         return eatable === null && eaten !== null;
-    };
+    }
     
     function getRandomDirection() {
         var moves = (direction === LEFT || direction === RIGHT) 
             ? [UP, DOWN] : [LEFT, RIGHT];
         return moves[Math.floor(Math.random() * 2)];
-    };
+    }
     
     function reset() {
         eaten = null;
@@ -112,33 +113,33 @@ Pacman.Ghost = function (game, map, colour) {
         position = {"x": 90, "y": 80};
         direction = getRandomDirection();
         due = getRandomDirection();
-    };
+    }
     
     loadGhostImage();
     
     function onWholeSquare(x) {
         return x % 10 === 0;
-    };
+    }
     
     function oppositeDirection(dir) { 
         return dir === LEFT && RIGHT ||
             dir === RIGHT && LEFT ||
             dir === UP && DOWN || UP;
-    };
+    }
 
     function makeEatable() {
         direction = oppositeDirection(direction);
         eatable = game.getTick() + 6 * Pacman.FPS;
-    };
+    }
 
     function eat() { 
         eatable = null;
         eaten = true; // Mark as permanently eaten for this level
-    };
+    }
 
     function pointToCoord(x) {
         return Math.round(x / 10);
-    };
+    }
 
     function nextSquare(x, dir) {
         var rem = x % 10;
@@ -149,15 +150,15 @@ Pacman.Ghost = function (game, map, colour) {
         } else {
             return x - rem;
         }
-    };
+    }
 
     function onGridSquare(pos) {
         return onWholeSquare(pos.y) && onWholeSquare(pos.x);
-    };
+    }
 
     function secondsAgo(tick) { 
         return (game.getTick() - tick) / Pacman.FPS;
-    };
+    }
 
     function getColour() { 
         if (eatable) { 
@@ -171,7 +172,7 @@ Pacman.Ghost = function (game, map, colour) {
             return "#222";
         } 
         return colour;
-    };
+    }
 
     function draw(ctx) {
   
@@ -271,7 +272,7 @@ Pacman.Ghost = function (game, map, colour) {
             ctx.fill();
         }
 
-    };
+    }
 
     function pane(pos) {
 
@@ -284,7 +285,7 @@ Pacman.Ghost = function (game, map, colour) {
         }
 
         return false;
-    };
+    }
     
     function move(ctx) {
         
@@ -341,7 +342,7 @@ Pacman.Ghost = function (game, map, colour) {
             "new" : position,
             "old" : oldPos
         };
-    };
+    }
     
     return {
         "eat"         : eat,
@@ -373,26 +374,26 @@ Pacman.User = function (game, map) {
     function loadDogImage() {
         dogImage = new Image();
         dogImage.src = './public/Ontwerp zonder titel (48) copy copy copy.png';
-    };
+    }
 
     function addScore(nScore) { 
         score += nScore;
         if (score >= 10000 && score - nScore < 10000) {
             lives += 1;
         }
-    };
+    }
 
     function theScore() { 
         return score;
-    };
+    }
 
     function loseLife() { 
         lives -= 1;
-    };
+    }
 
     function getLives() {
         return lives;
-    };
+    }
 
     function initUser() {
         score = 0;
@@ -403,18 +404,18 @@ Pacman.User = function (game, map) {
     function newLevel() {
         resetPosition();
         eaten = 0;
-    };
+    }
     
     function resetPosition() {
         position = {"x": 90, "y": 120};
         direction = LEFT;
         due = LEFT;
-    };
+    }
     
     function reset() {
         initUser();
         resetPosition();
-    };        
+    }        
     
     function keyDown(e) {
         if (typeof keyMap[e.keyCode] !== "undefined") { 
@@ -424,7 +425,7 @@ Pacman.User = function (game, map) {
             return false;
         }
         return true;
-	};
+	}
 
     function getNewCoord(dir, current) {   
         var levelSpeedMultiplier = getPacmanLevelSpeedMultiplier();
@@ -434,7 +435,7 @@ Pacman.User = function (game, map) {
             "x": current.x + (dir === LEFT && -speed || dir === RIGHT && speed || 0),
             "y": current.y + (dir === DOWN && speed || dir === UP && -speed || 0)
         };
-    };
+    }
     
     function getPacmanLevelSpeedMultiplier() {
         var currentLevel = game.getLevel();
@@ -458,15 +459,15 @@ Pacman.User = function (game, map) {
             // Level 30+: stay at 168%
             return 1.68;
         }
-    };
+    }
 
     function onWholeSquare(x) {
         return x % 10 === 0;
-    };
+    }
 
     function pointToCoord(x) {
         return Math.round(x/10);
-    };
+    }
     
     function nextSquare(x, dir) {
         var rem = x % 10;
@@ -477,25 +478,25 @@ Pacman.User = function (game, map) {
         } else {
             return x - rem;
         }
-    };
+    }
 
     function next(pos, dir) {
         return {
             "y" : pointToCoord(nextSquare(pos.y, dir)),
             "x" : pointToCoord(nextSquare(pos.x, dir)),
         };                               
-    };
+    }
 
     function onGridSquare(pos) {
         return onWholeSquare(pos.y) && onWholeSquare(pos.x);
-    };
+    }
 
     function isOnSamePlane(due, dir) { 
         return ((due === LEFT || due === RIGHT) && 
                 (dir === LEFT || dir === RIGHT)) || 
             ((due === UP || due === DOWN) && 
              (dir === UP || dir === DOWN));
-    };
+    }
 
     function move(ctx) {
         
@@ -572,12 +573,12 @@ Pacman.User = function (game, map) {
             "new" : position,
             "old" : oldPosition
         };
-    };
+    }
 
     function isMidSquare(x) { 
         var rem = x % 10;
         return rem > 3 || rem < 7;
-    };
+    }
 
     function calcAngle(dir, pos) { 
         if (dir == RIGHT && (pos.x % 10 < 5)) {
@@ -590,7 +591,7 @@ Pacman.User = function (game, map) {
             return {"start":0.75, "end":1.25, "direction": true};
         }
         return {"start":0, "end":2, "direction": false};
-    };
+    }
 
     function drawDead(ctx, amount) { 
 
@@ -621,7 +622,7 @@ Pacman.User = function (game, map) {
                     half, 0, Math.PI * 2 * amount, true); 
             ctx.fill();
         }
-    };
+    }
 
     function draw(ctx) { 
 
@@ -663,7 +664,7 @@ Pacman.User = function (game, map) {
                     Math.PI * angle.end, angle.direction); 
             ctx.fill();
         }
-    };
+    }
     
     initUser();
     loadDogImage();
@@ -697,12 +698,12 @@ Pacman.Map = function (size) {
     function loadBiscuitImage() {
         biscuitImage = new Image();
         biscuitImage.src = 'https://i.ibb.co/cSrc0TMf/biscuit.png';
-    };
+    }
     
     function loadPillImage() {
         pillImage = new Image();
         pillImage.src = 'https://i.ibb.co/xSCYVhMt/pill.png';
-    };
+    }
     
     function withinBounds(y, x) {
         return y >= 0 && y < height && x >= 0 && x < width;
@@ -757,15 +758,15 @@ Pacman.Map = function (size) {
         map    = Pacman.MAP.clone();
         height = map.length;
         width  = map[0].length;        
-    };
+    }
 
     function block(pos) {
         return map[pos.y][pos.x];
-    };
+    }
     
     function setBlock(pos, type) {
         map[pos.y][pos.x] = type;
-    };
+    }
 
     function drawPills(ctx) { 
 
@@ -803,7 +804,7 @@ Pacman.Map = function (size) {
                 }
 		    }
 	    }
-    };
+    }
     
     function draw(ctx) {
         
@@ -819,7 +820,7 @@ Pacman.Map = function (size) {
 			    drawBlock(i, j, ctx);
 		    }
 	    }
-    };
+    }
     
     function drawBlock(y, x, ctx) {
 
@@ -852,10 +853,12 @@ Pacman.Map = function (size) {
                     ctx.fillStyle = "#FFF";
 		            ctx.fillRect((x * blockSize) + (blockSize / 2.5), 
                                  (y * blockSize) + (blockSize / 2.5), 
-                    
+                                 blockSize / 6, blockSize / 6);
+                }
+            }
         }
         ctx.closePath();	 
-    };
+    }
 
     reset();
     loadBiscuitImage();
@@ -894,7 +897,7 @@ Pacman.Audio = function(game) {
         f.setAttribute("autobuffer", "true");
         f.setAttribute("src", path);
         f.pause();        
-    };
+    }
 
     function progress(event, name, callback) { 
         if (event.loaded === event.total && typeof callback === "function") {
@@ -902,7 +905,7 @@ Pacman.Audio = function(game) {
             files[name].removeEventListener("canplaythrough", 
                                             progressEvents[name], true);
         }
-    };
+    }
 
     function disableSound() {
         for (var i = 0; i < playing.length; i++) {
@@ -910,7 +913,7 @@ Pacman.Audio = function(game) {
             files[playing[i]].currentTime = 0;
         }
         playing = [];
-    };
+    }
 
     function ended(name) { 
 
@@ -926,7 +929,7 @@ Pacman.Audio = function(game) {
             }
         }
         playing = tmp;
-    };
+    }
 
     function play(name) { 
         if (!game.soundDisabled()) {
@@ -935,19 +938,19 @@ Pacman.Audio = function(game) {
             files[name].addEventListener("ended", endEvents[name], true);
             files[name].play();
         }
-    };
+    }
 
     function pause() { 
         for (var i = 0; i < playing.length; i++) {
             files[playing[i]].pause();
         }
-    };
+    }
     
     function resume() { 
         for (var i = 0; i < playing.length; i++) {
             files[playing[i]].play();
         }        
-    };
+    }
     
     return {
         "disableSound" : disableSound,
@@ -980,11 +983,13 @@ var PACMAN = (function () {
         chaseTimer   = 0,
         scatterMode  = true,
         modeChangeTime = 0,
-        globalLeaderboard = [];
+        globalLeaderboard = [],
+        playerName = "",
+        nameInputActive = false;
 
     function getTick() { 
         return tick;
-    };
+    }
     
     function drawScore(text, position) {
         ctx.fillStyle = "#FFFFFF";
@@ -1004,7 +1009,7 @@ var PACMAN = (function () {
 
     function soundDisabled() {
         return localStorage["soundDisabled"] === "true";
-    };
+    }
     
     function startLevel() {        
         user.resetPosition();
@@ -1025,7 +1030,113 @@ var PACMAN = (function () {
         startLevel();
     }
 
+    function showNameInput() {
+        setState(NAME_INPUT);
+        nameInputActive = true;
+        playerName = "";
+        
+        // Clear the game canvas
+        ctx.fillStyle = "#000";
+        ctx.fillRect(0, 0, map.width * map.blockSize, map.height * map.blockSize + 30);
+        
+        drawNameInputScreen();
+    }
+
+    function drawNameInputScreen() {
+        // Title
+        ctx.fillStyle = "#FFFF00";
+        ctx.font = "24px BDCartoonShoutRegular";
+        var titleText = "ENTER LEADERBOARD NAME";
+        var titleWidth = ctx.measureText(titleText).width;
+        ctx.fillText(titleText, ((map.width * map.blockSize) - titleWidth) / 2, 100);
+        
+        // Input box
+        var inputBoxWidth = 200;
+        var inputBoxHeight = 40;
+        var inputBoxX = ((map.width * map.blockSize) - inputBoxWidth) / 2;
+        var inputBoxY = 140;
+        
+        ctx.fillStyle = "#FFFFFF";
+        ctx.fillRect(inputBoxX, inputBoxY, inputBoxWidth, inputBoxHeight);
+        
+        ctx.strokeStyle = "#FFFF00";
+        ctx.lineWidth = 3;
+        ctx.strokeRect(inputBoxX, inputBoxY, inputBoxWidth, inputBoxHeight);
+        
+        // Player name text
+        ctx.fillStyle = "#000000";
+        ctx.font = "18px BDCartoonShoutRegular";
+        var nameText = playerName.toUpperCase();
+        var nameWidth = ctx.measureText(nameText).width;
+        ctx.fillText(nameText, inputBoxX + 10, inputBoxY + 25);
+        
+        // Blinking cursor
+        if (Math.floor(tick / 15) % 2 === 0) {
+            ctx.fillStyle = "#000000";
+            ctx.fillRect(inputBoxX + 10 + nameWidth, inputBoxY + 8, 2, 24);
+        }
+        
+        // Max characters info
+        ctx.fillStyle = "#f65b21";
+        ctx.font = "12px BDCartoonShoutRegular";
+        var maxText = "MAX 6 CHARACTERS";
+        var maxWidth = ctx.measureText(maxText).width;
+        ctx.fillText(maxText, ((map.width * map.blockSize) - maxWidth) / 2, 200);
+        
+        // Confirm button
+        var buttonWidth = 150;
+        var buttonHeight = 35;
+        var buttonX = ((map.width * map.blockSize) - buttonWidth) / 2;
+        var buttonY = 220;
+        
+        var buttonColor = playerName.length > 0 ? "#00FF00" : "#666666";
+        ctx.fillStyle = buttonColor;
+        ctx.fillRect(buttonX, buttonY, buttonWidth, buttonHeight);
+        
+        ctx.strokeStyle = "#FFFF00";
+        ctx.lineWidth = 2;
+        ctx.strokeRect(buttonX, buttonY, buttonWidth, buttonHeight);
+        
+        ctx.fillStyle = "#000000";
+        ctx.font = "16px BDCartoonShoutRegular";
+        var buttonText = "CONFIRM NAME";
+        var buttonTextWidth = ctx.measureText(buttonText).width;
+        ctx.fillText(buttonText, buttonX + (buttonWidth - buttonTextWidth) / 2, buttonY + 22);
+    }
+
+    function handleNameInput(e) {
+        if (!nameInputActive) return true;
+        
+        if (e.keyCode === KEY.ENTER && playerName.length > 0) {
+            // Confirm name
+            nameInputActive = false;
+            saveScoreGlobally();
+            return false;
+        } else if (e.keyCode === KEY.BACKSPACE) {
+            // Remove last character
+            playerName = playerName.slice(0, -1);
+            drawNameInputScreen();
+            return false;
+        } else if (playerName.length < 6) {
+            // Add character if it's alphanumeric or space
+            var char = String.fromCharCode(e.keyCode);
+            if ((e.keyCode >= 65 && e.keyCode <= 90) || // A-Z
+                (e.keyCode >= 48 && e.keyCode <= 57) || // 0-9
+                e.keyCode === 32) { // Space
+                playerName += char;
+                drawNameInputScreen();
+                return false;
+            }
+        }
+        
+        return true;
+    }
+
     function keyDown(e) {
+        if (state === NAME_INPUT) {
+            return handleNameInput(e);
+        }
+        
         if (e.keyCode === KEY.ESCAPE && state === LEADERBOARD) {
             setState(WAITING);
             map.draw(ctx);
@@ -1068,19 +1179,18 @@ var PACMAN = (function () {
             startLevel();
         } else {
             showNameInput();
-            saveScoreGlobally();
         }
     }
 
     function setState(nState) { 
         state = nState;
         stateChanged = true;
-    };
+    }
     
     function collided(user, ghost) {
         return (Math.sqrt(Math.pow(ghost.x - user.x, 2) + 
                           Math.pow(ghost.y - user.y, 2))) < 10;
-    };
+    }
 
     function drawFooter() {
         
@@ -1177,7 +1287,7 @@ var PACMAN = (function () {
                 }
             }
         }                             
-    };
+    }
 
     function mainLoop() {
 
@@ -1185,6 +1295,12 @@ var PACMAN = (function () {
 
         if (state !== PAUSE) { 
             ++tick;
+        }
+
+        if (state === NAME_INPUT) {
+            // Keep drawing the name input screen
+            drawNameInputScreen();
+            return;
         }
 
         map.drawPills(ctx);
@@ -1236,14 +1352,14 @@ var PACMAN = (function () {
         for (i = 0; i < ghosts.length; i += 1) {
             ghosts[i].makeEatable(ctx);
         }
-    };
+    }
     
     function completedLevel() {
         level += 1;
         
         if (level > 30) {
             // Game won! Save score globally
-            saveScoreGlobally();
+            showNameInput();
             setState(WAITING);
             map.draw(ctx);
             dialog("🐶CONGRATULATIONS! YOU BONKED PUMP.FUN OUT OF THE TRENCHES!🐶");
@@ -1254,11 +1370,11 @@ var PACMAN = (function () {
         map.reset();
         user.newLevel();
         startLevel();
-    };
+    }
     
     function getLevel() {
         return level;
-    };
+    }
     
     function saveScoreGlobally() {
         var currentScore = user.theScore();
@@ -1266,11 +1382,27 @@ var PACMAN = (function () {
         
         // Save to global Supabase leaderboard
         if (window.saveScoreToLeaderboard) {
-        ctx.fillText("RANK", dialog.x + 60, dialog.y + 40);
-        ctx.fillText("NAME", dialog.x + 120, dialog.y + 40);
-        ctx.fillText("SCORE", dialog.x + 180, dialog.y + 40);
-        ctx.fillText("LEVEL", dialog.x + 240, dialog.y + 40);
-        ctx.fillText("DATE", dialog.x + 320, dialog.y + 40);
+            window.saveScoreToLeaderboard(currentScore, currentLevel, playerName || "ANON")
+                .then(function(success) {
+                    if (success) {
+                        console.log('Score saved successfully!');
+                    } else {
+                        console.log('Failed to save score');
+                    }
+                    // Show leaderboard after saving
+                    showLeaderboard();
+                })
+                .catch(function(error) {
+                    console.error('Error saving score:', error);
+                    // Show leaderboard anyway
+                    showLeaderboard();
+                });
+        } else {
+            // Fallback if Supabase not available
+            showLeaderboard();
+        }
+    }
+    
     async function showLeaderboard() {
         // Fetch global leaderboard
         if (window.getGlobalLeaderboard) {
@@ -1294,42 +1426,20 @@ var PACMAN = (function () {
         ctx.fillText(titleText, ((map.width * map.blockSize) - titleWidth) / 2, 40);
         
         // Headers
-        ctx.fillStyle = "#f65b21";
+        ctx.fillStyle = "#FFFF00";
         ctx.font = "16px BDCartoonShoutRegular";
         ctx.fillText("RANK", 50, 80);
-        ctx.fillText("SCORE", 150, 80);
-        ctx.fillText("LEVEL", 280, 80);
+        ctx.fillText("NAME", 120, 80);
+        ctx.fillText("SCORE", 200, 80);
+        ctx.fillText("LEVEL", 300, 80);
         
         // Leaderboard entries
         ctx.fillStyle = "#FFFFFF";
         ctx.font = "14px BDCartoonShoutRegular";
         
-        async function showLeaderboard() {
-    // ... setup code zoals ctx.fillStyle, fonts, etc.
-
-    if (globalLeaderboard.length === 0) {
-        ctx.fillText("Loading global scores...", 200, 120);
-    } else {
-        for (var i = 0; i < globalLeaderboard.length; i++) {
-            var entry = globalLeaderboard[i];
-            var yPos = 110 + (i * 25);
-
-            ctx.fillStyle = i < 3 ? "#FFD700" : "#FFFFFF";
-            ctx.fillText((i + 1).toString(), 50, yPos);
-
-            ctx.fillStyle = "#FFFFFF";
-            ctx.fillText(entry.name || "ANON", 100, yPos);
-            ctx.fillText(entry.score.toLocaleString(), 180, yPos);
-            ctx.fillText(entry.level.toString(), 260, yPos);
-        }
-    }
-
-    // extra tekst onderaan?
-    ctx.fillStyle = "#f65b21";
-    ctx.fillText("Press ESC to return to game", 200, map.height * map.blockSize - 20);
-}
-
-
+        if (globalLeaderboard.length === 0) {
+            ctx.fillText("Loading global scores...", 200, 120);
+        } else {
             for (var i = 0; i < globalLeaderboard.length; i++) {
                 var entry = globalLeaderboard[i];
                 var yPos = 110 + (i * 25);
@@ -1338,19 +1448,24 @@ var PACMAN = (function () {
                 ctx.fillStyle = i < 3 ? "#FFD700" : "#FFFFFF"; // Gold for top 3
                 ctx.fillText((i + 1) + ".", 50, yPos);
                 
-                // Score
+                // Name
                 ctx.fillStyle = "#FFFFFF";
-                ctx.fillText(entry.score.toLocaleString(), 150, yPos);
+                ctx.fillText(entry.name || "ANON", 120, yPos);
+                
+                // Score
+                ctx.fillStyle = "#00FF00";
+                ctx.fillText(entry.score.toLocaleString(), 200, yPos);
                 
                 // Level
-                ctx.fillText(entry.level, 280, yPos);
+                ctx.fillStyle = "#FFD700";
+                ctx.fillText(entry.level, 300, yPos);
             }
         }
         
         // Instructions
         ctx.fillStyle = "#f65b21";
         ctx.font = "14px BDCartoonShoutRegular";
-        ctx.fillText("Press ESC to return to game", 200, map.height * map.blockSize - 20);
+        ctx.fillText("PRESS ESC TO RETURN TO GAME", 180, map.height * map.blockSize - 20);
         
         // Set leaderboard state
         setState(LEADERBOARD);
@@ -1361,7 +1476,7 @@ var PACMAN = (function () {
             e.preventDefault();
             e.stopPropagation();
         }
-    };
+    }
     
     function init(wrapper, root) {
         
@@ -1404,7 +1519,7 @@ var PACMAN = (function () {
         ];
 
         load(audio_files, function() { loaded(); });
-    };
+    }
 
     function load(arr, callback) { 
         
@@ -1414,7 +1529,7 @@ var PACMAN = (function () {
             var x = arr.pop();
             audio.load(x[0], x[1], function() { load(arr, callback); });
         }
-    };
+    }
         
     function loaded() {
 
@@ -1424,7 +1539,7 @@ var PACMAN = (function () {
         document.addEventListener("keypress", keyPress, true); 
         
         timer = window.setInterval(mainLoop, 1000 / Pacman.FPS);
-    };
+    }
     
     return {
         "init" : init,

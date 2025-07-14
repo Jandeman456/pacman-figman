@@ -179,7 +179,7 @@
         const { error } = await supabase
           .from('leaderboard')
           .insert([
-            { score: score, level: level }
+            { score: score, level: level, name: name }
           ])
         
         if (error) {
