@@ -328,7 +328,7 @@ Pacman.Ghost = function (game, map, colour) {
         }
         
         if (onGrid &&
-            map.isWallSpace({
+            speed = 1; // Always use speed 1 for consistent movement
                 "y" : pointToCoord(nextSquare(npos.y, direction)),
                 "x" : pointToCoord(nextSquare(npos.x, direction))
             })) {
