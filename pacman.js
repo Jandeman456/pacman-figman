@@ -109,7 +109,11 @@ Pacman.Ghost = function (game, map, colour) {
     };
     
     function reset() {
-        eaten = null;
+        console.log("=== GHOST RESET CALLED ===");
+        console.log("Ghost eaten status before reset:", eaten);
+        eaten = false;
+        console.log("Ghost eaten status after reset:", eaten);
+        due = 0;
         eatable = null;
         position = {"x": 90, "y": 80};
         direction = getRandomDirection();
@@ -1063,25 +1067,12 @@ var PACMAN = (function () {
 
     function loseLife() {        
         setState(WAITING);
-        console.log("=== LOSING LIFE ===");
-        console.log("Ghosts before loseLife:");
-        for (var i = 0; i < ghosts.length; i++) {
-            console.log("Ghost " + i + " eaten:", ghosts[i].eaten);
-        }
-        
         user.loseLife();
         if (user.getLives() > 0) {
             // Reset ghosts when losing a life (not just new level)
-            for (var i = 0, len = ghosts.length; i < len; i += 1) { 
-                console.log("Processing ghost " + i + ", eaten:", ghosts[i].eaten);
+            for (var i = 0; i < ghosts.length; i += 1) { 
                 ghosts[i].reset();
             }
-            
-            console.log("Ghosts after reset in loseLife:");
-            for (var i = 0; i < ghosts.length; i++) {
-                console.log("Ghost " + i + " eaten:", ghosts[i].eaten);
-            }
-            
             startLevel();
         } else {
             // Game over - save score globally
