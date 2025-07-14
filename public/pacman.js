@@ -1154,6 +1154,7 @@ var PACMAN = (function () {
         }
         
         if (e.keyCode === KEY.ESCAPE && state === WAITING) {
+        if (e.keyCode === KEY.BACKSPACE && state === WAITING) {
             // Return to home screen
             document.getElementById("pacman").style.display = "none";
             document.getElementById("start-screen").style.display = "block";
@@ -1161,10 +1162,12 @@ var PACMAN = (function () {
             e.preventDefault();
             e.stopPropagation();
             return false;
-        } else if (e.keyCode === KEY.ESCAPE && state === LEADERBOARD) {
+        } else if (e.keyCode === KEY.BACKSPACE && state === LEADERBOARD) {
             setState(WAITING);
             map.draw(ctx);
             dialog("Press N to start BONKING PUMP.FUN");
+            e.preventDefault();
+            e.stopPropagation();
             return false;
         } else if (e.keyCode === KEY.L && state === WAITING) {
             showLeaderboard();
