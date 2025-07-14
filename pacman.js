@@ -1063,12 +1063,25 @@ var PACMAN = (function () {
 
     function loseLife() {        
         setState(WAITING);
+        console.log("=== LOSING LIFE ===");
+        console.log("Ghosts before loseLife:");
+        for (var i = 0; i < ghosts.length; i++) {
+            console.log("Ghost " + i + " eaten:", ghosts[i].eaten);
+        }
+        
         user.loseLife();
         if (user.getLives() > 0) {
             // Reset ghosts when losing a life (not just new level)
-            for (var i = 0; i < ghosts.length; i += 1) { 
+            for (var i = 0, len = ghosts.length; i < len; i += 1) { 
+                console.log("Processing ghost " + i + ", eaten:", ghosts[i].eaten);
                 ghosts[i].reset();
             }
+            
+            console.log("Ghosts after reset in loseLife:");
+            for (var i = 0; i < ghosts.length; i++) {
+                console.log("Ghost " + i + " eaten:", ghosts[i].eaten);
+            }
+            
             startLevel();
         } else {
             // Game over - save score globally
