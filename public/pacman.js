@@ -54,27 +54,24 @@ Pacman.Ghost = function (game, map, colour) {
     function getLevelSpeedMultiplier() {
         var currentLevel = game.getLevel();
         
-        // Extra speed boost on special levels
-        var specialLevelBoost = (currentLevel === 5 || currentLevel === 15 || currentLevel === 30) ? 1.3 : 1.0;
-        
         if (currentLevel === 1) {
             // Level 1: 100%
-            return 1.0 * specialLevelBoost;
+            return 1.0;
         } else if (currentLevel <= 9) {
             // Levels 2-9: start at 105%, increase 5% per level
-            return (1.0 + ((currentLevel - 1) * 0.05)) * specialLevelBoost;
+            return 1.0 + ((currentLevel - 1) * 0.05);
         } else if (currentLevel <= 14) {
             // Levels 10-14: start at 145%, increase 4% per level
-            return (1.40 + ((currentLevel - 9) * 0.04)) * specialLevelBoost;
+            return 1.40 + ((currentLevel - 9) * 0.04);
         } else if (currentLevel <= 22) {
             // Levels 15-22: start at 165%, increase 3% per level
-            return (1.60 + ((currentLevel - 14) * 0.03)) * specialLevelBoost;
+            return 1.60 + ((currentLevel - 14) * 0.03);
         } else if (currentLevel <= 30) {
             // Levels 23-30: start at 186%, increase 2% per level
-            return (1.84 + ((currentLevel - 22) * 0.02)) * specialLevelBoost;
+            return 1.84 + ((currentLevel - 22) * 0.02);
         } else {
             // Level 30+: stay at 200%
-            return 2.0 * specialLevelBoost;
+            return 2.0;
         }
     }
 
@@ -108,18 +105,6 @@ Pacman.Ghost = function (game, map, colour) {
         var moves = (direction === LEFT || direction === RIGHT) 
             ? [UP, DOWN] : [LEFT, RIGHT];
         return moves[Math.floor(Math.random() * 2)];
-    }
-    
-    function getAggressiveDirection(userPos, ghostPos) {
-        // More aggressive pathfinding towards user
-        var dx = userPos.x - ghostPos.x;
-        var dy = userPos.y - ghostPos.y;
-        
-        if (Math.abs(dx) > Math.abs(dy)) {
-            return dx > 0 ? RIGHT : LEFT;
-        } else {
-            return dy > 0 ? DOWN : UP;
-        }
     }
     
     function reset() {
@@ -351,13 +336,7 @@ Pacman.Ghost = function (game, map, colour) {
             position = tmp;
         }
         
-        // More aggressive behavior on special levels
-        if ((game.getLevel() === 5 || game.getLevel() === 15 || game.getLevel() === 30) && 
-            !eatable && !eaten) {
-            due = getAggressiveDirection(userPos || {x: 90, y: 120}, position);
-        } else {
-            due = getRandomDirection();
-        }
+        due = getRandomDirection();
         
         return {
             "new" : position,
@@ -461,27 +440,24 @@ Pacman.User = function (game, map) {
     function getPacmanLevelSpeedMultiplier() {
         var currentLevel = game.getLevel();
         
-        // Extra speed boost on special levels for user too
-        var specialLevelBoost = (currentLevel === 5 || currentLevel === 15 || currentLevel === 30) ? 1.2 : 1.0;
-        
         if (currentLevel === 1) {
             // Level 1: 100%
-            return 1.0 * specialLevelBoost;
+            return 1.0;
         } else if (currentLevel <= 9) {
             // Levels 2-9: start at 104%, increase 4% per level
-            return (1.0 + ((currentLevel - 1) * 0.04)) * specialLevelBoost;
+            return 1.0 + ((currentLevel - 1) * 0.04);
         } else if (currentLevel <= 14) {
             // Levels 10-14: start at 136%, increase 3% per level
-            return (1.32 + ((currentLevel - 9) * 0.03)) * specialLevelBoost;
+            return 1.32 + ((currentLevel - 9) * 0.03);
         } else if (currentLevel <= 22) {
             // Levels 15-22: start at 147%, increase 2% per level
-            return (1.44 + ((currentLevel - 14) * 0.02)) * specialLevelBoost;
+            return 1.44 + ((currentLevel - 14) * 0.02);
         } else if (currentLevel <= 30) {
             // Levels 23-30: start at 163%, increase 1% per level
-            return (1.60 + ((currentLevel - 22) * 0.01)) * specialLevelBoost;
+            return 1.60 + ((currentLevel - 22) * 0.01);
         } else {
             // Level 30+: stay at 168%
-            return 1.68 * specialLevelBoost;
+            return 1.68;
         }
     }
 
@@ -598,29 +574,6 @@ Pacman.User = function (game, map) {
             "old" : oldPosition
         };
     }
-    
-    function shootPill() {
-        // Only shoot pills on special levels
-        if (game.getLevel() !== 5 && game.getLevel() !== 15 && game.getLevel() !== 30) {
-            return;
-        }
-        
-        // Limit pill shooting rate
-        if (game.getTick() - lastPillShot < 10) {
-            return;
-        }
-        
-        lastPillShot = game.getTick();
-        
-        var pill = {
-            x: position.x,
-            y: position.y,
-            direction: direction,
-            speed: 4
-        };
-        
-        userPills.push(pill);
-    }
 
     function isMidSquare(x) { 
         var rem = x % 10;
@@ -728,8 +681,7 @@ Pacman.User = function (game, map) {
         "move"          : move,
         "newLevel"      : newLevel,
         "reset"         : reset,
-        "resetPosition" : resetPosition,
-        "shootPill"     : shootPill
+        "resetPosition" : resetPosition
     };
 };
 
@@ -1034,78 +986,10 @@ var PACMAN = (function () {
         modeChangeTime = 0,
         globalLeaderboard = [],
         playerName = "",
-        nameInputActive = false,
-        userPills = [],
-        lastPillShot = 0;
+        nameInputActive = false;
 
     function getTick() { 
         return tick;
-    }
-    
-    function updateUserPills() {
-        for (var i = userPills.length - 1; i >= 0; i--) {
-            var pill = userPills[i];
-            
-            // Move pill
-            if (pill.direction === LEFT) {
-                pill.x -= pill.speed;
-            } else if (pill.direction === RIGHT) {
-                pill.x += pill.speed;
-            } else if (pill.direction === UP) {
-                pill.y -= pill.speed;
-            } else if (pill.direction === DOWN) {
-                pill.y += pill.speed;
-            }
-            
-            // Check wall collision
-            var pillMapPos = {
-                x: Math.floor(pill.x / 10),
-                y: Math.floor(pill.y / 10)
-            };
-            
-            if (map.isWallSpace(pillMapPos)) {
-                userPills.splice(i, 1);
-                continue;
-            }
-            
-            // Check ghost collision
-            var hitGhost = false;
-            for (var j = 0; j < ghosts.length; j++) {
-                var ghost = ghosts[j];
-                var ghostMapPos = {
-                    x: Math.floor(ghostPos[j].new.x / 10),
-                    y: Math.floor(ghostPos[j].new.y / 10)
-                };
-                
-                if (Math.abs(pill.x - ghostPos[j].new.x) < 15 && 
-                    Math.abs(pill.y - ghostPos[j].new.y) < 15) {
-                    ghost.eat(); // Disable ghost for this level
-                    userPills.splice(i, 1);
-                    hitGhost = true;
-                    break;
-                }
-            }
-            
-            if (hitGhost) continue;
-            
-            // Remove pills that go off screen
-            if (pill.x < 0 || pill.x > map.width * 10 || 
-                pill.y < 0 || pill.y > map.height * 10) {
-                userPills.splice(i, 1);
-            }
-        }
-    }
-    
-    function drawUserPills() {
-        ctx.fillStyle = "#FFFF00";
-        for (var i = 0; i < userPills.length; i++) {
-            var pill = userPills[i];
-            ctx.beginPath();
-            ctx.arc((pill.x / 10) * map.blockSize, 
-                   (pill.y / 10) * map.blockSize, 
-                   3, 0, Math.PI * 2);
-            ctx.fill();
-        }
     }
     
     function drawScore(text, position) {
@@ -1141,7 +1025,6 @@ var PACMAN = (function () {
     
     function startLevel() {        
         user.resetPosition();
-        userPills = []; // Clear pills when starting new level
         for (var i = 0; i < ghosts.length; i += 1) { 
             ghosts[i].reset();
         }
@@ -1442,14 +1325,6 @@ var PACMAN = (function () {
 
         if (state === PLAYING) {
             mainDraw();
-            updateUserPills();
-            drawUserPills();
-            
-            // Auto-shoot pills on special levels
-            if ((level === 5 || level === 15 || level === 30) && 
-                tick % 15 === 0) { // Shoot every 15 ticks
-                user.shootPill();
-            }
         } else if (state === WAITING && stateChanged) {            
             stateChanged = false;
             map.draw(ctx);
