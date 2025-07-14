@@ -1173,6 +1173,7 @@ var PACMAN = (function () {
                 if (ghosts[i].isVunerable()) { 
                     audio.play("eatghost");
                     ghosts[i].eat();
+                    console.log("👻 GHOST", i, "EATEN! Status:", ghosts[i].eaten);
                     eatenCount += 1;
                     nScore = eatenCount * 50;
                     drawScore(nScore, ghostPos[i]);
