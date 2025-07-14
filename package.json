@@ -1,6 +1,7 @@
 {
   "name": "project",
   "version": "1.0.0",
+  "main": "modernizr-1.5.min.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "vite --host",
