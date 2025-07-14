@@ -536,7 +536,7 @@ Pacman.User = function (game, map) {
             block === Pacman.BISCUIT || block === Pacman.PILL) {
             
             map.setBlock(nextWhole, Pacman.EMPTY);           
-            addScore((block === Pacman.BISCUIT) ? 10 : 50);
+            addScore((block === Pacman.BISCUIT) ? 20 : 50);
             eaten += 1;
             
             if (eaten === 182) {
