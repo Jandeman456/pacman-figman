@@ -1071,7 +1071,12 @@ var PACMAN = (function () {
         if (user.getLives() > 0) {
             // Reset ghosts when losing a life (not just new level)
             for (var i = 0; i < ghosts.length; i += 1) { 
-                ghosts[i].reset();
+                if (!ghosts[i].eaten) {
+                    ghosts[i].reset();
+                    console.log("🔄 Resetting living ghost", i);
+                } else {
+                    console.log("⚰️ Keeping dead ghost", i, "dead");
+                }
             }
             startLevel();
         } else {
@@ -1173,7 +1178,6 @@ var PACMAN = (function () {
                 if (ghosts[i].isVunerable()) { 
                     audio.play("eatghost");
                     ghosts[i].eat();
-                    console.log("👻 GHOST", i, "EATEN! Status:", ghosts[i].eaten);
                     eatenCount += 1;
                     nScore = eatenCount * 50;
                     drawScore(nScore, ghostPos[i]);
