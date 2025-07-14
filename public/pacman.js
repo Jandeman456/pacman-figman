@@ -3,10 +3,13 @@ Here are the missing closing brackets and braces to fix the syntax errors:
 ```javascript
         }
     }
+    }
+    }
 
     function collided(user, ghost) {
         return (Math.sqrt(Math.pow(ghost.x - user.x, 2) + 
                           Math.pow(ghost.y - user.y, 2))) < 10;
+    }
     }
 ```
 
