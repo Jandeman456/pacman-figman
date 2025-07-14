@@ -135,7 +135,7 @@ Pacman.Ghost = function (game, map, colour) {
 
     function eat() { 
         eatable = null;
-        eaten = game.getTick();
+        eaten = true; // Mark as permanently eaten for this level
     };
 
     function pointToCoord(x) {
@@ -177,6 +177,11 @@ Pacman.Ghost = function (game, map, colour) {
 
     function draw(ctx) {
   
+        // If ghost is eaten (dead), don't draw anything
+        if (eaten === true) {
+            return;
+        }
+        
         var s    = map.blockSize, 
             top  = (position.y/10) * s,
             left = (position.x/10) * s;
@@ -186,9 +191,6 @@ Pacman.Ghost = function (game, map, colour) {
             eatable = null;
         }
         
-        if (eaten && secondsAgo(eaten) > 3) { 
-            eaten = null;
-        }
         
         if (ghostImage && ghostImage.complete) {
             ctx.save();
@@ -287,6 +289,14 @@ Pacman.Ghost = function (game, map, colour) {
     };
     
     function move(ctx) {
+        
+        // If ghost is eaten (dead), don't move
+        if (eaten === true) {
+            return {
+                "new" : position,
+                "old" : position
+            };
+        }
         
         var oldPos = position,
             onGrid = onGridSquare(position),
@@ -1148,8 +1158,7 @@ var PACMAN = (function () {
                     nScore = eatenCount * 50;
                     drawScore(nScore, ghostPos[i]);
                     user.addScore(nScore);                    
-                    setState(EATEN_PAUSE);
-                    timerStart = tick;
+                    // No pause needed - ghost is just gone for this level
                 } else if (ghosts[i].isDangerous()) {
                     audio.play("die");
                     setState(DYING);
