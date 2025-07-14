@@ -13,6 +13,6 @@ Here are the missing closing brackets and braces to fix the syntax errors:
     }
 ```
 
-The main issue was a missing closing brace `}` for the `loseLife()` function and a missing closing brace `}` for the `collided()` function definition.
+The main issue was a missing closing brace `}\` for the `loseLife()\` function and a missing closing brace `}\` for the `collided()\` function definition.
 
 The fixed code should now be syntactically complete and properly nested.
