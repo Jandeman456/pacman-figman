@@ -54,20 +54,23 @@ Pacman.Ghost = function (game, map, colour) {
     function getLevelSpeedMultiplier() {
         var currentLevel = game.getLevel();
         
-        if (currentLevel <= 8) {
-            // Levels 1-8: start at 100%, increase 5% per level
+        if (currentLevel === 1) {
+            // Level 1: 100%
+            return 1.0;
+        } else if (currentLevel <= 9) {
+            // Levels 2-9: start at 105%, increase 5% per level
             return 1.0 + ((currentLevel - 1) * 0.05);
-        } else if (currentLevel <= 13) {
-            // Levels 9-13: start at 140%, increase 4% per level
-            return 1.35 + ((currentLevel - 8) * 0.04);
-        } else if (currentLevel <= 21) {
-            // Levels 14-21: start at 155%, increase 3% per level
-            return 1.55 + ((currentLevel - 13) * 0.03);
-        } else if (currentLevel <= 26) {
-            // Levels 22-26: start at 179%, increase 2% per level
-            return 1.79 + ((currentLevel - 21) * 0.02);
+        } else if (currentLevel <= 14) {
+            // Levels 10-14: start at 145%, increase 4% per level
+            return 1.40 + ((currentLevel - 9) * 0.04);
+        } else if (currentLevel <= 22) {
+            // Levels 15-22: start at 165%, increase 3% per level
+            return 1.60 + ((currentLevel - 14) * 0.03);
+        } else if (currentLevel <= 27) {
+            // Levels 23-27: start at 189%, increase 2% per level
+            return 1.84 + ((currentLevel - 22) * 0.02);
         } else {
-            // Level 26+: stay at 200%
+            // Level 27+: stay at 200%
             return 2.0;
         }
     };
@@ -1176,11 +1179,11 @@ var PACMAN = (function () {
     function completedLevel() {
         level += 1;
         
-        if (level > 26) {
+        if (level > 27) {
             // Game won!
             setState(WAITING);
             map.draw(ctx);
-            dialog("🎉 CONGRATULATIONS! YOU WON BONKING PUMP.FUN! 🎉");
+            dialog("🐶CONGRATULATIONS! YOU BONKED PUMP.FUN OUT OF THE TRENCHES!🐶");
             return;
         }
         
