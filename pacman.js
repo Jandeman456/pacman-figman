@@ -99,7 +99,10 @@ Pacman.Ghost = function (game, map, colour) {
     };
 
     function isHidden() { 
-        return eatable === null && eaten !== null;
+        // Fix speed issue - ensure proper speed calculation
+        var speed = isVunerable() ? 1 : 1; // Both vulnerable and normal should be speed 1
+        
+        return npos;
     };
     
     function getRandomDirection() {
