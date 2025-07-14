@@ -19,6 +19,7 @@ var NONE        = 4,
     COUNTDOWN   = 8,
     EATEN_PAUSE = 9,
     DYING       = 10,
+    LEADERBOARD = 12,
     Pacman      = {};
 
 Pacman.FPS = 30;
@@ -1007,6 +1008,16 @@ var PACMAN = (function () {
     }
 
     function keyDown(e) {
+        if (e.keyCode === KEY.ESCAPE && state === LEADERBOARD) {
+            setState(WAITING);
+            map.draw(ctx);
+            dialog("Press N to start BONKING PUMP.FUN");
+            return false;
+        } else if (e.keyCode === KEY.L && state === WAITING) {
+            showLeaderboard();
+            return false;
+        }
+        
         if (e.keyCode === KEY.N) {
             startNewGame();
         } else if (e.keyCode === KEY.S) {
@@ -1033,6 +1044,9 @@ var PACMAN = (function () {
         user.loseLife();
         if (user.getLives() > 0) {
             startLevel();
+        } else {
+            // Game over - save score
+            saveScore();
         }
     }
 
@@ -1208,6 +1222,7 @@ var PACMAN = (function () {
         
         if (level > 30) {
             // Game won!
+            saveScore();
             setState(WAITING);
             map.draw(ctx);
             dialog("🐶CONGRATULATIONS! YOU BONKED PUMP.FUN OUT OF THE TRENCHES!🐶");
@@ -1223,6 +1238,88 @@ var PACMAN = (function () {
     function getLevel() {
         return level;
     };
+    
+    function saveScore() {
+        var currentScore = user.theScore();
+        var currentLevel = level;
+        
+        // Get existing leaderboard
+        var leaderboard = JSON.parse(localStorage.getItem('bonkmanLeaderboard') || '[]');
+        
+        // Add new score
+        leaderboard.push({
+            score: currentScore,
+            level: currentLevel,
+            date: new Date().toLocaleDateString()
+        });
+        
+        // Sort by score (highest first)
+        leaderboard.sort(function(a, b) { return b.score - a.score; });
+        
+        // Keep only top 10
+        leaderboard = leaderboard.slice(0, 10);
+        
+        // Save back to localStorage
+        localStorage.setItem('bonkmanLeaderboard', JSON.stringify(leaderboard));
+    }
+    
+    function showLeaderboard() {
+        var leaderboard = JSON.parse(localStorage.getItem('bonkmanLeaderboard') || '[]');
+        
+        // Clear the game canvas
+        ctx.fillStyle = "#000";
+        ctx.fillRect(0, 0, map.width * map.blockSize, map.height * map.blockSize + 30);
+        
+        // Title
+        ctx.fillStyle = "#FFFF00";
+        ctx.font = "24px BDCartoonShoutRegular";
+        var titleText = "🏆 TOP 10 LEADERBOARD 🏆";
+        var titleWidth = ctx.measureText(titleText).width;
+        ctx.fillText(titleText, ((map.width * map.blockSize) - titleWidth) / 2, 40);
+        
+        // Headers
+        ctx.fillStyle = "#f65b21";
+        ctx.font = "16px BDCartoonShoutRegular";
+        ctx.fillText("RANK", 50, 80);
+        ctx.fillText("SCORE", 150, 80);
+        ctx.fillText("LEVEL", 280, 80);
+        ctx.fillText("DATE", 380, 80);
+        
+        // Leaderboard entries
+        ctx.fillStyle = "#FFFFFF";
+        ctx.font = "14px BDCartoonShoutRegular";
+        
+        if (leaderboard.length === 0) {
+            ctx.fillText("No scores yet! Play to set a record!", 150, 120);
+        } else {
+            for (var i = 0; i < leaderboard.length; i++) {
+                var entry = leaderboard[i];
+                var yPos = 110 + (i * 25);
+                
+                // Rank
+                ctx.fillStyle = i < 3 ? "#FFD700" : "#FFFFFF"; // Gold for top 3
+                ctx.fillText((i + 1) + ".", 50, yPos);
+                
+                // Score
+                ctx.fillStyle = "#FFFFFF";
+                ctx.fillText(entry.score.toLocaleString(), 150, yPos);
+                
+                // Level
+                ctx.fillText(entry.level, 280, yPos);
+                
+                // Date
+                ctx.fillText(entry.date, 380, yPos);
+            }
+        }
+        
+        // Instructions
+        ctx.fillStyle = "#f65b21";
+        ctx.font = "14px BDCartoonShoutRegular";
+        ctx.fillText("Press ESC to return to game", 200, map.height * map.blockSize - 20);
+        
+        // Set leaderboard state
+        setState(LEADERBOARD);
+    }
 
     function keyPress(e) { 
         if (state !== WAITING && state !== PAUSE) { 
@@ -1295,7 +1392,8 @@ var PACMAN = (function () {
     };
     
     return {
-        "init" : init
+        "init" : init,
+        "showLeaderboard" : showLeaderboard
     };
     
 }());
