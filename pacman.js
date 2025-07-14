@@ -1234,6 +1234,11 @@ var PACMAN = (function () {
         } 
 
         drawFooter();
+        
+        // Hide game UI when showing leaderboard
+        if (showingLeaderboard) {
+            return;
+        }
     }
 
     function eatenPill() {
