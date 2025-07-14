@@ -1097,14 +1097,19 @@ var PACMAN = (function () {
     }
     
     function drawUserPills() {
-        ctx.fillStyle = "#FFFF00";
         for (var i = 0; i < userPills.length; i++) {
             var pill = userPills[i];
-            ctx.beginPath();
-            ctx.arc((pill.x / 10) * map.blockSize, 
-                   (pill.y / 10) * map.blockSize, 
-                   3, 0, Math.PI * 2);
-            ctx.fill();
+            
+            if (map.pillImage && map.pillImage.complete) {
+                var pillSize = 8; // Small size for projectile
+                ctx.drawImage(map.pillImage, pill.x - pillSize/2, pill.y - pillSize/2, pillSize, pillSize);
+            } else {
+                // Fallback to yellow circle
+                ctx.fillStyle = "#FFFF00";
+                ctx.beginPath();
+                ctx.arc(pill.x, pill.y, 3, 0, Math.PI * 2);
+                ctx.fill();
+            }
         }
     }
     
