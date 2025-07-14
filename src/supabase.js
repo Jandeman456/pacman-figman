@@ -1,7 +1,11 @@
 import { createClient } from '@supabase/supabase-js'
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://your-project.supabase.co'
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'your-anon-key'
+
+// Debug logging
+console.log('Supabase URL:', supabaseUrl)
+console.log('Supabase Key exists:', !!supabaseAnonKey)
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
@@ -33,6 +37,7 @@ export async function saveScoreToLeaderboard(score, level) {
 // Function to get top 10 global scores
 export async function getGlobalLeaderboard() {
   try {
+    console.log('Fetching leaderboard...')
     const { data, error } = await supabase
       .from('leaderboard')
       .select('score, level, created_at')
@@ -42,9 +47,11 @@ export async function getGlobalLeaderboard() {
     
     if (error) {
       console.error('Error fetching leaderboard:', error)
+      console.error('Error details:', error.message, error.details)
       return []
     }
     
+    console.log('Leaderboard data:', data)
     return data || []
   } catch (error) {
     console.error('Error fetching leaderboard:', error)
