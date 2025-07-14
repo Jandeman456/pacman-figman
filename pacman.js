@@ -109,11 +109,7 @@ Pacman.Ghost = function (game, map, colour) {
     };
     
     function reset() {
-        console.log("=== GHOST RESET CALLED ===");
-        console.log("Ghost eaten status before reset:", eaten);
-        eaten = false;
-        console.log("Ghost eaten status after reset:", eaten);
-        due = 0;
+        eaten = null;
         eatable = null;
         position = {"x": 90, "y": 80};
         direction = getRandomDirection();
@@ -1071,12 +1067,7 @@ var PACMAN = (function () {
         if (user.getLives() > 0) {
             // Reset ghosts when losing a life (not just new level)
             for (var i = 0; i < ghosts.length; i += 1) { 
-                if (!ghosts[i].eaten) {
-                    ghosts[i].reset();
-                    console.log("🔄 Resetting living ghost", i);
-                } else {
-                    console.log("⚰️ Keeping dead ghost", i, "dead");
-                }
+                ghosts[i].reset();
             }
             startLevel();
         } else {
