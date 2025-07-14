@@ -986,7 +986,9 @@ var PACMAN = (function () {
         modeChangeTime = 0,
         globalLeaderboard = [],
         playerName = "",
-        nameInputActive = false;
+        nameInputActive = false,
+        bullets = [],
+        canShoot = false;
 
     function getTick() { 
         return tick;
@@ -1028,6 +1030,14 @@ var PACMAN = (function () {
         for (var i = 0; i < ghosts.length; i += 1) { 
             ghosts[i].reset();
         }
+        
+        // Check if this is a shooting level
+        canShoot = (level === 1 || level === 5 || 
+                   level === 15 || level === 25);
+        
+        // Clear any existing bullets
+        bullets = [];
+        
         audio.play("start");
         timerStart = tick;
         setState(COUNTDOWN);
@@ -1148,6 +1158,95 @@ var PACMAN = (function () {
         return playerName;
     }
 
+    function createBullet() {
+        if (!canShoot) return;
+        
+        var direction = user.direction || user.due;
+        if (!direction) return;
+        
+        var bullet = {
+            "x": user.position.x,
+            "y": user.position.y, 
+            "direction": direction,
+            "speed": 3
+        };
+        
+        bullets.push(bullet);
+    }
+    
+    function updateBullets() {
+        if (!canShoot) return;
+        
+        for (var i = bullets.length - 1; i >= 0; i--) {
+            var bullet = bullets[i];
+            
+            // Move bullet
+            switch(bullet.direction) {
+                case UP:
+                    bullet.y -= bullet.speed;
+                    break;
+                case DOWN:
+                    bullet.y += bullet.speed;
+                    break;
+                case LEFT:
+                    bullet.x -= bullet.speed;
+                    break;
+                case RIGHT:
+                    bullet.x += bullet.speed;
+                    break;
+            }
+            
+            // Check wall collision
+            var bulletPos = {"x": Math.floor(bullet.x / map.blockSize), 
+                           "y": Math.floor(bullet.y / map.blockSize)};
+            
+            if (map.isWallSpace(bulletPos)) {
+                bullets.splice(i, 1);
+                continue;
+            }
+            
+            // Check ghost collision
+            var hitGhost = false;
+            for (var j = 0; j < ghosts.length; j++) {
+                var ghost = ghosts[j];
+                var ghostPos = ghost.position();
+                
+                var distance = Math.sqrt(
+                    Math.pow(bullet.x - ghostPos.x, 2) + 
+                    Math.pow(bullet.y - ghostPos.y, 2)
+                );
+                
+                if (distance < map.blockSize * 0.8) {
+                    // Hit ghost - make it edible like with power pills
+                    ghost.makeEatable();
+                    bullets.splice(i, 1);
+                    hitGhost = true;
+                    break;
+                }
+            }
+            
+            if (hitGhost) continue;
+            
+            // Remove bullets that go off screen
+            if (bullet.x < 0 || bullet.x > map.width * map.blockSize || 
+                bullet.y < 0 || bullet.y > map.height * map.blockSize) {
+                bullets.splice(i, 1);
+            }
+        }
+    }
+    
+    function drawBullets(ctx) {
+        if (!canShoot) return;
+        
+        ctx.fillStyle = "#FFFF00"; // Yellow bullets
+        for (var i = 0; i < bullets.length; i++) {
+            var bullet = bullets[i];
+            ctx.beginPath();
+            ctx.arc(bullet.x + map.blockSize/2, bullet.y + map.blockSize/2, 3, 0, Math.PI * 2);
+            ctx.fill();
+        }
+    }
+
     function keyDown(e) {
         if (state === NAME_INPUT) {
             return handleNameInput(e);
@@ -1178,6 +1277,11 @@ var PACMAN = (function () {
             audio.pause();
             map.draw(ctx);
             dialog("Paused");
+        } else if (e.keyCode === 32) { // Spacebar for shooting
+            e.preventDefault();
+            if (state === PLAYING) {
+                createBullet();
+            }
         } else if (state !== PAUSE) {   
             return user.keyDown(e);
         }
@@ -1274,6 +1378,8 @@ var PACMAN = (function () {
         }
         u = user.move(ctx);
         
+        updateBullets();
+        
         for (i = 0, len = ghosts.length; i < len; i += 1) {
             redrawBlock(ghostPos[i].old);
         }
@@ -1283,6 +1389,7 @@ var PACMAN = (function () {
             ghosts[i].draw(ctx);
         }                     
         user.draw(ctx);
+        drawBullets(ctx);
         
         userPos = u["new"];
         
