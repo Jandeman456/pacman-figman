@@ -286,6 +286,41 @@ Pacman.Ghost = function (game, map, colour) {
         return false;
     };
     
+    function handleNameInput(e) {
+        e.preventDefault();
+        
+        if (e.keyCode === 13) { // Enter key
+            if (playerName.length > 0) {
+                confirmName();
+            }
+        } else if (e.keyCode === 8) { // Backspace
+            playerName = playerName.slice(0, -1);
+        } else if (e.keyCode >= 32 && e.keyCode <= 126) { // Printable characters
+            var char = String.fromCharCode(e.keyCode);
+            if (playerName.length < 6) {
+                playerName += char.toUpperCase();
+            }
+        }
+    }
+    
+    function confirmName() {
+        if (playerName.length > 0) {
+            nameInputActive = false;
+            
+            // Save score with name to leaderboard
+            if (window.saveScoreToLeaderboard) {
+                window.saveScoreToLeaderboard(score, level, playerName).then(function(success) {
+                    if (success) {
+                        console.log('Score saved successfully with name:', playerName);
+                    }
+                    showScores();
+                });
+            } else {
+                showScores();
+            }
+        }
+    }
+    
     function move(ctx) {
         
         // If ghost is eaten (dead), don't move
