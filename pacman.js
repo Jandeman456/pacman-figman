@@ -550,7 +550,18 @@ Pacman.User = function (game, map) {
             addScore((block === Pacman.BISCUIT) ? 10 : 50);
             eaten += 1;
             
-            if (eaten === 182) {
+            // Check if all dots are collected by counting remaining dots on map
+            var remainingDots = 0;
+            for (var mapY = 0; mapY < map.height; mapY++) {
+                for (var mapX = 0; mapX < map.width; mapX++) {
+                    var mapBlock = map.block({x: mapX, y: mapY});
+                    if (mapBlock === Pacman.BISCUIT || mapBlock === Pacman.PILL) {
+                        remainingDots++;
+                    }
+                }
+            }
+            
+            if (remainingDots === 0) {
                 game.completedLevel();
             }
             
@@ -1054,6 +1065,10 @@ var PACMAN = (function () {
         setState(WAITING);
         user.loseLife();
         if (user.getLives() > 0) {
+            // Reset ghosts when losing a life (not just new level)
+            for (var i = 0; i < ghosts.length; i += 1) { 
+                ghosts[i].reset();
+            }
             startLevel();
         } else {
             // Game over - save score globally
