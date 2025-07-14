@@ -1333,3 +1333,18 @@ PACMAN.load = function (root, callback) {
     loadAudio("siren");
     loadAudio("waza");
 };
+
+PACMAN.init = function(el, root) {
+    var audio = PACMAN.audio(root);
+    audio.load("die", root, function() { startGame(); });
+    audio.load("eatghost", root, function() {});
+    audio.load("eatpill", root, function() {});
+    audio.load("eating", root, function() {});
+    audio.load("intermission", root, function() {});
+    audio.load("opening_song", root, function() {});
+    audio.load("siren", root, function() {});
+    
+    function startGame() {
+        PACMAN.init(el, root);
+    }
+};

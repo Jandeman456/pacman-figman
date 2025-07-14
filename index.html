@@ -304,9 +304,7 @@
       
       if (Modernizr.canvas && Modernizr.localstorage && 
           Modernizr.audio && (Modernizr.audio.ogg || Modernizr.audio.mp3)) {
-        PACMAN.load("./", function(audio) {
-          window.setTimeout(function () { PACMAN.init(el, "./"); }, 0);
-        });
+        window.setTimeout(function () { PACMAN.init(el, "./"); }, 0);
       } else { 
         el.innerHTML = "Sorry, needs a decent browser<br /><small>" + 
           "(firefox 3.6+, Chrome 4+, Opera 10+ and Safari 4+)</small>";
@@ -320,13 +318,11 @@
       
       if (Modernizr.canvas && Modernizr.localstorage && 
           Modernizr.audio && (Modernizr.audio.ogg || Modernizr.audio.mp3)) {
-        PACMAN.load("./", function(audio) {
-          window.setTimeout(function () { 
-            PACMAN.init(el, "./"); 
-            // Wait a bit for initialization then show leaderboard
-            setTimeout(function() { PACMAN.showLeaderboard(); }, 200);
-          }, 0);
-        });
+        window.setTimeout(function () { 
+          PACMAN.init(el, "./"); 
+          // Wait a bit for initialization then show leaderboard
+          setTimeout(function() { PACMAN.showLeaderboard(); }, 200);
+        }, 0);
       } else { 
         el.innerHTML = "Sorry, needs a decent browser<br /><small>" + 
           "(firefox 3.6+, Chrome 4+, Opera 10+ and Safari 4+)</small>";
