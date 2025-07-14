@@ -1234,11 +1234,11 @@ var PACMAN = (function () {
     function init(wrapper, root) {
         
         var i, len, ghost,
-            blockSize = Math.floor((wrapper.offsetWidth * 1.0) / 19),
+            blockSize = 24,
             canvas    = document.createElement("canvas");
         
-        canvas.setAttribute("width", (blockSize * 19) + "px");
-        canvas.setAttribute("height", (blockSize * 22) + 30 + "px");
+        canvas.setAttribute("width", "456px");
+        canvas.setAttribute("height", "600px");
 
         wrapper.appendChild(canvas);
 
