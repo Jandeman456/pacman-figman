@@ -999,7 +999,7 @@ var PACMAN = (function () {
 
     function startNewGame() {
         setState(WAITING);
-        level = 0;
+        level = 1;
         user.reset();
         map.reset();
         map.draw(ctx);
