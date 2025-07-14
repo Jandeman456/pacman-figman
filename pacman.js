@@ -418,10 +418,37 @@ Pacman.User = function (game, map) {
 	};
 
     function getNewCoord(dir, current) {   
+        var levelSpeedMultiplier = getPacmanLevelSpeedMultiplier();
+        var speed = 2 * levelSpeedMultiplier;
+        
         return {
-            "x": current.x + (dir === LEFT && -2 || dir === RIGHT && 2 || 0),
-            "y": current.y + (dir === DOWN && 2 || dir === UP    && -2 || 0)
+            "x": current.x + (dir === LEFT && -speed || dir === RIGHT && speed || 0),
+            "y": current.y + (dir === DOWN && speed || dir === UP && -speed || 0)
         };
+    };
+    
+    function getPacmanLevelSpeedMultiplier() {
+        var currentLevel = game.getLevel();
+        
+        if (currentLevel === 1) {
+            // Level 1: 100%
+            return 1.0;
+        } else if (currentLevel <= 9) {
+            // Levels 2-9: start at 104%, increase 4% per level
+            return 1.0 + ((currentLevel - 1) * 0.04);
+        } else if (currentLevel <= 14) {
+            // Levels 10-14: start at 136%, increase 3% per level
+            return 1.32 + ((currentLevel - 9) * 0.03);
+        } else if (currentLevel <= 22) {
+            // Levels 15-22: start at 147%, increase 2% per level
+            return 1.44 + ((currentLevel - 14) * 0.02);
+        } else if (currentLevel <= 30) {
+            // Levels 23-30: start at 163%, increase 1% per level
+            return 1.60 + ((currentLevel - 22) * 0.01);
+        } else {
+            // Level 30+: stay at 168%
+            return 1.68;
+        }
     };
 
     function onWholeSquare(x) {
