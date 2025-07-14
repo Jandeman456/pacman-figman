@@ -1158,6 +1158,9 @@ var PACMAN = (function () {
             document.getElementById("pacman").style.display = "none";
             document.getElementById("start-screen").style.display = "block";
             document.getElementById("leaderboard-button").style.display = "block";
+            document.getElementById("pacman").style.display = "none";
+            document.getElementById("start-screen").style.display = "block";
+            document.getElementById("leaderboard-button").style.display = "block";
             return false;
         } else if (e.keyCode === KEY.ESCAPE && state === LEADERBOARD) {
             setState(WAITING);
@@ -1201,13 +1204,6 @@ var PACMAN = (function () {
             startLevel();
         } else {
             showNameInput();
-        }
-    }
-
-    function setState(nState) { 
-        state = nState;
-        stateChanged = true;
-    }
     
     function collided(user, ghost) {
         return (Math.sqrt(Math.pow(ghost.x - user.x, 2) + 
