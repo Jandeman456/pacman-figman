@@ -13,7 +13,7 @@ if (onGrid && map.isFloorSpace({
     })) {
     
     due = getRandomDirection();            
-    return move(ctx);
+    move(ctx);
 }
 
 // Added missing closing bracket for oppositeDirection() function
