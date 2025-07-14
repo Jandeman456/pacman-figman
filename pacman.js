@@ -1022,7 +1022,7 @@ var PACMAN = (function () {
 
     function startNewGame() {
         setState(WAITING);
-        level = 1;
+        // Don't reset eaten ghosts - they should stay dead until next level
         user.reset();
         map.reset();
         map.draw(ctx);
@@ -1230,8 +1230,12 @@ var PACMAN = (function () {
             }
         } 
 
-        drawFooter();
-    }
+        // Only reset living ghosts, keep eaten ones dead
+        for (var i = 0, len = ghosts.length; i < len; i += 1) {
+            ghosts[i].eaten = false; // Bring back eaten ghosts
+            if (!ghosts[i].eaten) {
+                ghosts[i].reset();
+            }
 
     function eatenPill() {
         audio.play("eatpill");
@@ -1248,7 +1252,7 @@ var PACMAN = (function () {
         if (level > 30) {
             // Game won! Save score globally
             saveScoreGlobally();
-            setState(WAITING);
+        // Reset ALL ghosts for new level (bring back eaten ones)
             map.draw(ctx);
             dialog("🐶CONGRATULATIONS! YOU BONKED PUMP.FUN OUT OF THE TRENCHES!🐶");
             return;
