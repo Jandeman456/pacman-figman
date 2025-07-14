@@ -1334,7 +1334,15 @@ var PACMAN = (function () {
         } else if (state === WAITING && stateChanged) {            
             stateChanged = false;
             map.draw(ctx);
-            dialog("Press N to start BONKING PUMP.FUN | Press ESC to return to home screen");            
+            dialog("Press N to start BONKING PUMP.FUN");
+            
+            // Add ESC instruction below the main dialog
+            ctx.fillStyle = "#f65b21";
+            ctx.font = "12px BDCartoonShoutRegular";
+            var escText = "Press ESC to return to home screen";
+            var escWidth = ctx.measureText(escText).width;
+            var escX = ((map.width * map.blockSize) - escWidth) / 2;
+            ctx.fillText(escText, escX, (map.height * 10) + 25);
         } else if (state === EATEN_PAUSE && 
                    (tick - timerStart) > (Pacman.FPS / 3)) {
             map.draw(ctx);
