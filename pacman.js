@@ -1069,7 +1069,7 @@ var PACMAN = (function () {
             }
             startLevel();
         } else {
-            // Game over - save score globally
+            showNameInput();
             saveScoreGlobally();
         }
     }
