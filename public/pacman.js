@@ -1319,7 +1319,9 @@ var PACMAN = (function () {
             return;
         }
 
-        map.drawPills(ctx);
+        if (state !== LEADERBOARD) {
+            map.drawPills(ctx);
+        }
 
         if (state === PLAYING) {
             mainDraw();
