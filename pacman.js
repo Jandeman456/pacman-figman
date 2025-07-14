@@ -66,11 +66,11 @@ Pacman.Ghost = function (game, map, colour) {
         } else if (currentLevel <= 22) {
             // Levels 15-22: start at 165%, increase 3% per level
             return 1.60 + ((currentLevel - 14) * 0.03);
-        } else if (currentLevel <= 27) {
-            // Levels 23-27: start at 189%, increase 2% per level
+        } else if (currentLevel <= 30) {
+            // Levels 23-30: start at 186%, increase 2% per level
             return 1.84 + ((currentLevel - 22) * 0.02);
         } else {
-            // Level 27+: stay at 200%
+            // Level 30+: stay at 200%
             return 2.0;
         }
     };
@@ -1179,7 +1179,7 @@ var PACMAN = (function () {
     function completedLevel() {
         level += 1;
         
-        if (level > 27) {
+        if (level > 30) {
             // Game won!
             setState(WAITING);
             map.draw(ctx);
