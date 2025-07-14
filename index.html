@@ -175,11 +175,16 @@
     
     // Function to save score to global leaderboard
     async function saveScoreToLeaderboard(score, level) {
+      return saveScoreToLeaderboardWithName(score, level, 'ANON');
+    }
+    
+    // Function to save score with name to global leaderboard
+    async function saveScoreToLeaderboardWithName(score, level, name) {
       try {
         const { error } = await supabase
           .from('leaderboard')
           .insert([
-            { score: score, level: level }
+            { score: score, level: level, name: name || 'ANON' }
           ])
         
         if (error) {
@@ -200,7 +205,7 @@
         console.log('Fetching leaderboard...')
         const { data, error } = await supabase
           .from('leaderboard')
-          .select('score, level, created_at')
+          .select('score, level, created_at, name')
           .order('score', { ascending: false })
           .order('created_at', { ascending: false })
           .limit(10)
