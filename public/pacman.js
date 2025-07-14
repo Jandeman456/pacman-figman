@@ -937,6 +937,7 @@ Pacman.Audio = function(game) {
             endEvents[name] = function() { ended(name); };
             playing.push(name);
             files[name].addEventListener("ended", endEvents[name], true);
+            files[name].volume = (name === 'die') ? 0.7 : 0.5;
             files[name].play();
         }
     }
