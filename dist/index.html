@@ -109,8 +109,39 @@
         transform: translateY(4px);
         box-shadow: 0 2px 0 #228B22, 0 4px 8px rgba(0,0,0,0.3);
       }
+      
+      #leaderboard-button {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        font-family: 'BDCartoonShoutRegular', sans-serif;
+        font-size: 1rem;
+        background: linear-gradient(45deg, #FFD700, #FFA500);
+        color: #000000;
+        border: 3px solid #FFFF00;
+        border-radius: 10px;
+        padding: 10px 20px;
+        cursor: pointer;
+        text-shadow: 1px 1px 0px #FFFFFF;
+        box-shadow: 0 4px 0 #FF8C00, 0 6px 10px rgba(0,0,0,0.3);
+        transition: all 0.1s ease;
+        letter-spacing: 0.05em;
+        z-index: 1001;
+      }
+      
+      #leaderboard-button:hover {
+        background: linear-gradient(45deg, #FFA500, #FFD700);
+        transform: translateY(1px);
+        box-shadow: 0 3px 0 #FF8C00, 0 5px 8px rgba(0,0,0,0.3);
+      }
+      
+      #leaderboard-button:active {
+        transform: translateY(2px);
+        box-shadow: 0 2px 0 #FF8C00, 0 4px 6px rgba(0,0,0,0.3);
+      }
     </style>
 
+  <script type="module" crossorigin src="/assets/index-CtjMiZmx.js"></script>
 </head>
 
 <body>
@@ -123,6 +154,8 @@
     <h1 id="game-title">BONKMAN</h1>
     <button id="start-button">LET'S BONKMAN!</button>
   </div>
+  
+  <button id="leaderboard-button">SHOW LEADERBOARD</button>
   
   <div id="pacman" style="display: none;"></div>
   
@@ -204,9 +237,11 @@
     var el = document.getElementById("pacman");
     var startScreen = document.getElementById("start-screen");
     var startButton = document.getElementById("start-button");
+    var leaderboardButton = document.getElementById("leaderboard-button");
     
     startButton.addEventListener("click", function() {
       startScreen.style.display = "none";
+      leaderboardButton.style.display = "none";
       el.style.display = "block";
       
       if (Modernizr.canvas && Modernizr.localstorage && 
@@ -218,6 +253,23 @@
       }
     });
 
+    leaderboardButton.addEventListener("click", function() {
+      startScreen.style.display = "none";
+      leaderboardButton.style.display = "none";
+      el.style.display = "block";
+      
+      if (Modernizr.canvas && Modernizr.localstorage && 
+          Modernizr.audio && (Modernizr.audio.ogg || Modernizr.audio.mp3)) {
+        window.setTimeout(function () { 
+          PACMAN.init(el, "./"); 
+          // Wait a bit for initialization then show leaderboard
+          setTimeout(function() { PACMAN.showLeaderboard(); }, 200);
+        }, 0);
+      } else { 
+        el.innerHTML = "Sorry, needs a decent browser<br /><small>" + 
+          "(firefox 3.6+, Chrome 4+, Opera 10+ and Safari 4+)</small>";
+      }
+    });
   </script>
 
 </body>
