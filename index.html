@@ -155,235 +155,235 @@
       /* Custom Dog Character (Right side) */
       .dog-fighter {
         position: absolute;
-        width: 120px;
-        height: 100px;
+        width: 100px;
+        height: 80px;
         right: 15%;
         top: 40%;
         animation: dogFighting 6s ease-in-out infinite;
       }
       
       .dog-body {
-        width: 70px;
-        height: 40px;
-        background: linear-gradient(45deg, #FFA500, #FF8C00);
-        border-radius: 20px;
+        width: 60px;
+        height: 35px;
+        background: linear-gradient(45deg, #D2691E, #8B4513);
+        border-radius: 18px;
         position: relative;
         margin-top: 20px;
-        border: 3px solid #000;
+        border: 2px solid #654321;
       }
       
       .dog-head {
-        width: 35px;
-        height: 30px;
-        background: linear-gradient(45deg, #FFA500, #FF8C00);
-        border-radius: 50% 50% 30% 30%;
+        width: 30px;
+        height: 25px;
+        background: linear-gradient(45deg, #D2691E, #8B4513);
+        border-radius: 60% 60% 40% 40%;
         position: absolute;
-        top: -15px;
-        left: 45px;
-        border: 3px solid #000;
+        top: -12px;
+        left: 40px;
+        border: 2px solid #654321;
       }
       
       .dog-snout {
-        width: 20px;
-        height: 12px;
-        background: #FF8C00;
-        border-radius: 60% 60% 40% 40%;
+        width: 15px;
+        height: 10px;
+        background: #8B4513;
+        border-radius: 50%;
         position: absolute;
-        top: 10px;
-        left: 30px;
-        border: 2px solid #000;
+        top: 8px;
+        left: 25px;
+        border: 1px solid #654321;
       }
       
       .dog-eyes {
-        width: 6px;
-        height: 6px;
-        background: #000;
-        border-radius: 50%;
-        position: absolute;
-        top: 6px;
-      }
-      
-      .dog-eye-left { left: 6px; }
-      .dog-eye-right { left: 18px; }
-      
-      .dog-nose {
         width: 4px;
         height: 4px;
         background: #000;
         border-radius: 50%;
         position: absolute;
-        top: 15px;
-        left: 38px;
+        top: 5px;
+      }
+      
+      .dog-eye-left { left: 8px; }
+      .dog-eye-right { left: 16px; }
+      
+      .dog-nose {
+        width: 3px;
+        height: 3px;
+        background: #000;
+        border-radius: 50%;
+        position: absolute;
+        top: 12px;
+        left: 32px;
       }
       
       .dog-ears {
-        width: 12px;
-        height: 18px;
-        background: linear-gradient(45deg, #FF8C00, #FFA500);
-        border-radius: 60% 60% 10% 10%;
+        width: 10px;
+        height: 15px;
+        background: linear-gradient(45deg, #8B4513, #654321);
+        border-radius: 50% 50% 20% 20%;
         position: absolute;
-        top: -10px;
-        border: 2px solid #000;
+        top: -8px;
+        border: 1px solid #654321;
       }
       
-      .dog-ear-left { left: 3px; transform: rotate(-25deg); }
-      .dog-ear-right { right: 3px; transform: rotate(25deg); }
+      .dog-ear-left { left: 5px; transform: rotate(-20deg); }
+      .dog-ear-right { right: 5px; transform: rotate(20deg); }
       
       .dog-legs {
-        width: 10px;
-        height: 20px;
-        background: linear-gradient(180deg, #FFA500, #FF8C00);
+        width: 8px;
+        height: 18px;
+        background: linear-gradient(180deg, #D2691E, #8B4513);
         position: absolute;
-        bottom: -20px;
-        border-radius: 5px;
-        border: 2px solid #000;
+        bottom: -18px;
+        border-radius: 4px;
+        border: 1px solid #654321;
       }
       
-      .dog-leg1 { left: 10px; }
-      .dog-leg2 { left: 25px; }
-      .dog-leg3 { right: 25px; }
-      .dog-leg4 { right: 10px; }
+      .dog-leg1 { left: 8px; }
+      .dog-leg2 { left: 20px; }
+      .dog-leg3 { right: 20px; }
+      .dog-leg4 { right: 8px; }
       
       .dog-tail {
-        width: 25px;
-        height: 8px;
-        background: linear-gradient(90deg, #FF8C00, #FFA500);
-        border-radius: 4px;
+        width: 20px;
+        height: 6px;
+        background: linear-gradient(90deg, #8B4513, #D2691E);
+        border-radius: 3px;
         position: absolute;
-        left: -20px;
-        top: 10px;
+        left: -15px;
+        top: 8px;
         transform-origin: right center;
         animation: tailWag 0.4s ease-in-out infinite alternate;
-        border: 2px solid #000;
+        border: 1px solid #654321;
       }
       
       .club {
-        width: 40px;
-        height: 12px;
-        background: linear-gradient(90deg, #8B4513, #A0522D);
-        border-radius: 6px;
+        width: 35px;
+        height: 10px;
+        background: linear-gradient(90deg, #8B4513, #654321);
+        border-radius: 5px;
         position: absolute;
-        top: -10px;
-        right: -35px;
+        top: -8px;
+        right: -30px;
         transform-origin: left center;
         animation: clubSwing 1.5s ease-in-out infinite;
-        border: 3px solid #000;
+        border: 2px solid #4A4A4A;
       }
       
       .club::before {
         content: '';
-        width: 18px;
-        height: 18px;
-        background: radial-gradient(circle, #8B4513, #654321);
+        width: 15px;
+        height: 15px;
+        background: radial-gradient(circle, #654321, #4A4A4A);
         border-radius: 50%;
         position: absolute;
-        right: -9px;
-        top: -3px;
-        border: 3px solid #000;
+        right: -7px;
+        top: -2.5px;
+        border: 2px solid #4A4A4A;
       }
       
       /* Custom Bodybuilder Character (Left side) */
       .bodybuilder-fighter {
         position: absolute;
-        width: 130px;
-        height: 110px;
+        width: 110px;
+        height: 90px;
         left: 15%;
         top: 38%;
         animation: bodybuilderFighting 6s ease-in-out infinite;
       }
       
       .bodybuilder-body {
-        width: 80px;
-        height: 60px;
-        background: linear-gradient(45deg, #FFDBAC, #F4A460);
-        border-radius: 15px;
+        width: 70px;
+        height: 55px;
+        background: linear-gradient(45deg, #FFE4B5, #DEB887);
+        border-radius: 12px;
         position: relative;
         margin-top: 25px;
-        border: 3px solid #000;
+        border: 2px solid #CD853F;
       }
       
       .bodybuilder-head {
-        width: 40px;
-        height: 35px;
-        background: linear-gradient(45deg, #FFDBAC, #F4A460);
+        width: 35px;
+        height: 30px;
+        background: linear-gradient(45deg, #FFE4B5, #F5DEB3);
         border-radius: 50%;
         position: absolute;
-        top: -20px;
-        left: 20px;
-        border: 3px solid #000;
+        top: -18px;
+        left: 17px;
+        border: 2px solid #CD853F;
       }
       
       .bodybuilder-face {
-        width: 6px;
-        height: 6px;
+        width: 4px;
+        height: 4px;
         background: #000;
         border-radius: 50%;
         position: absolute;
-        top: 10px;
+        top: 8px;
       }
       
-      .face-eye-left { left: 10px; }
-      .face-eye-right { left: 24px; }
+      .face-eye-left { left: 8px; }
+      .face-eye-right { left: 20px; }
       
       .bodybuilder-mouth {
-        width: 10px;
-        height: 4px;
+        width: 8px;
+        height: 3px;
         background: #8B0000;
         border-radius: 50%;
         position: absolute;
-        top: 22px;
-        left: 15px;
+        top: 18px;
+        left: 13px;
       }
       
       .bodybuilder-muscles {
-        width: 30px;
-        height: 35px;
-        background: linear-gradient(45deg, #F4A460, #DEB887);
+        width: 25px;
+        height: 30px;
+        background: linear-gradient(45deg, #DEB887, #CD853F);
         border-radius: 50%;
         position: absolute;
-        top: 15px;
-        border: 3px solid #000;
+        top: 12px;
+        border: 2px solid #8B7355;
       }
       
-      .muscle-left { left: -15px; }
-      .muscle-right { right: -15px; }
+      .muscle-left { left: -12px; }
+      .muscle-right { right: -12px; }
       
       .bodybuilder-legs {
-        width: 18px;
-        height: 30px;
-        background: linear-gradient(180deg, #FFDBAC, #F4A460);
+        width: 15px;
+        height: 25px;
+        background: linear-gradient(180deg, #FFE4B5, #DEB887);
         position: absolute;
-        bottom: -30px;
-        border-radius: 9px;
-        border: 3px solid #000;
+        bottom: -25px;
+        border-radius: 8px;
+        border: 2px solid #CD853F;
       }
       
-      .bodybuilder-leg1 { left: 22px; }
-      .bodybuilder-leg2 { right: 22px; }
+      .bodybuilder-leg1 { left: 18px; }
+      .bodybuilder-leg2 { right: 18px; }
       
       .cannon {
-        width: 50px;
-        height: 16px;
-        background: linear-gradient(90deg, #808080, #696969);
-        border-radius: 8px;
+        width: 45px;
+        height: 14px;
+        background: linear-gradient(90deg, #696969, #2F4F2F);
+        border-radius: 7px;
         position: absolute;
-        top: 20px;
-        right: -45px;
+        top: 18px;
+        right: -40px;
         transform-origin: right center;
         animation: cannonAim 3s ease-in-out infinite;
-        border: 3px solid #000;
+        border: 2px solid #4A4A4A;
       }
       
       .cannon::before {
         content: '';
-        width: 12px;
-        height: 12px;
-        background: radial-gradient(circle, #696969, #000);
+        width: 10px;
+        height: 10px;
+        background: radial-gradient(circle, #2F4F2F, #000);
         border-radius: 50%;
         position: absolute;
-        right: -6px;
+        right: -5px;
         top: 2px;
-        border: 2px solid #000;
+        border: 1px solid #000;
       }
       
       /* Fighting Animations */
@@ -474,12 +474,12 @@
       /* Green Pills from Cannon */
       .green-pill {
         position: absolute;
-        width: 12px;
-        height: 12px;
+        width: 10px;
+        height: 10px;
         background: radial-gradient(circle, #00FF00, #32CD32, #228B22);
         border-radius: 50%;
         box-shadow: 0 0 20px #00FF00, 0 0 30px #32CD32;
-        border: 2px solid #000;
+        border: 2px solid #228B22;
         animation: pillShoot 1.8s linear infinite;
       }
       
@@ -497,11 +497,10 @@
       /* Battle Impact Effects */
       .battle-impact {
         position: absolute;
-        width: 15px;
-        height: 15px;
+        width: 8px;
+        height: 8px;
         background: radial-gradient(circle, #FFD700, #FF4500, #FF0000);
         border-radius: 50%;
-        border: 2px solid #000;
         animation: battleBurst 0.8s ease-out infinite;
       }
       
