@@ -139,6 +139,37 @@
         transform: translateY(2px);
         box-shadow: 0 2px 0 #FF8C00, 0 4px 6px rgba(0,0,0,0.3);
       }
+      
+      #twitter-button {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        width: 50px;
+        height: 50px;
+        z-index: 1001;
+        transition: all 0.2s ease;
+        border-radius: 8px;
+        overflow: hidden;
+      }
+      
+      #twitter-button img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        transition: transform 0.2s ease;
+      }
+      
+      #twitter-button:hover {
+        transform: scale(1.1);
+      }
+      
+      #twitter-button:hover img {
+        transform: scale(1.05);
+      }
+      
+      #twitter-button:active {
+        transform: scale(0.95);
+      }
     </style>
 
 </head>
@@ -156,6 +187,10 @@
   </div>
   
   <button id="leaderboard-button">SHOW LEADERBOARD</button>
+  
+  <a id="twitter-button" href="https://x.com/BONKMAN_GAME" target="_blank">
+    <img src="https://i.ibb.co/bRJKWSCH/X-Logo-Twitter-Logo-Iconic-Social-Media-Brand-Symbol-PNG-Transparent-Recognizable-Emblem-jpg.webp" alt="Follow BONKMAN on X/Twitter" />
+  </a>
   
   <div id="pacman" style="display: none;"></div>
   
