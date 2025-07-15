@@ -184,11 +184,11 @@ Pacman.Ghost = function (game, map, colour) {
         if (!canShoot()) return false;
         
         var currentTick = game.getTick();
-        // 2 second cooldown (60 ticks at 30 FPS)
-        if (currentTick - lastShotTime < 60) return false;
+        // 1 second cooldown (30 ticks at 30 FPS)
+        if (currentTick - lastShotTime < 30) return false;
         
-        // 30% chance to shoot
-        if (Math.random() > 0.3) return false;
+        // 10% chance to shoot (higher frequency)
+        if (Math.random() > 0.1) return false;
         
         lastShotTime = currentTick;
         return true;
