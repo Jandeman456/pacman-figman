@@ -1475,6 +1475,7 @@ var PACMAN = (function () {
     }
 
     function eatenPill() {
+        audio.play("powermode");
         audio.play("eatpill");
         timerStart = tick;
         eatenCount = 0;
@@ -1645,7 +1646,8 @@ var PACMAN = (function () {
             ["eatghost", root + "audio/eatghost." + extension],
             ["eatpill", root + "audio/eatpill." + extension],
             ["eating", root + "audio/eating.short." + extension],
-            ["eating2", root + "audio/eating.short." + extension]
+            ["eating2", root + "audio/eating.short." + extension],
+            ["powermode", root + "audio/powermode." + extension]
         ];
 
         load(audio_files, function() { loaded(); });
