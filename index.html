@@ -607,7 +607,6 @@
     startButton.addEventListener("click", function() {
       startScreen.style.display = "none";
       leaderboardButton.style.display = "none";
-      battleCanvas.style.display = "none"; // Hide battle animation
       el.style.display = "block";
       
       if (Modernizr.canvas && Modernizr.localstorage && 
@@ -622,7 +621,6 @@
     leaderboardButton.addEventListener("click", function() {
       startScreen.style.display = "none";
       leaderboardButton.style.display = "none";
-      battleCanvas.style.display = "none"; // Hide battle animation
       el.style.display = "block";
       
       if (Modernizr.canvas && Modernizr.localstorage && 
