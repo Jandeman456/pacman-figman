@@ -344,6 +344,8 @@ var speed = Math.min(Math.round(levelSpeed), 2);
         };
     }
     
+Pacman.User = function (game, map) {
+    
     var position  = null,
         direction = null,
         eaten     = null,
@@ -417,9 +419,12 @@ var speed = Math.min(Math.round(levelSpeed), 2);
     function getNewCoord(dir, current) {   
         // Keep Pacman speed constant at 2 pixels per frame for all levels
         var speed = 2;
+        
+        return {
+            "x": current.x + (dir === LEFT && -speed || dir === RIGHT && speed || 0),
+            "y": current.y + (dir === DOWN && speed || dir === UP && -speed || 0)
+        };
     }
-    
-
 
     function onWholeSquare(x) {
         return x % 10 === 0;
