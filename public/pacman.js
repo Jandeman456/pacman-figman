@@ -1027,7 +1027,8 @@ var PACMAN = (function () {
         playerName = "",
         nameInputActive = false,
         bullets = [],
-        canShoot = false;
+        canShoot = false,
+        ghostPills = [];
 
     function getTick() { 
         return tick;
@@ -1076,6 +1077,9 @@ var PACMAN = (function () {
         
         // Clear any existing bullets
         bullets = [];
+        
+        // Clear any existing ghost pills
+        ghostPills = [];
         
         audio.play("start");
         timerStart = tick;
@@ -1274,6 +1278,78 @@ var PACMAN = (function () {
         }
     }
     
+    function updateGhostPills() {
+        var currentLevel = getLevel();
+        if (currentLevel !== 1 && currentLevel !== 5) {
+            ghostPills = [];
+            return;
+        }
+        
+        // Create new pills from ghosts
+        for (var i = 0; i < ghosts.length; i++) {
+            var newPill = ghosts[i].createPill();
+            if (newPill) {
+                ghostPills.push(newPill);
+            }
+        }
+        
+        // Update existing pills
+        for (var i = ghostPills.length - 1; i >= 0; i--) {
+            var pill = ghostPills[i];
+            
+            // Move pill
+            switch(pill.direction) {
+                case UP:
+                    pill.y -= pill.speed;
+                    break;
+                case DOWN:
+                    pill.y += pill.speed;
+                    break;
+                case LEFT:
+                    pill.x -= pill.speed;
+                    break;
+                case RIGHT:
+                    pill.x += pill.speed;
+                    break;
+            }
+            
+            pill.life--;
+            
+            // Check wall collision
+            var pillPos = {"x": Math.floor(pill.x / 10), "y": Math.floor(pill.y / 10)};
+            if (map.isWallSpace(pillPos) || pill.life <= 0) {
+                ghostPills.splice(i, 1);
+                continue;
+            }
+            
+            // Check collision with user
+            var distance = Math.sqrt(
+                Math.pow(pill.x - userPos.x, 2) + 
+                Math.pow(pill.y - userPos.y, 2)
+            );
+            
+            if (distance < 15) {
+                // Hit user - lose life
+                ghostPills.splice(i, 1);
+                audio.play("die");
+                setState(DYING);
+                timerStart = tick;
+                break;
+            }
+        }
+    }
+    
+    function drawGhostPills(ctx) {
+        var currentLevel = getLevel();
+        if (currentLevel !== 1 && currentLevel !== 5) return;
+        
+        ctx.fillStyle = "#00FF00"; // Green pills
+        for (var i = 0; i < ghostPills.length; i++) {
+            var pill = ghostPills[i];
+            ctx.fillRect(pill.x - 3, pill.y - 3, 6, 6);
+        }
+    }
+    
     function drawBullets(ctx) {
         if (!canShoot) return;
         
@@ -1418,6 +1494,7 @@ var PACMAN = (function () {
         u = user.move(ctx);
         
         updateBullets();
+        updateGhostPills();
         
         for (i = 0, len = ghosts.length; i < len; i += 1) {
             redrawBlock(ghostPos[i].old);
@@ -1429,6 +1506,7 @@ var PACMAN = (function () {
         }                     
         user.draw(ctx);
         drawBullets(ctx);
+        drawGhostPills(ctx);
         
         userPos = u["new"];
         
