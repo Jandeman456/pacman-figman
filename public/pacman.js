@@ -43,7 +43,7 @@ Pacman.Ghost = function (game, map, colour) {
     function getNewCoord(dir, current) { 
         
         var levelSpeed = game.getLevel() <= 5 ? 1 : 1 + ((game.getLevel() - 5) * 0.05);
-var speed = Math.min(Math.round(levelSpeed), 2);
+        var speed = Math.min(Math.round(levelSpeed), 2);
     
         return {
             "x": addBounded(current.x, (dir === LEFT && -speed || dir === RIGHT && speed || 0)),
@@ -329,12 +329,7 @@ var speed = Math.min(Math.round(levelSpeed), 2);
             return move(ctx);
         }
 
-        var futureBlock = map.block(next(npos, direction));
-if (futureBlock === Pacman.WALL || futureBlock === undefined) {
-    direction = NONE;
-    return { "new": position, "old": position };
-}
-position = npos;        
+        position = npos;        
         
         var tmp = pane(position);
         if (tmp) { 
@@ -448,27 +443,19 @@ Pacman.User = function (game, map) {
     }
     
     
-function getPacmanLevelSpeedMultiplier() {
-    var currentLevel = game.getLevel();
+    function getPacmanLevelSpeedMultiplier() {
+        var currentLevel = game.getLevel();
 
-    if (currentLevel <= 5) {
-        return 1.0 + ((currentLevel - 1) * 0.1); // Levels 1–5: 1.0–1.4
-    } else if (currentLevel <= 10) {
-        return 1.4 + ((currentLevel - 5) * 0.05); // Levels 6–10: 1.45–1.65
-    } else if (currentLevel <= 20) {
-        return 1.65 + ((currentLevel - 10) * 0.015); // Levels 11–20: 1.665–1.8
-    } else {
-        return 1.8; // Levels 21–30: hard cap
+        if (currentLevel <= 5) {
+            return 1.0 + ((currentLevel - 1) * 0.1); // Levels 1–5: 1.0–1.4
+        } else if (currentLevel <= 10) {
+            return 1.4 + ((currentLevel - 5) * 0.05); // Levels 6–10: 1.45–1.65
+        } else if (currentLevel <= 20) {
+            return 1.65 + ((currentLevel - 10) * 0.015); // Levels 11–20: 1.665–1.8
+        } else {
+            return 1.8; // Levels 21–30: hard cap
+        }
     }
-}
- else if (currentLevel <= 10) {
-        return 1.4 + ((currentLevel - 5) * 0.05); // Levels 6–10: 1.45–1.65
-    } else if (currentLevel <= 20) {
-        return 1.65 + ((currentLevel - 10) * 0.015); // Levels 11–20: 1.665–1.8
-    } else {
-        return 1.8; // Levels 21–30: hard cap
-    }
-}
 
 
     function onWholeSquare(x) {
@@ -547,12 +534,7 @@ function getPacmanLevelSpeedMultiplier() {
             npos = {"y": 100, "x": 190};
         }
         
-        var futureBlock = map.block(next(npos, direction));
-if (futureBlock === Pacman.WALL || futureBlock === undefined) {
-    direction = NONE;
-    return { "new": position, "old": position };
-}
-position = npos;        
+        position = npos;        
         nextWhole = next(position, direction);
         
         block = map.block(nextWhole);        
@@ -776,12 +758,12 @@ Pacman.Map = function (size) {
     }
 
     
-function block(pos) {
-    if (pos.y < 0 || pos.y >= map.length || pos.x < 0 || pos.x >= map[0].length) {
-        return Pacman.WALL;
+    function block(pos) {
+        if (pos.y < 0 || pos.y >= map.length || pos.x < 0 || pos.x >= map[0].length) {
+            return Pacman.WALL;
+        }
+        return map[pos.y][pos.x];
     }
-    return map[pos.y][pos.x];
-}
 
     
     function setBlock(pos, type) {
