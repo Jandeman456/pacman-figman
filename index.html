@@ -139,110 +139,6 @@
         transform: translateY(2px);
         box-shadow: 0 2px 0 #FF8C00, 0 4px 6px rgba(0,0,0,0.3);
       }
-      
-      /* Animated Characters */
-      #animated-characters {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        pointer-events: none;
-        z-index: 500; /* Between background (-2) and buttons (1000+) */
-        overflow: hidden;
-      }
-      
-      .character {
-        position: absolute;
-        background-image: url('https://i.ibb.co/cSJLFdhY/image.png');
-        background-size: contain;
-        background-repeat: no-repeat;
-        background-position: center;
-      }
-      
-      .dog-character {
-        width: 150px;
-        height: 120px;
-        background-position: left center;
-        animation: dogFloat 4s ease-in-out infinite, dogMove 8s linear infinite;
-      }
-      
-      .bodybuilder-character {
-        width: 120px;
-        height: 150px;
-        background-position: right center;
-        animation: bodybuilderBounce 3s ease-in-out infinite, bodybuilderMove 10s linear infinite reverse;
-      }
-      
-      @keyframes dogFloat {
-        0%, 100% { transform: translateY(0px) rotate(-2deg); }
-        50% { transform: translateY(-15px) rotate(2deg); }
-      }
-      
-      @keyframes dogMove {
-        0% { left: -200px; }
-        25% { left: 20%; }
-        50% { left: 40%; }
-        75% { left: 60%; }
-        100% { left: calc(100% + 200px); }
-      }
-      
-      @keyframes bodybuilderBounce {
-        0%, 100% { transform: translateY(0px) scale(1) rotate(1deg); }
-        50% { transform: translateY(-20px) scale(1.05) rotate(-1deg); }
-      }
-      
-      @keyframes bodybuilderMove {
-        0% { right: -200px; }
-        20% { right: 15%; }
-        40% { right: 35%; }
-        60% { right: 55%; }
-        80% { right: 75%; }
-        100% { right: calc(100% + 200px); }
-      }
-      
-      /* Green Pills Animation */
-      .green-pill {
-        position: absolute;
-        width: 8px;
-        height: 8px;
-        background: radial-gradient(circle, #00FF00, #32CD32);
-        border-radius: 50%;
-        box-shadow: 0 0 10px #00FF00;
-        animation: pillShoot 2s linear infinite;
-      }
-      
-      @keyframes pillShoot {
-        0% { 
-          opacity: 1;
-          transform: scale(1);
-        }
-        100% { 
-          opacity: 0;
-          transform: translateX(var(--endX, 300px)) translateY(var(--endY, -50px)) scale(0.5);
-        }
-      }
-      
-      /* Floating particles */
-      .particle {
-        position: absolute;
-        width: 4px;
-        height: 4px;
-        background: #FFD700;
-        border-radius: 50%;
-        animation: particleFloat 6s ease-in-out infinite;
-      }
-      
-      @keyframes particleFloat {
-        0%, 100% { 
-          opacity: 0.3;
-          transform: translateY(0px) scale(0.5);
-        }
-        50% { 
-          opacity: 1;
-          transform: translateY(-100px) scale(1);
-        }
-      }
     </style>
 
 </head>
@@ -250,12 +146,6 @@
 <body>
   
   <canvas id="backgroundCanvas"></canvas>
-  
-  <!-- Animated Characters Layer -->
-  <div id="animated-characters">
-    <div class="character dog-character" style="top: 60%; animation-delay: 0s;"></div>
-    <div class="character bodybuilder-character" style="top: 40%; animation-delay: 2s;"></div>
-  </div>
   
   <div id="shim">shim for font face</div>
 
@@ -442,72 +332,6 @@
         el.innerHTML = "Sorry, needs a decent browser<br /><small>" + 
           "(firefox 3.6+, Chrome 4+, Opera 10+ and Safari 4+)</small>";
       }
-    });
-  </script>
-
-  <script>
-    // Animated Characters JavaScript
-    function createGreenPills() {
-      const container = document.getElementById('animated-characters');
-      const bodybuilder = document.querySelector('.bodybuilder-character');
-      
-      if (!bodybuilder) return;
-      
-      setInterval(() => {
-        const pill = document.createElement('div');
-        pill.className = 'green-pill';
-        
-        const rect = bodybuilder.getBoundingClientRect();
-        pill.style.left = (rect.left + rect.width/2) + 'px';
-        pill.style.top = (rect.top + rect.height/2) + 'px';
-        
-        // Random direction
-        const angle = Math.random() * Math.PI * 2;
-        const distance = 200 + Math.random() * 100;
-        const endX = Math.cos(angle) * distance;
-        const endY = Math.sin(angle) * distance;
-        
-        pill.style.setProperty('--endX', endX + 'px');
-        pill.style.setProperty('--endY', endY + 'px');
-        
-        container.appendChild(pill);
-        
-        // Remove pill after animation
-        setTimeout(() => {
-          if (pill.parentNode) {
-            pill.parentNode.removeChild(pill);
-          }
-        }, 2000);
-      }, 800 + Math.random() * 1200); // Random interval
-    }
-    
-    function createFloatingParticles() {
-      const container = document.getElementById('animated-characters');
-      
-      setInterval(() => {
-        const particle = document.createElement('div');
-        particle.className = 'particle';
-        
-        particle.style.left = Math.random() * window.innerWidth + 'px';
-        particle.style.top = window.innerHeight + 'px';
-        particle.style.animationDelay = Math.random() * 2 + 's';
-        particle.style.animationDuration = (4 + Math.random() * 4) + 's';
-        
-        container.appendChild(particle);
-        
-        // Remove particle after animation
-        setTimeout(() => {
-          if (particle.parentNode) {
-            particle.parentNode.removeChild(particle);
-          }
-        }, 8000);
-      }, 1500);
-    }
-    
-    // Start animations when page loads
-    window.addEventListener('load', function() {
-      setTimeout(createGreenPills, 1000);
-      setTimeout(createFloatingParticles, 2000);
     });
   </script>
 
