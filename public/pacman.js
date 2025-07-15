@@ -33,7 +33,8 @@ Pacman.Ghost = function (game, map, colour) {
         eaten     = null,
         due       = null,
         ghostImage = null,
-        baseSpeed = 2;
+        baseSpeed = 2,
+        lastShotTime = 0;
     
     function loadGhostImage() {
         ghostImage = new Image();
@@ -172,6 +173,37 @@ Pacman.Ghost = function (game, map, colour) {
             return "#222";
         } 
         return colour;
+    }
+    
+    function canShoot() {
+        var currentLevel = game.getLevel();
+        return (currentLevel === 1 || currentLevel === 5) && !eatable && !eaten;
+    }
+    
+    function shouldShoot() {
+        if (!canShoot()) return false;
+        
+        var currentTick = game.getTick();
+        // 2 second cooldown (60 ticks at 30 FPS)
+        if (currentTick - lastShotTime < 60) return false;
+        
+        // 30% chance to shoot
+        if (Math.random() > 0.3) return false;
+        
+        lastShotTime = currentTick;
+        return true;
+    }
+    
+    function createPill() {
+        if (!shouldShoot()) return null;
+        
+        return {
+            x: position.x,
+            y: position.y,
+            direction: direction,
+            speed: 2,
+            life: 300 // 10 seconds at 30 FPS
+        };
     }
 
     function draw(ctx) {
@@ -344,6 +376,10 @@ Pacman.Ghost = function (game, map, colour) {
         };
     }
     
+    function getPosition() {
+        return position;
+    }
+    
     return {
         "eat"         : eat,
         "isVunerable" : isVunerable,
@@ -351,7 +387,9 @@ Pacman.Ghost = function (game, map, colour) {
         "makeEatable" : makeEatable,
         "reset"       : reset,
         "move"        : move,
-        "draw"        : draw
+        "draw"        : draw,
+        "getPosition" : getPosition,
+        "createPill"  : createPill
     };
 };
 
