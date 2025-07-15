@@ -1133,6 +1133,29 @@ var PACMAN = (function () {
         return true;
     }
 
+    function handleMouseClick(e) {
+        if (state !== NAME_INPUT || !nameInputActive) return;
+        
+        // Get canvas position
+        var rect = ctx.canvas.getBoundingClientRect();
+        var mouseX = e.clientX - rect.left;
+        var mouseY = e.clientY - rect.top;
+        
+        // Calculate button position (same as in drawNameInputScreen)
+        var buttonWidth = 150;
+        var buttonHeight = 35;
+        var buttonX = ((map.width * map.blockSize) - buttonWidth) / 2;
+        var buttonY = 220;
+        
+        // Check if click is within button bounds and name is not empty
+        if (mouseX >= buttonX && mouseX <= buttonX + buttonWidth &&
+            mouseY >= buttonY && mouseY <= buttonY + buttonHeight &&
+            playerName.length > 0) {
+            // Confirm name
+            nameInputActive = false;
+            saveScoreGlobally();
+        }
+    }
     function getPlayerName() {
         return playerName;
     }
@@ -1663,6 +1686,7 @@ var PACMAN = (function () {
         
         document.addEventListener("keydown", keyDown, true);
         document.addEventListener("keypress", keyPress, true); 
+        document.addEventListener("click", handleMouseClick, true);
         
         timer = window.setInterval(mainLoop, 1000 / Pacman.FPS);
     }
