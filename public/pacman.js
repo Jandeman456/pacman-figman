@@ -510,36 +510,43 @@ Pacman.User = function (game, map) {
             oldPosition = position,
             block       = null;
         
-        // Try the new direction first if it's different
         if (due !== direction) {
-            var testPos = getNewCoord(due, position);
-            var testCoord = {
-                "x": Math.floor(testPos.x / 10),
-                "y": Math.floor(testPos.y / 10)
-            };
+            npos = getNewCoord(due, position);
             
-            // If new direction is clear, use it
-            if (map.isFloorSpace(testCoord)) {
+            if (isOnSamePlane(due, direction) || 
+                (onGridSquare(position) && 
+                 map.isFloorSpace(next(npos, due)))) {
                 direction = due;
-                npos = testPos;
+            } else {
+                npos = null;
+            }
+        }
+
+        if (npos === null) {
+            npos = getNewCoord(direction, position);
+        }
+        
+        // Enhanced wall collision detection - check multiple points ahead
+        var willHitWall = false;
+        if (onGridSquare(position)) {
+            var nextPos = next(npos, direction);
+            if (map.isWallSpace(nextPos)) {
+                willHitWall = true;
             }
         }
         
-        // If we haven't set a new position yet, try current direction
-        if (npos === null) {
-            var testPos = getNewCoord(direction, position);
-            var testCoord = {
-                "x": Math.floor(testPos.x / 10),
-                "y": Math.floor(testPos.y / 10)
-            };
-            
-            // If current direction is clear, use it
-            if (map.isFloorSpace(testCoord)) {
-                npos = testPos;
-            } else {
-                // Can't move in any direction, stay put
-                npos = position;
-            }
+        // Also check if we're about to hit a wall at current position
+        var currentNext = next(npos, direction);
+        if (map.isWallSpace(currentNext)) {
+            willHitWall = true;
+        }
+        
+        if (willHitWall) {
+            direction = NONE;
+        }
+
+        if (direction === NONE) {
+            return {"new" : position, "old" : position};
         }
         
         if (npos.y === 100 && npos.x >= 190 && direction === RIGHT) {
@@ -555,8 +562,8 @@ Pacman.User = function (game, map) {
         
         block = map.block(nextWhole);        
         
-        // Dot collection - use original logic
-        var canEatDot = (isMidSquare(position.y) || isMidSquare(position.x));
+        // More precise dot collection - check if we're close enough to center
+        var canEatDot = (Math.abs(position.y % 10 - 5) < 3 || Math.abs(position.x % 10 - 5) < 3);
         
         if (canEatDot && (block === Pacman.BISCUIT || block === Pacman.PILL)) {
             
