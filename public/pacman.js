@@ -1665,6 +1665,7 @@ var PACMAN = (function () {
             ["eating2", root + "audio/eating.short." + extension],
             ["powermode", root + "audio/powermode." + extension],
             ["victory", root + "audio/victory." + extension]
+            ["gameplay", root + "audio/gameplay." + extension]
         ];
 
         load(audio_files, function() { loaded(); });
