@@ -433,8 +433,8 @@ Pacman.User = function (game, map) {
         var calculatedSpeed = baseSpeed * levelSpeedMultiplier;
         
         // Cap maximum speed to prevent wall clipping
-        // Speed should never exceed 5 pixels per frame to maintain collision detection
-        var speed = Math.min(Math.round(calculatedSpeed), 5);
+        // Speed should never exceed 3 pixels per frame to maintain collision detection
+        var speed = Math.min(Math.round(calculatedSpeed), 3);
         
         return {
             "x": current.x + (dir === LEFT && -speed || dir === RIGHT && speed || 0),
@@ -526,7 +526,22 @@ Pacman.User = function (game, map) {
             npos = getNewCoord(direction, position);
         }
         
-        if (onGridSquare(position) && map.isWallSpace(next(npos, direction))) {
+        // Enhanced wall collision detection - check multiple points ahead
+        var willHitWall = false;
+        if (onGridSquare(position)) {
+            var nextPos = next(npos, direction);
+            if (map.isWallSpace(nextPos)) {
+                willHitWall = true;
+            }
+        }
+        
+        // Also check if we're about to hit a wall at current position
+        var currentNext = next(npos, direction);
+        if (map.isWallSpace(currentNext)) {
+            willHitWall = true;
+        }
+        
+        if (willHitWall) {
             direction = NONE;
         }
 
@@ -547,8 +562,10 @@ Pacman.User = function (game, map) {
         
         block = map.block(nextWhole);        
         
-        if ((isMidSquare(position.y) || isMidSquare(position.x)) &&
-            block === Pacman.BISCUIT || block === Pacman.PILL) {
+        // More precise dot collection - check if we're close enough to center
+        var canEatDot = (Math.abs(position.y % 10 - 5) < 3 || Math.abs(position.x % 10 - 5) < 3);
+        
+        if (canEatDot && (block === Pacman.BISCUIT || block === Pacman.PILL)) {
             
             map.setBlock(nextWhole, Pacman.EMPTY);           
             addScore((block === Pacman.BISCUIT) ? 10 : 50);
