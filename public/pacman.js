@@ -1502,7 +1502,7 @@ var PACMAN = (function () {
     }
     
     function getLevel() {
-        return level;
+        return Math.min(level, 19);
     }
     
     function saveScoreGlobally() {
