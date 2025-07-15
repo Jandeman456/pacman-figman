@@ -1414,8 +1414,8 @@ var PACMAN = (function () {
             map.draw(ctx);
             dialog("🐶CONGRATULATIONS! YOU BONKED PUMP.FUN OUT OF THE TRENCHES!🐶");
             
-            // Check if 3 seconds have passed
-            if (tick - gameWonTimer > (Pacman.FPS * 3)) {
+            // Check if 6 seconds have passed
+            if (tick - gameWonTimer > (Pacman.FPS * 6)) {
                 showNameInput();
             }
             return;
@@ -1485,6 +1485,7 @@ var PACMAN = (function () {
             // Game won! Show congratulations screen
             setState(GAME_WON);
             gameWonTimer = tick;
+            audio.play("victory");
             return;
         }
         
@@ -1639,7 +1640,8 @@ var PACMAN = (function () {
             ["eatpill", root + "audio/eatpill." + extension],
             ["eating", root + "audio/eating.short." + extension],
             ["eating2", root + "audio/eating.short." + extension],
-            ["powermode", root + "audio/powermode." + extension]
+            ["powermode", root + "audio/powermode." + extension],
+            ["victory", root + "audio/victory." + extension]
         ];
 
         load(audio_files, function() { loaded(); });
