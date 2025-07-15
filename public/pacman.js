@@ -21,6 +21,7 @@ var NONE        = 4,
     DYING       = 10,
     LEADERBOARD = 12,
     NAME_INPUT  = 13,
+    GAME_WON    = 14,
     Pacman      = {};
 
 Pacman.FPS = 30;
@@ -965,7 +966,8 @@ var PACMAN = (function () {
         playerName = "",
         nameInputActive = false,
         bullets = [],
-        canShoot = false;
+        canShoot = false,
+        gameWonTimer = 0;
 
     function getTick() { 
         return tick;
@@ -1406,6 +1408,18 @@ var PACMAN = (function () {
             drawNameInputScreen();
             return;
         }
+        
+        if (state === GAME_WON) {
+            // Show congratulations message
+            map.draw(ctx);
+            dialog("🐶CONGRATULATIONS! YOU BONKED PUMP.FUN OUT OF THE TRENCHES!🐶");
+            
+            // Check if 3 seconds have passed
+            if (tick - gameWonTimer > (Pacman.FPS * 3)) {
+                showNameInput();
+            }
+            return;
+        }
 
         if (state !== LEADERBOARD) {
             map.drawPills(ctx);
@@ -1468,15 +1482,9 @@ var PACMAN = (function () {
         level += 1;
         
         if (level > 30) {
-            // Game won! Show congratulations first, then save score
-            setState(WAITING);
-            map.draw(ctx);
-            dialog("🐶CONGRATULATIONS! YOU BONKED PUMP.FUN OUT OF THE TRENCHES!🐶");
-            
-            // Show congratulations for 3 seconds, then show name input
-            setTimeout(function() {
-                showNameInput();
-            }, 3000);
+            // Game won! Show congratulations screen
+            setState(GAME_WON);
+            gameWonTimer = tick;
             return;
         }
         
