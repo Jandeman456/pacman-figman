@@ -429,7 +429,12 @@ Pacman.User = function (game, map) {
 
     function getNewCoord(dir, current) {   
         var levelSpeedMultiplier = getPacmanLevelSpeedMultiplier();
-        var speed = Math.round(2 * levelSpeedMultiplier);
+        var baseSpeed = 2;
+        var calculatedSpeed = baseSpeed * levelSpeedMultiplier;
+        
+        // Cap maximum speed to prevent wall clipping
+        // Speed should never exceed 5 pixels per frame to maintain collision detection
+        var speed = Math.min(Math.round(calculatedSpeed), 5);
         
         return {
             "x": current.x + (dir === LEFT && -speed || dir === RIGHT && speed || 0),
