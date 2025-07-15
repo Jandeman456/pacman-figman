@@ -146,6 +146,7 @@
 <body>
   
   <canvas id="backgroundCanvas"></canvas>
+  <canvas id="battleCanvas"></canvas>
   
   <div id="shim">shim for font face</div>
 
@@ -245,6 +246,307 @@
     canvas.style.left = '0';
     canvas.style.zIndex = '-2';
     canvas.style.opacity = '0.6';
+    
+    // Battle animation canvas
+    const battleCanvas = document.getElementById('battleCanvas');
+    const battleCtx = battleCanvas.getContext('2d');
+    
+    // Set battle canvas to full screen
+    function resizeBattleCanvas() {
+      battleCanvas.width = window.innerWidth;
+      battleCanvas.height = window.innerHeight;
+    }
+    
+    resizeBattleCanvas();
+    window.addEventListener('resize', resizeBattleCanvas);
+    
+    // Position battle canvas between background and UI
+    battleCanvas.style.position = 'fixed';
+    battleCanvas.style.top = '0';
+    battleCanvas.style.left = '0';
+    battleCanvas.style.zIndex = '-1';
+    battleCanvas.style.pointerEvents = 'none';
+    
+    // Battle animation variables
+    let battleTime = 0;
+    let bodybuilderPills = [];
+    let dogBalls = [];
+    let explosions = [];
+    
+    // Character positions
+    const bodybuilderX = window.innerWidth * 0.2;
+    const bodybuilderY = window.innerHeight * 0.6;
+    const dogX = window.innerWidth * 0.8;
+    const dogY = window.innerHeight * 0.6;
+    
+    // Pixel art drawing functions
+    function drawPixelRect(ctx, x, y, w, h, color) {
+      ctx.fillStyle = color;
+      ctx.fillRect(Math.floor(x), Math.floor(y), w, h);
+    }
+    
+    function drawBodybuilder(ctx, x, y, frame) {
+      const recoil = Math.sin(frame * 0.3) * 2;
+      
+      // Body (orange/bronze)
+      drawPixelRect(ctx, x-20, y-40, 40, 60, '#D2691E');
+      drawPixelRect(ctx, x-25, y-35, 50, 50, '#CD853F');
+      
+      // Green outfit
+      drawPixelRect(ctx, x-18, y-30, 36, 40, '#00FF00');
+      drawPixelRect(ctx, x-15, y-25, 30, 30, '#32CD32');
+      
+      // White/light green trim
+      drawPixelRect(ctx, x-18, y-30, 36, 3, '#FFFFFF');
+      drawPixelRect(ctx, x-18, y-15, 36, 3, '#90EE90');
+      
+      // Head
+      drawPixelRect(ctx, x-15, y-60, 30, 25, '#D2691E');
+      
+      // Green flattop hair
+      drawPixelRect(ctx, x-16, y-65, 32, 8, '#00FF00');
+      drawPixelRect(ctx, x-14, y-70, 28, 5, '#32CD32');
+      
+      // Angry face
+      drawPixelRect(ctx, x-8, y-55, 3, 3, '#000000'); // Left eye
+      drawPixelRect(ctx, x+5, y-55, 3, 3, '#000000'); // Right eye
+      drawPixelRect(ctx, x-6, y-45, 12, 2, '#000000'); // Angry mouth
+      
+      // Eyebrows (angry)
+      drawPixelRect(ctx, x-10, y-58, 8, 2, '#000000');
+      drawPixelRect(ctx, x+2, y-58, 8, 2, '#000000');
+      
+      // Arms
+      drawPixelRect(ctx, x-35, y-35, 15, 25, '#D2691E'); // Left arm
+      drawPixelRect(ctx, x+20, y-35, 15, 25, '#D2691E'); // Right arm
+      
+      // Cannon (huge green sci-fi weapon)
+      const cannonX = x + 35 + recoil;
+      drawPixelRect(ctx, cannonX, y-25, 60, 15, '#006400');
+      drawPixelRect(ctx, cannonX, y-20, 55, 10, '#228B22');
+      drawPixelRect(ctx, cannonX+45, y-22, 15, 14, '#004000');
+      
+      // PUMP.FUN label on cannon
+      ctx.fillStyle = '#FFFFFF';
+      ctx.font = 'bold 8px monospace';
+      ctx.fillText('PUMP.FUN', cannonX + 5, y - 12);
+      
+      // Legs
+      drawPixelRect(ctx, x-12, y+20, 10, 25, '#D2691E');
+      drawPixelRect(ctx, x+2, y+20, 10, 25, '#D2691E');
+      drawPixelRect(ctx, x-12, y+20, 10, 15, '#00FF00'); // Green shorts
+      drawPixelRect(ctx, x+2, y+20, 10, 15, '#00FF00');
+    }
+    
+    function drawDog(ctx, x, y, frame) {
+      const swing = Math.sin(frame * 0.4) * 10;
+      
+      // Dog body (orange)
+      drawPixelRect(ctx, x-15, y-30, 30, 40, '#FF8C00');
+      drawPixelRect(ctx, x-12, y-25, 24, 30, '#FFA500');
+      
+      // Head
+      drawPixelRect(ctx, x-18, y-50, 36, 25, '#FF8C00');
+      drawPixelRect(ctx, x-15, y-45, 30, 20, '#FFA500');
+      
+      // Dark ears
+      drawPixelRect(ctx, x-20, y-55, 8, 15, '#8B4513');
+      drawPixelRect(ctx, x+12, y-55, 8, 15, '#8B4513');
+      
+      // Blue collar
+      drawPixelRect(ctx, x-16, y-35, 32, 5, '#0000FF');
+      drawPixelRect(ctx, x-14, y-33, 28, 3, '#4169E1');
+      
+      // Angry face
+      drawPixelRect(ctx, x-8, y-45, 3, 3, '#000000'); // Left eye (angry)
+      drawPixelRect(ctx, x+5, y-45, 3, 3, '#000000'); // Right eye
+      
+      // Angry eyebrows
+      drawPixelRect(ctx, x-10, y-48, 6, 2, '#000000');
+      drawPixelRect(ctx, x+4, y-48, 6, 2, '#000000');
+      
+      // Snarling mouth with teeth
+      drawPixelRect(ctx, x-6, y-38, 12, 3, '#000000');
+      drawPixelRect(ctx, x-4, y-35, 2, 3, '#FFFFFF'); // Teeth
+      drawPixelRect(ctx, x+2, y-35, 2, 3, '#FFFFFF');
+      
+      // Arms holding bat
+      drawPixelRect(ctx, x-25, y-25, 12, 20, '#FF8C00');
+      drawPixelRect(ctx, x+13, y-25, 12, 20, '#FF8C00');
+      
+      // Baseball bat (brown with wood texture)
+      const batX = x + 25 + swing;
+      const batY = y - 30;
+      drawPixelRect(ctx, batX, batY, 4, 40, '#8B4513');
+      drawPixelRect(ctx, batX+1, batY, 2, 40, '#A0522D');
+      drawPixelRect(ctx, batX, batY+35, 8, 8, '#654321'); // Bat handle
+      
+      // Legs
+      drawPixelRect(ctx, x-10, y+10, 8, 20, '#FF8C00');
+      drawPixelRect(ctx, x+2, y+10, 8, 20, '#FF8C00');
+      
+      // White tail tip
+      drawPixelRect(ctx, x-25, y-10, 6, 6, '#FFFFFF');
+      drawPixelRect(ctx, x-28, y-8, 8, 4, '#FF8C00');
+    }
+    
+    function createPill(x, y) {
+      return {
+        x: x,
+        y: y,
+        vx: 8,
+        vy: Math.random() * 2 - 1,
+        life: 100
+      };
+    }
+    
+    function createBall(x, y) {
+      return {
+        x: x,
+        y: y,
+        vx: -6,
+        vy: Math.random() * 3 - 1.5,
+        life: 100
+      };
+    }
+    
+    function createExplosion(x, y) {
+      return {
+        x: x,
+        y: y,
+        size: 1,
+        life: 20,
+        maxLife: 20
+      };
+    }
+    
+    function drawPill(ctx, pill) {
+      // Green capsule/pill
+      drawPixelRect(ctx, pill.x-6, pill.y-3, 12, 6, '#00FF00');
+      drawPixelRect(ctx, pill.x-4, pill.y-2, 8, 4, '#32CD32');
+      drawPixelRect(ctx, pill.x-2, pill.y-1, 4, 2, '#90EE90'); // Highlight
+      
+      // Pixel glans effect
+      drawPixelRect(ctx, pill.x-3, pill.y-2, 2, 1, '#FFFFFF');
+    }
+    
+    function drawBall(ctx, ball) {
+      // Brown baseball
+      drawPixelRect(ctx, ball.x-4, ball.y-4, 8, 8, '#8B4513');
+      drawPixelRect(ctx, ball.x-3, ball.y-3, 6, 6, '#A0522D');
+      
+      // Baseball stitching
+      drawPixelRect(ctx, ball.x-1, ball.y-3, 2, 1, '#FFFFFF');
+      drawPixelRect(ctx, ball.x-1, ball.y+2, 2, 1, '#FFFFFF');
+    }
+    
+    function drawExplosion(ctx, explosion) {
+      const alpha = explosion.life / explosion.maxLife;
+      const size = explosion.size * (1 - alpha + 0.5);
+      
+      ctx.globalAlpha = alpha;
+      
+      // Pixel explosion effect
+      drawPixelRect(ctx, explosion.x-size*2, explosion.y-size*2, size*4, size*4, '#FFFF00');
+      drawPixelRect(ctx, explosion.x-size, explosion.y-size, size*2, size*2, '#FF4500');
+      drawPixelRect(ctx, explosion.x-size/2, explosion.y-size/2, size, size, '#FFFFFF');
+      
+      ctx.globalAlpha = 1;
+    }
+    
+    function updateBattle() {
+      battleTime++;
+      
+      // Bodybuilder fires pills
+      if (battleTime % 30 === 0) {
+        bodybuilderPills.push(createPill(bodybuilderX + 60, bodybuilderY - 15));
+      }
+      
+      // Dog throws balls
+      if (battleTime % 45 === 0) {
+        dogBalls.push(createBall(dogX - 20, dogY - 20));
+      }
+      
+      // Update pills
+      for (let i = bodybuilderPills.length - 1; i >= 0; i--) {
+        const pill = bodybuilderPills[i];
+        pill.x += pill.vx;
+        pill.y += pill.vy;
+        pill.life--;
+        
+        if (pill.life <= 0 || pill.x > window.innerWidth) {
+          bodybuilderPills.splice(i, 1);
+        }
+      }
+      
+      // Update balls
+      for (let i = dogBalls.length - 1; i >= 0; i--) {
+        const ball = dogBalls[i];
+        ball.x += ball.vx;
+        ball.y += ball.vy;
+        ball.life--;
+        
+        if (ball.life <= 0 || ball.x < 0) {
+          dogBalls.splice(i, 1);
+        }
+      }
+      
+      // Check collisions
+      for (let i = bodybuilderPills.length - 1; i >= 0; i--) {
+        for (let j = dogBalls.length - 1; j >= 0; j--) {
+          const pill = bodybuilderPills[i];
+          const ball = dogBalls[j];
+          
+          const dx = pill.x - ball.x;
+          const dy = pill.y - ball.y;
+          const distance = Math.sqrt(dx * dx + dy * dy);
+          
+          if (distance < 15) {
+            // Collision! Create explosion
+            explosions.push(createExplosion((pill.x + ball.x) / 2, (pill.y + ball.y) / 2));
+            bodybuilderPills.splice(i, 1);
+            dogBalls.splice(j, 1);
+            break;
+          }
+        }
+      }
+      
+      // Update explosions
+      for (let i = explosions.length - 1; i >= 0; i--) {
+        const explosion = explosions[i];
+        explosion.life--;
+        explosion.size += 0.5;
+        
+        if (explosion.life <= 0) {
+          explosions.splice(i, 1);
+        }
+      }
+    }
+    
+    function drawBattle() {
+      // Clear canvas
+      battleCtx.clearRect(0, 0, battleCanvas.width, battleCanvas.height);
+      
+      // Draw characters
+      drawBodybuilder(battleCtx, bodybuilderX, bodybuilderY, battleTime);
+      drawDog(battleCtx, dogX, dogY, battleTime);
+      
+      // Draw projectiles
+      bodybuilderPills.forEach(pill => drawPill(battleCtx, pill));
+      dogBalls.forEach(ball => drawBall(battleCtx, ball));
+      
+      // Draw explosions
+      explosions.forEach(explosion => drawExplosion(battleCtx, explosion));
+    }
+    
+    function animateBattle() {
+      updateBattle();
+      drawBattle();
+      requestAnimationFrame(animateBattle);
+    }
+    
+    // Start battle animation
+    animateBattle();
     
     // Load images
     const img1 = new Image();
