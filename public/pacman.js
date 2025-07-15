@@ -627,7 +627,6 @@ Pacman.User = function (game, map) {
     function draw(ctx) { 
 
         var s = map.blockSize;
-        "getPosition"    : function() { return position; },
         
         if (dogImage && dogImage.complete) {
             var x = (position.x/10) * s;
