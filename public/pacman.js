@@ -1468,11 +1468,15 @@ var PACMAN = (function () {
         level += 1;
         
         if (level > 30) {
-            // Game won! Save score globally
-            showNameInput();
+            // Game won! Show congratulations first, then save score
             setState(WAITING);
             map.draw(ctx);
             dialog("🐶CONGRATULATIONS! YOU BONKED PUMP.FUN OUT OF THE TRENCHES!🐶");
+            
+            // Show congratulations for 3 seconds, then show name input
+            setTimeout(function() {
+                showNameInput();
+            }, 3000);
             return;
         }
         
