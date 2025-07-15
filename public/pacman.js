@@ -510,33 +510,29 @@ Pacman.User = function (game, map) {
             oldPosition = position,
             block       = null;
         
-        // Try the new direction first if it's different
+        // Try to change direction if user wants to
         if (due !== direction) {
-            var testPos = getNewCoord(due, position);
-            var testCoord = {
-                "x": Math.floor(testPos.x / 10),
-                "y": Math.floor(testPos.y / 10)
-            };
+            npos = getNewCoord(due, position);
             
-            // If new direction is clear, use it
-            if (map.isFloorSpace(testCoord)) {
+            if (isOnSamePlane(due, direction) || 
+                (onGridSquare(position) && 
+                 map.isFloorSpace(next(npos, due)))) {
                 direction = due;
-                npos = testPos;
+            } else {
+                npos = null;
             }
         }
-        
-        // If we haven't set a new position yet, try current direction
+
+        // If we couldn't change direction, continue in current direction
         if (npos === null) {
-            var testPos = getNewCoord(direction, position);
-            var testCoord = {
-                "x": Math.floor(testPos.x / 10),
-                "y": Math.floor(testPos.y / 10)
-            };
-            
-            // If current direction is clear, use it
-            if (map.isFloorSpace(testCoord)) {
-                npos = testPos;
-            } else {
+            npos = getNewCoord(direction, position);
+        }
+        
+        // Check for wall collision using proper collision detection
+        if (onGridSquare(position) && map.isWallSpace(next(npos, direction))) {
+            // Hit a wall, stop moving
+            return {"new" : position, "old" : position};
+        }
                 // Can't move in any direction, stay put
                 npos = position;
             }
@@ -555,8 +551,7 @@ Pacman.User = function (game, map) {
         
         block = map.block(nextWhole);        
         
-        // Dot collection - use original logic
-        var canEatDot = (isMidSquare(position.y) || isMidSquare(position.x));
+        if ((isMidSquare(position.y) || isMidSquare(position.x)) &&
         
         if (canEatDot && (block === Pacman.BISCUIT || block === Pacman.PILL)) {
             
