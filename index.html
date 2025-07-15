@@ -152,319 +152,248 @@
         overflow: hidden;
       }
       
-      /* Custom Dog Character (Right side) */
+      /* Custom Dog Character */
       .dog-fighter {
         position: absolute;
-        width: 100px;
-        height: 80px;
-        right: 15%;
-        top: 40%;
-        animation: dogFighting 6s ease-in-out infinite;
+        width: 80px;
+        height: 60px;
+        left: 15%;
+        top: 45%;
+        animation: dogFighting 8s ease-in-out infinite;
       }
       
       .dog-body {
-        width: 60px;
-        height: 35px;
-        background: linear-gradient(45deg, #D2691E, #8B4513);
-        border-radius: 18px;
+        width: 50px;
+        height: 30px;
+        background: #8B4513;
+        border-radius: 15px;
         position: relative;
-        margin-top: 20px;
-        border: 2px solid #654321;
+        margin-top: 15px;
       }
       
       .dog-head {
-        width: 30px;
-        height: 25px;
-        background: linear-gradient(45deg, #D2691E, #8B4513);
-        border-radius: 60% 60% 40% 40%;
-        position: absolute;
-        top: -12px;
-        left: 40px;
-        border: 2px solid #654321;
-      }
-      
-      .dog-snout {
-        width: 15px;
-        height: 10px;
+        width: 25px;
+        height: 20px;
         background: #8B4513;
         border-radius: 50%;
         position: absolute;
-        top: 8px;
-        left: 25px;
-        border: 1px solid #654321;
-      }
-      
-      .dog-eyes {
-        width: 4px;
-        height: 4px;
-        background: #000;
-        border-radius: 50%;
-        position: absolute;
-        top: 5px;
-      }
-      
-      .dog-eye-left { left: 8px; }
-      .dog-eye-right { left: 16px; }
-      
-      .dog-nose {
-        width: 3px;
-        height: 3px;
-        background: #000;
-        border-radius: 50%;
-        position: absolute;
-        top: 12px;
-        left: 32px;
+        top: -10px;
+        left: 35px;
       }
       
       .dog-ears {
-        width: 10px;
-        height: 15px;
-        background: linear-gradient(45deg, #8B4513, #654321);
-        border-radius: 50% 50% 20% 20%;
+        width: 8px;
+        height: 12px;
+        background: #654321;
+        border-radius: 50%;
         position: absolute;
-        top: -8px;
-        border: 1px solid #654321;
+        top: -5px;
       }
       
-      .dog-ear-left { left: 5px; transform: rotate(-20deg); }
-      .dog-ear-right { right: 5px; transform: rotate(20deg); }
+      .dog-ear-left { left: 2px; }
+      .dog-ear-right { right: 2px; }
       
       .dog-legs {
-        width: 8px;
-        height: 18px;
-        background: linear-gradient(180deg, #D2691E, #8B4513);
+        width: 6px;
+        height: 15px;
+        background: #8B4513;
         position: absolute;
-        bottom: -18px;
-        border-radius: 4px;
-        border: 1px solid #654321;
+        bottom: -15px;
+        border-radius: 3px;
       }
       
-      .dog-leg1 { left: 8px; }
-      .dog-leg2 { left: 20px; }
-      .dog-leg3 { right: 20px; }
-      .dog-leg4 { right: 8px; }
+      .dog-leg1 { left: 5px; }
+      .dog-leg2 { left: 15px; }
+      .dog-leg3 { right: 15px; }
+      .dog-leg4 { right: 5px; }
       
       .dog-tail {
-        width: 20px;
-        height: 6px;
-        background: linear-gradient(90deg, #8B4513, #D2691E);
-        border-radius: 3px;
+        width: 15px;
+        height: 4px;
+        background: #8B4513;
+        border-radius: 2px;
         position: absolute;
-        left: -15px;
-        top: 8px;
+        left: -10px;
+        top: 5px;
         transform-origin: right center;
-        animation: tailWag 0.4s ease-in-out infinite alternate;
-        border: 1px solid #654321;
+        animation: tailWag 0.5s ease-in-out infinite alternate;
       }
       
       .club {
-        width: 35px;
-        height: 10px;
-        background: linear-gradient(90deg, #8B4513, #654321);
-        border-radius: 5px;
+        width: 30px;
+        height: 8px;
+        background: #654321;
+        border-radius: 4px;
         position: absolute;
-        top: -8px;
-        right: -30px;
+        top: -5px;
+        right: -25px;
         transform-origin: left center;
-        animation: clubSwing 1.5s ease-in-out infinite;
-        border: 2px solid #4A4A4A;
+        animation: clubSwing 2s ease-in-out infinite;
       }
       
       .club::before {
         content: '';
-        width: 15px;
-        height: 15px;
-        background: radial-gradient(circle, #654321, #4A4A4A);
+        width: 12px;
+        height: 12px;
+        background: #654321;
         border-radius: 50%;
         position: absolute;
-        right: -7px;
-        top: -2.5px;
-        border: 2px solid #4A4A4A;
+        right: -6px;
+        top: -2px;
       }
       
-      /* Custom Bodybuilder Character (Left side) */
+      /* Custom Bodybuilder Character */
       .bodybuilder-fighter {
         position: absolute;
-        width: 110px;
-        height: 90px;
-        left: 15%;
-        top: 38%;
-        animation: bodybuilderFighting 6s ease-in-out infinite;
+        width: 90px;
+        height: 80px;
+        right: 15%;
+        top: 42%;
+        animation: bodybuilderFighting 8s ease-in-out infinite;
       }
       
       .bodybuilder-body {
-        width: 70px;
-        height: 55px;
-        background: linear-gradient(45deg, #FFE4B5, #DEB887);
-        border-radius: 12px;
+        width: 60px;
+        height: 50px;
+        background: #FFE4B5;
+        border-radius: 10px;
         position: relative;
-        margin-top: 25px;
-        border: 2px solid #CD853F;
+        margin-top: 20px;
       }
       
       .bodybuilder-head {
-        width: 35px;
-        height: 30px;
-        background: linear-gradient(45deg, #FFE4B5, #F5DEB3);
+        width: 30px;
+        height: 25px;
+        background: #FFE4B5;
         border-radius: 50%;
         position: absolute;
-        top: -18px;
-        left: 17px;
-        border: 2px solid #CD853F;
-      }
-      
-      .bodybuilder-face {
-        width: 4px;
-        height: 4px;
-        background: #000;
-        border-radius: 50%;
-        position: absolute;
-        top: 8px;
-      }
-      
-      .face-eye-left { left: 8px; }
-      .face-eye-right { left: 20px; }
-      
-      .bodybuilder-mouth {
-        width: 8px;
-        height: 3px;
-        background: #8B0000;
-        border-radius: 50%;
-        position: absolute;
-        top: 18px;
-        left: 13px;
+        top: -15px;
+        left: 15px;
       }
       
       .bodybuilder-muscles {
-        width: 25px;
-        height: 30px;
-        background: linear-gradient(45deg, #DEB887, #CD853F);
+        width: 20px;
+        height: 25px;
+        background: #DEB887;
         border-radius: 50%;
         position: absolute;
-        top: 12px;
-        border: 2px solid #8B7355;
+        top: 10px;
       }
       
-      .muscle-left { left: -12px; }
-      .muscle-right { right: -12px; }
+      .muscle-left { left: -10px; }
+      .muscle-right { right: -10px; }
       
       .bodybuilder-legs {
-        width: 15px;
-        height: 25px;
-        background: linear-gradient(180deg, #FFE4B5, #DEB887);
+        width: 12px;
+        height: 20px;
+        background: #FFE4B5;
         position: absolute;
-        bottom: -25px;
-        border-radius: 8px;
-        border: 2px solid #CD853F;
+        bottom: -20px;
+        border-radius: 6px;
       }
       
-      .bodybuilder-leg1 { left: 18px; }
-      .bodybuilder-leg2 { right: 18px; }
+      .bodybuilder-leg1 { left: 15px; }
+      .bodybuilder-leg2 { right: 15px; }
       
       .cannon {
-        width: 45px;
-        height: 14px;
-        background: linear-gradient(90deg, #696969, #2F4F2F);
-        border-radius: 7px;
+        width: 40px;
+        height: 12px;
+        background: #696969;
+        border-radius: 6px;
         position: absolute;
-        top: 18px;
-        right: -40px;
+        top: 15px;
+        left: -35px;
         transform-origin: right center;
-        animation: cannonAim 3s ease-in-out infinite;
-        border: 2px solid #4A4A4A;
+        animation: cannonAim 4s ease-in-out infinite;
       }
       
       .cannon::before {
         content: '';
-        width: 10px;
-        height: 10px;
-        background: radial-gradient(circle, #2F4F2F, #000);
+        width: 8px;
+        height: 8px;
+        background: #2F4F2F;
         border-radius: 50%;
         position: absolute;
-        right: -5px;
+        left: -4px;
         top: 2px;
-        border: 1px solid #000;
       }
       
       /* Fighting Animations */
       @keyframes dogFighting {
         0% { 
-          transform: translateX(0px) translateY(0px) rotate(0deg) scaleX(-1);
+          transform: translateX(0px) translateY(0px) rotate(0deg);
         }
-        15% { 
-          transform: translateX(-80px) translateY(-8px) rotate(-3deg) scaleX(-1.05);
+        20% { 
+          transform: translateX(150px) translateY(-10px) rotate(-5deg);
         }
-        30% { 
-          transform: translateX(-150px) translateY(-15px) rotate(-10deg) scaleX(-1.1);
-        }
-        45% { 
-          transform: translateX(-180px) translateY(-20px) rotate(8deg) scaleX(-0.9);
+        40% { 
+          transform: translateX(200px) translateY(-20px) rotate(-15deg) scale(1.1);
         }
         60% { 
-          transform: translateX(-120px) translateY(-5px) rotate(-12deg) scaleX(-1.05);
+          transform: translateX(180px) translateY(-5px) rotate(10deg) scale(0.9);
         }
-        75% { 
-          transform: translateX(-60px) translateY(3px) rotate(5deg) scaleX(-1.02);
+        80% { 
+          transform: translateX(100px) translateY(5px) rotate(-8deg);
         }
         100% { 
-          transform: translateX(0px) translateY(0px) rotate(0deg) scaleX(-1);
+          transform: translateX(0px) translateY(0px) rotate(0deg);
         }
       }
       
       @keyframes bodybuilderFighting {
         0% { 
-          transform: translateX(0px) translateY(0px) rotate(0deg);
+          transform: translateX(0px) translateY(0px) rotate(0deg) scaleX(-1);
         }
-        20% { 
-          transform: translateX(60px) translateY(-10px) rotate(5deg) scale(1.05);
+        15% { 
+          transform: translateX(-50px) translateY(-8px) rotate(3deg) scaleX(-1.05);
         }
-        35% { 
-          transform: translateX(100px) translateY(-18px) rotate(-8deg) scale(0.95);
+        30% { 
+          transform: translateX(-80px) translateY(-15px) rotate(-8deg) scaleX(-0.95);
         }
-        50% { 
-          transform: translateX(120px) translateY(-12px) rotate(10deg) scale(1.1);
+        45% { 
+          transform: translateX(-100px) translateY(-10px) rotate(12deg) scaleX(-1.1);
         }
-        65% { 
-          transform: translateX(80px) translateY(-5px) rotate(-6deg) scale(0.9);
+        60% { 
+          transform: translateX(-70px) translateY(5px) rotate(-5deg) scaleX(-0.9);
         }
         80% { 
-          transform: translateX(40px) translateY(2px) rotate(4deg) scale(1.02);
+          transform: translateX(-30px) translateY(2px) rotate(6deg) scaleX(-1.02);
         }
         100% { 
-          transform: translateX(0px) translateY(0px) rotate(0deg);
+          transform: translateX(0px) translateY(0px) rotate(0deg) scaleX(-1);
         }
       }
       
       @keyframes tailWag {
         0% { 
-          transform: rotate(-25deg);
+          transform: rotate(-20deg);
         }
         100% { 
-          transform: rotate(25deg);
+          transform: rotate(20deg);
         }
       }
       
       @keyframes clubSwing {
-        0%, 60% { 
+        0%, 70% { 
           transform: rotate(0deg);
         }
-        25% { 
-          transform: rotate(-60deg);
+        35% { 
+          transform: rotate(-45deg);
         }
-        40% { 
-          transform: rotate(-80deg);
+        50% { 
+          transform: rotate(-60deg);
         }
       }
       
       @keyframes cannonAim {
         0%, 100% { 
-          transform: rotate(10deg);
+          transform: rotate(0deg);
         }
         25% { 
-          transform: rotate(-15deg);
+          transform: rotate(-10deg);
         }
         50% { 
-          transform: rotate(25deg);
+          transform: rotate(15deg);
         }
         75% { 
           transform: rotate(-5deg);
@@ -474,48 +403,47 @@
       /* Green Pills from Cannon */
       .green-pill {
         position: absolute;
-        width: 10px;
-        height: 10px;
-        background: radial-gradient(circle, #00FF00, #32CD32, #228B22);
+        width: 8px;
+        height: 8px;
+        background: radial-gradient(circle, #00FF00, #32CD32);
         border-radius: 50%;
-        box-shadow: 0 0 20px #00FF00, 0 0 30px #32CD32;
-        border: 2px solid #228B22;
-        animation: pillShoot 1.8s linear infinite;
+        box-shadow: 0 0 15px #00FF00, 0 0 25px #00FF00;
+        animation: pillShoot 2s linear infinite;
       }
       
       @keyframes pillShoot {
         0% { 
           opacity: 1;
-          transform: scale(1) rotate(0deg);
+          transform: scale(1);
         }
         100% { 
           opacity: 0;
-          transform: translateX(var(--pillX, 400px)) translateY(var(--pillY, 0px)) scale(0.3) rotate(360deg);
+          transform: translateX(var(--pillX, -300px)) translateY(var(--pillY, 0px)) scale(0.2);
         }
       }
       
       /* Battle Impact Effects */
       .battle-impact {
         position: absolute;
-        width: 8px;
-        height: 8px;
-        background: radial-gradient(circle, #FFD700, #FF4500, #FF0000);
+        width: 6px;
+        height: 6px;
+        background: radial-gradient(circle, #FFD700, #FF6B00);
         border-radius: 50%;
-        animation: battleBurst 0.8s ease-out infinite;
+        animation: battleBurst 0.6s ease-out infinite;
       }
       
       @keyframes battleBurst {
         0% { 
           opacity: 1;
-          transform: scale(0.2);
+          transform: scale(0.1);
         }
-        50% { 
+        40% { 
           opacity: 1;
-          transform: scale(3);
+          transform: scale(2);
         }
         100% { 
           opacity: 0;
-          transform: scale(0.2) translateX(var(--impactX, 60px)) translateY(var(--impactY, -30px));
+          transform: scale(0.1) translateX(var(--impactX, 40px)) translateY(var(--impactY, -20px));
         }
       }
     </style>
@@ -532,10 +460,6 @@
     <div class="dog-fighter">
       <div class="dog-body">
         <div class="dog-head">
-          <div class="dog-snout"></div>
-          <div class="dog-eyes dog-eye-left"></div>
-          <div class="dog-eyes dog-eye-right"></div>
-          <div class="dog-nose"></div>
           <div class="dog-ears dog-ear-left"></div>
           <div class="dog-ears dog-ear-right"></div>
         </div>
@@ -552,11 +476,6 @@
     <div class="bodybuilder-fighter">
       <div class="bodybuilder-body">
         <div class="bodybuilder-head"></div>
-        <div class="bodybuilder-head">
-          <div class="bodybuilder-face face-eye-left"></div>
-          <div class="bodybuilder-face face-eye-right"></div>
-          <div class="bodybuilder-mouth"></div>
-        </div>
         <div class="bodybuilder-muscles muscle-left"></div>
         <div class="bodybuilder-muscles muscle-right"></div>
         <div class="bodybuilder-legs bodybuilder-leg1"></div>
@@ -767,12 +686,12 @@
         pill.className = 'green-pill';
         
         const rect = bodybuilder.getBoundingClientRect();
-        pill.style.left = (rect.left + rect.width - 10) + 'px';
+        pill.style.left = (rect.left + 20) + 'px';
         pill.style.top = (rect.top + rect.height/2) + 'px';
         
-        // Shoot towards dog (right side) with spread
-        const pillX = 300 + Math.random() * 200;
-        const pillY = (Math.random() - 0.5) * 120;
+        // Shoot towards dog with spread
+        const pillX = -200 - Math.random() * 150;
+        const pillY = (Math.random() - 0.5) * 100;
         
         pill.style.setProperty('--pillX', pillX + 'px');
         pill.style.setProperty('--pillY', pillY + 'px');
@@ -784,8 +703,8 @@
           if (pill.parentNode) {
             pill.parentNode.removeChild(pill);
           }
-        }, 1800);
-      }, 600 + Math.random() * 800);
+        }, 2000);
+      }, 800 + Math.random() * 1200);
     }
     
     function createBattleEffects() {
@@ -795,13 +714,13 @@
         const impact = document.createElement('div');
         impact.className = 'battle-impact';
         
-        // Random position in middle battle zone
-        impact.style.left = (35 + Math.random() * 30) + '%';
-        impact.style.top = (35 + Math.random() * 25) + '%';
+        // Random position in battle zone
+        impact.style.left = (25 + Math.random() * 50) + '%';
+        impact.style.top = (40 + Math.random() * 20) + '%';
         
         // Random impact burst
-        const impactX = (Math.random() - 0.5) * 100;
-        const impactY = (Math.random() - 0.5) * 80;
+        const impactX = (Math.random() - 0.5) * 80;
+        const impactY = (Math.random() - 0.5) * 60;
         impact.style.setProperty('--impactX', impactX + 'px');
         impact.style.setProperty('--impactY', impactY + 'px');
         
@@ -811,14 +730,14 @@
           if (impact.parentNode) {
             impact.parentNode.removeChild(impact);
           }
-        }, 800);
-      }, 1000 + Math.random() * 1500);
+        }, 600);
+      }, 1500 + Math.random() * 2000);
     }
     
     // Start battle animations
     window.addEventListener('load', function() {
-      setTimeout(createCannonPills, 1000);
-      setTimeout(createBattleEffects, 1800);
+      setTimeout(createCannonPills, 1500);
+      setTimeout(createBattleEffects, 2500);
     });
   </script>
 
