@@ -260,26 +260,38 @@
       .club {
         width: 40px;
         height: 12px;
-        background: linear-gradient(90deg, #8B4513, #A0522D);
-        border-radius: 6px;
+        background: linear-gradient(90deg, #D2691E, #8B4513);
+        border-radius: 2px;
         position: absolute;
         top: -10px;
         right: -35px;
         transform-origin: left center;
-        animation: clubSwing 1.5s ease-in-out infinite;
+        animation: baseballSwing 2s ease-in-out infinite;
         border: 3px solid #000;
       }
       
       .club::before {
         content: '';
-        width: 18px;
-        height: 18px;
-        background: radial-gradient(circle, #8B4513, #654321);
+        width: 8px;
+        height: 8px;
+        background: linear-gradient(90deg, #8B4513, #654321);
+        border-radius: 2px;
+        position: absolute;
+        left: -4px;
+        top: 2px;
+        border: 2px solid #000;
+      }
+      
+      .club::after {
+        content: '';
+        width: 12px;
+        height: 12px;
+        background: radial-gradient(circle, #D2691E, #8B4513);
         border-radius: 50%;
         position: absolute;
-        right: -9px;
-        top: -3px;
-        border: 3px solid #000;
+        right: -6px;
+        top: 0px;
+        border: 2px solid #000;
       }
       
       /* Custom Bodybuilder Character (Left side) */
@@ -457,15 +469,18 @@
         }
       }
       
-      @keyframes clubSwing {
-        0%, 60% { 
+      @keyframes baseballSwing {
+        0%, 70% { 
           transform: rotate(0deg);
         }
-        25% { 
-          transform: rotate(-60deg);
+        15% { 
+          transform: rotate(-45deg);
         }
-        40% { 
-          transform: rotate(-80deg);
+        30% { 
+          transform: rotate(-90deg);
+        }
+        45% { 
+          transform: rotate(45deg);
         }
       }
       
@@ -485,6 +500,49 @@
       }
       
       /* Green Pills from Cannon */
+      .baseball {
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        background: radial-gradient(circle, #FFFFFF, #F0F0F0, #DCDCDC);
+        border-radius: 50%;
+        border: 2px solid #000;
+        animation: baseballThrow 2.5s linear infinite;
+      }
+      
+      .baseball::before {
+        content: '';
+        position: absolute;
+        width: 8px;
+        height: 1px;
+        background: #FF0000;
+        top: 4px;
+        left: 1px;
+        border-radius: 1px;
+      }
+      
+      .baseball::after {
+        content: '';
+        position: absolute;
+        width: 1px;
+        height: 8px;
+        background: #FF0000;
+        top: 1px;
+        left: 4px;
+        border-radius: 1px;
+      }
+      
+      @keyframes baseballThrow {
+        0% { 
+          opacity: 1;
+          transform: scale(1) rotate(0deg);
+        }
+        100% { 
+          opacity: 0;
+          transform: translateX(var(--baseballX, -400px)) translateY(var(--baseballY, 0px)) scale(0.3) rotate(-360deg);
+        }
+      }
+      
       .green-pill {
         position: absolute;
         width: 12px;
@@ -770,6 +828,38 @@
 
   <script>
     // Custom Fighting Animation JavaScript
+    function createBaseballs() {
+      const container = document.getElementById('animated-characters');
+      const dog = document.querySelector('.dog-fighter');
+      
+      if (!dog) return;
+      
+      setInterval(() => {
+        const baseball = document.createElement('div');
+        baseball.className = 'baseball';
+        
+        const rect = dog.getBoundingClientRect();
+        baseball.style.left = (rect.left - 10) + 'px';
+        baseball.style.top = (rect.top + rect.height/2) + 'px';
+        
+        // Throw towards bodybuilder (left side) with spread
+        const baseballX = -300 - Math.random() * 200;
+        const baseballY = (Math.random() - 0.5) * 120;
+        
+        baseball.style.setProperty('--baseballX', baseballX + 'px');
+        baseball.style.setProperty('--baseballY', baseballY + 'px');
+        
+        container.appendChild(baseball);
+        
+        // Clean up
+        setTimeout(() => {
+          if (baseball.parentNode) {
+            baseball.parentNode.removeChild(baseball);
+          }
+        }, 2500);
+      }, 800 + Math.random() * 1200);
+    }
+    
     function createCannonPills() {
       const container = document.getElementById('animated-characters');
       const bodybuilder = document.querySelector('.bodybuilder-fighter');
@@ -831,6 +921,7 @@
     
     // Start battle animations
     window.addEventListener('load', function() {
+      setTimeout(createBaseballs, 800);
       setTimeout(createCannonPills, 1000);
       setTimeout(createBattleEffects, 1800);
     });
