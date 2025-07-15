@@ -42,8 +42,8 @@ Pacman.Ghost = function (game, map, colour) {
     
     function getNewCoord(dir, current) { 
         
-        var levelSpeedMultiplier = getLevelSpeedMultiplier();
-        var speed = 1; // Always keep normal speed
+        var levelSpeed = game.getLevel() <= 5 ? 1 : 1 + ((game.getLevel() - 5) * 0.05);
+var speed = Math.min(Math.round(levelSpeed), 2);
     
         return {
             "x": addBounded(current.x, (dir === LEFT && -speed || dir === RIGHT && speed || 0)),
@@ -443,28 +443,19 @@ Pacman.User = function (game, map) {
     }
     
     function getPacmanLevelSpeedMultiplier() {
-        var currentLevel = game.getLevel();
-        
-        if (currentLevel === 1) {
-            // Level 1: 100%
-            return 1.0;
-        } else if (currentLevel <= 9) {
-            // Levels 2-9: start at 104%, increase 4% per level
-            return 1.0 + ((currentLevel - 1) * 0.04);
-        } else if (currentLevel <= 14) {
-            // Levels 10-14: start at 136%, increase 3% per level
-            return 1.32 + ((currentLevel - 9) * 0.03);
-        } else if (currentLevel <= 22) {
-            // Levels 15-22: start at 147%, increase 2% per level
-            return 1.44 + ((currentLevel - 14) * 0.02);
-        } else if (currentLevel <= 30) {
-            // Levels 23-30: start at 163%, increase 1% per level
-            return 1.60 + ((currentLevel - 22) * 0.01);
-        } else {
-            // Level 30+: stay at 168%
-            return 1.68;
-        }
+    var currentLevel = game.getLevel();
+
+    if (currentLevel <= 5) {
+        return 1.0 + ((currentLevel - 1) * 0.1); // Levels 1–5: 1.0–1.4
+    } else if (currentLevel <= 10) {
+        return 1.4 + ((currentLevel - 5) * 0.05); // Levels 6–10: 1.45–1.65
+    } else if (currentLevel <= 20) {
+        return 1.65 + ((currentLevel - 10) * 0.015); // Levels 11–20: 1.665–1.8
+    } else {
+        return 1.8; // Levels 21–30: hard cap
     }
+}
+
 
     function onWholeSquare(x) {
         return x % 10 === 0;
