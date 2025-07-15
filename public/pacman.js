@@ -42,8 +42,8 @@ Pacman.Ghost = function (game, map, colour) {
     
     function getNewCoord(dir, current) { 
         
-        var levelSpeedMultiplier = getLevelSpeedMultiplier();
-        var speed = 1; // Always keep normal speed
+        // Keep ghosts at constant speed to prevent glitching
+        var speed = 1;
     
         return {
             "x": addBounded(current.x, (dir === LEFT && -speed || dir === RIGHT && speed || 0)),
@@ -51,30 +51,6 @@ Pacman.Ghost = function (game, map, colour) {
         };
     }
     
-    function getLevelSpeedMultiplier() {
-        var currentLevel = game.getLevel();
-        
-        if (currentLevel === 1) {
-            // Level 1: 100%
-            return 1.0;
-        } else if (currentLevel <= 9) {
-            // Levels 2-9: start at 105%, increase 5% per level
-            return 1.0 + ((currentLevel - 1) * 0.05);
-        } else if (currentLevel <= 14) {
-            // Levels 10-14: start at 145%, increase 4% per level
-            return 1.40 + ((currentLevel - 9) * 0.04);
-        } else if (currentLevel <= 22) {
-            // Levels 15-22: start at 165%, increase 3% per level
-            return 1.60 + ((currentLevel - 14) * 0.03);
-        } else if (currentLevel <= 30) {
-            // Levels 23-30: start at 186%, increase 2% per level
-            return 1.84 + ((currentLevel - 22) * 0.02);
-        } else {
-            // Level 30+: stay at 200%
-            return 2.0;
-        }
-    }
-
     /* Collision detection(walls) is done when a ghost lands on an
      * exact block, make sure they dont skip over it 
      */
@@ -445,24 +421,21 @@ Pacman.User = function (game, map) {
     function getPacmanLevelSpeedMultiplier() {
         var currentLevel = game.getLevel();
         
+        // More conservative speed increases to prevent glitching
         if (currentLevel === 1) {
-            // Level 1: 100%
             return 1.0;
-        } else if (currentLevel <= 9) {
-            // Levels 2-9: start at 104%, increase 4% per level
-            return 1.0 + ((currentLevel - 1) * 0.04);
-        } else if (currentLevel <= 14) {
-            // Levels 10-14: start at 136%, increase 3% per level
-            return 1.32 + ((currentLevel - 9) * 0.03);
-        } else if (currentLevel <= 22) {
-            // Levels 15-22: start at 147%, increase 2% per level
-            return 1.44 + ((currentLevel - 14) * 0.02);
-        } else if (currentLevel <= 30) {
-            // Levels 23-30: start at 163%, increase 1% per level
-            return 1.60 + ((currentLevel - 22) * 0.01);
+        } else if (currentLevel <= 5) {
+            // Levels 2-5: gradual increase
+            return 1.0 + ((currentLevel - 1) * 0.1);
+        } else if (currentLevel <= 10) {
+            // Levels 6-10: slower increase
+            return 1.4 + ((currentLevel - 5) * 0.05);
+        } else if (currentLevel <= 20) {
+            // Levels 11-20: very slow increase
+            return 1.65 + ((currentLevel - 10) * 0.02);
         } else {
-            // Level 30+: stay at 168%
-            return 1.68;
+            // Level 20+: cap at safe speed
+            return 1.85;
         }
     }
 
@@ -526,7 +499,14 @@ Pacman.User = function (game, map) {
             npos = getNewCoord(direction, position);
         }
         
+        // Enhanced wall collision detection for high speeds
         if (onGridSquare(position) && map.isWallSpace(next(npos, direction))) {
+            direction = NONE;
+        }
+        
+        // Additional safety check: prevent moving into walls at any speed
+        var futurePos = next(npos, direction);
+        if (map.isWallSpace(futurePos)) {
             direction = NONE;
         }
 
@@ -534,6 +514,7 @@ Pacman.User = function (game, map) {
             return {"new" : position, "old" : position};
         }
         
+        // Tunnel handling with bounds checking
         if (npos.y === 100 && npos.x >= 190 && direction === RIGHT) {
             npos = {"y": 100, "x": -10};
         }
@@ -544,6 +525,15 @@ Pacman.User = function (game, map) {
         
         position = npos;        
         nextWhole = next(position, direction);
+        
+        // Bounds checking for nextWhole to prevent array access errors
+        if (nextWhole.x < 0 || nextWhole.x >= map.width || 
+            nextWhole.y < 0 || nextWhole.y >= map.height) {
+            return {
+                "new" : position,
+                "old" : oldPosition
+            };
+        }
         
         block = map.block(nextWhole);        
         
@@ -582,7 +572,7 @@ Pacman.User = function (game, map) {
 
     function isMidSquare(x) { 
         var rem = x % 10;
-        return rem > 3 || rem < 7;
+        return rem > 3 && rem < 7;
     }
 
     function calcAngle(dir, pos) { 
