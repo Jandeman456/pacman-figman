@@ -139,6 +139,31 @@
         transform: translateY(2px);
         box-shadow: 0 2px 0 #FF8C00, 0 4px 6px rgba(0,0,0,0.3);
       }
+      
+      #twitter-button {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        width: 60px;
+        height: 60px;
+        background: url('public/Ontwerp zonder titel (57).png') center/contain no-repeat;
+        border: none;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        z-index: 1002;
+        opacity: 0.9;
+      }
+      
+      #twitter-button:hover {
+        transform: scale(1.1);
+        opacity: 1;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+      }
+      
+      #twitter-button:active {
+        transform: scale(0.95);
+      }
     </style>
 
 </head>
@@ -156,6 +181,10 @@
   </div>
   
   <button id="leaderboard-button">SHOW LEADERBOARD</button>
+  
+  <a href="https://x.com/PLAYBONKMAN_FUN" target="_blank">
+    <button id="twitter-button" title="Follow @PLAYBONKMAN_FUN"></button>
+  </a>
   
   <div id="pacman" style="display: none;"></div>
   
