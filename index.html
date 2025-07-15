@@ -295,7 +295,7 @@
       .bodybuilder-body {
         width: 80px;
         height: 60px;
-        background: linear-gradient(45deg, #FFDBAC, #F4A460);
+        background: linear-gradient(45deg, #32CD32, #228B22);
         border-radius: 15px;
         position: relative;
         margin-top: 25px;
@@ -305,7 +305,7 @@
       .bodybuilder-head {
         width: 40px;
         height: 35px;
-        background: linear-gradient(45deg, #FFDBAC, #F4A460);
+        background: linear-gradient(45deg, #32CD32, #228B22);
         border-radius: 50%;
         position: absolute;
         top: -20px;
@@ -338,7 +338,7 @@
       .bodybuilder-muscles {
         width: 30px;
         height: 35px;
-        background: linear-gradient(45deg, #F4A460, #DEB887);
+        background: linear-gradient(45deg, #228B22, #006400);
         border-radius: 50%;
         position: absolute;
         top: 15px;
@@ -351,7 +351,7 @@
       .bodybuilder-legs {
         width: 18px;
         height: 30px;
-        background: linear-gradient(180deg, #FFDBAC, #F4A460);
+        background: linear-gradient(180deg, #32CD32, #228B22);
         position: absolute;
         bottom: -30px;
         border-radius: 9px;
@@ -364,7 +364,7 @@
       .cannon {
         width: 50px;
         height: 16px;
-        background: linear-gradient(90deg, #808080, #696969);
+        background: linear-gradient(90deg, #32CD32, #228B22);
         border-radius: 8px;
         position: absolute;
         top: 20px;
@@ -378,12 +378,25 @@
         content: '';
         width: 12px;
         height: 12px;
-        background: radial-gradient(circle, #696969, #000);
+        background: radial-gradient(circle, #228B22, #006400);
         border-radius: 50%;
         position: absolute;
         right: -6px;
         top: 2px;
         border: 2px solid #000;
+      }
+      
+      .cannon::after {
+        content: 'PUMP.FUN';
+        position: absolute;
+        top: -2px;
+        left: 2px;
+        font-size: 6px;
+        font-weight: bold;
+        color: white;
+        text-shadow: 1px 1px 0px #000;
+        font-family: Arial, sans-serif;
+        letter-spacing: 0.5px;
       }
       
       /* Fighting Animations */
