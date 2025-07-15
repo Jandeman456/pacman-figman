@@ -139,6 +139,167 @@
         transform: translateY(2px);
         box-shadow: 0 2px 0 #FF8C00, 0 4px 6px rgba(0,0,0,0.3);
       }
+      
+      #battle-animation {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        z-index: -1;
+        pointer-events: none;
+        opacity: 0.8;
+      }
+      
+      .battle-character {
+        position: absolute;
+        animation-duration: 3s;
+        animation-iteration-count: infinite;
+        animation-timing-function: ease-in-out;
+      }
+      
+      .bodybuilder {
+        left: 15%;
+        top: 40%;
+        width: 300px;
+        height: 400px;
+        background: url('https://i.ibb.co/LXS5tfdN/Chat-GPT-Image-13-jul-2025-23-29-57.png') no-repeat;
+        background-size: 600px 400px;
+        background-position: 0 0;
+        animation-name: bodybuilderFight;
+        transform-origin: center bottom;
+      }
+      
+      .dog {
+        right: 15%;
+        top: 40%;
+        width: 300px;
+        height: 400px;
+        background: url('https://i.ibb.co/LXS5tfdN/Chat-GPT-Image-13-jul-2025-23-29-57.png') no-repeat;
+        background-size: 600px 400px;
+        background-position: -300px 0;
+        animation-name: dogFight;
+        transform-origin: center bottom;
+      }
+      
+      @keyframes bodybuilderFight {
+        0% { 
+          transform: translateX(0) scale(1) rotate(0deg);
+        }
+        25% { 
+          transform: translateX(20px) scale(1.05) rotate(-2deg);
+        }
+        50% { 
+          transform: translateX(-10px) scale(0.98) rotate(1deg);
+        }
+        75% { 
+          transform: translateX(15px) scale(1.02) rotate(-1deg);
+        }
+        100% { 
+          transform: translateX(0) scale(1) rotate(0deg);
+        }
+      }
+      
+      @keyframes dogFight {
+        0% { 
+          transform: translateX(0) scale(1) rotate(0deg);
+        }
+        30% { 
+          transform: translateX(-25px) scale(1.08) rotate(3deg);
+        }
+        60% { 
+          transform: translateX(10px) scale(0.95) rotate(-2deg);
+        }
+        90% { 
+          transform: translateX(-15px) scale(1.03) rotate(1deg);
+        }
+        100% { 
+          transform: translateX(0) scale(1) rotate(0deg);
+        }
+      }
+      
+      .projectile {
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        animation-duration: 2s;
+        animation-iteration-count: infinite;
+        animation-timing-function: linear;
+      }
+      
+      .pill {
+        background: radial-gradient(circle, #00ff00, #00aa00);
+        box-shadow: 0 0 10px #00ff00;
+        animation-name: pillFly;
+        left: 25%;
+        top: 50%;
+      }
+      
+      .baseball {
+        background: radial-gradient(circle, #8B4513, #654321);
+        box-shadow: 0 0 8px #8B4513;
+        animation-name: baseballFly;
+        right: 25%;
+        top: 50%;
+      }
+      
+      @keyframes pillFly {
+        0% { 
+          transform: translateX(0) translateY(0) rotate(0deg);
+          opacity: 1;
+        }
+        50% { 
+          transform: translateX(300px) translateY(-50px) rotate(180deg);
+          opacity: 0.8;
+        }
+        100% { 
+          transform: translateX(600px) translateY(0) rotate(360deg);
+          opacity: 0;
+        }
+      }
+      
+      @keyframes baseballFly {
+        0% { 
+          transform: translateX(0) translateY(0) rotate(0deg);
+          opacity: 1;
+        }
+        50% { 
+          transform: translateX(-300px) translateY(-30px) rotate(-180deg);
+          opacity: 0.8;
+        }
+        100% { 
+          transform: translateX(-600px) translateY(0) rotate(-360deg);
+          opacity: 0;
+        }
+      }
+      
+      .explosion {
+        position: absolute;
+        left: 50%;
+        top: 45%;
+        width: 60px;
+        height: 60px;
+        background: radial-gradient(circle, #ffff00, #ff6600, transparent);
+        border-radius: 50%;
+        animation: explode 1.5s infinite;
+        transform: translate(-50%, -50%);
+      }
+      
+      @keyframes explode {
+        0% { 
+          transform: translate(-50%, -50%) scale(0);
+          opacity: 0;
+        }
+        50% { 
+          transform: translate(-50%, -50%) scale(1.5);
+          opacity: 1;
+        }
+        100% { 
+          transform: translate(-50%, -50%) scale(0);
+          opacity: 0;
+        }
+      }
     </style>
 
 </head>
@@ -146,6 +307,14 @@
 <body>
   
   <canvas id="backgroundCanvas"></canvas>
+  
+  <div id="battle-animation">
+    <div class="battle-character bodybuilder"></div>
+    <div class="battle-character dog"></div>
+    <div class="projectile pill"></div>
+    <div class="projectile baseball"></div>
+    <div class="explosion"></div>
+  </div>
   
   <div id="shim">shim for font face</div>
 
