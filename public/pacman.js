@@ -1270,6 +1270,10 @@ var PACMAN = (function () {
         
         if (e.keyCode === KEY.N) {
             startNewGame();
+        } else if (e.keyCode === KEY.T && (state === PLAYING || state === COUNTDOWN)) {
+            // Cheat: Skip to next level
+            completedLevel();
+            return false;
         } else if (e.keyCode === KEY.S) {
             audio.disableSound();
             localStorage["soundDisabled"] = !soundDisabled();
