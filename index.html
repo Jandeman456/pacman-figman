@@ -155,149 +155,155 @@
       /* Custom Dog Character (Right side) */
       .dog-fighter {
         position: absolute;
-        width: 100px;
-        height: 120px;
+        width: 120px;
+        height: 140px;
         right: 15%;
         top: 35%;
         animation: dogFighting 6s ease-in-out infinite;
       }
       
       .dog-body {
-        width: 50px;
-        height: 60px;
-        background: linear-gradient(45deg, #FFA500, #FF8C00);
-        border-radius: 15px;
+        width: 45px;
+        height: 70px;
+        background: linear-gradient(180deg, #D2691E, #CD853F);
+        border-radius: 8px;
         position: relative;
         margin: 0 auto;
-        margin-top: 40px;
-        border: 3px solid #000;
+        margin-top: 35px;
+        border: 2px solid #000;
       }
       
       .dog-head {
-        width: 40px;
-        height: 35px;
-        background: linear-gradient(45deg, #FFA500, #FF8C00);
-        border-radius: 50% 50% 30% 30%;
+        width: 50px;
+        height: 40px;
+        background: linear-gradient(180deg, #D2691E, #CD853F);
+        border-radius: 25px 25px 15px 15px;
         position: absolute;
-        top: -30px;
-        left: 5px;
-        border: 3px solid #000;
+        top: -35px;
+        left: -2px;
+        border: 2px solid #000;
       }
       
       .dog-snout {
-        width: 30px;
-        height: 18px;
-        background: #FF8C00;
-        border-radius: 80% 80% 20% 20%;
+        width: 35px;
+        height: 20px;
+        background: linear-gradient(180deg, #DEB887, #D2691E);
+        border-radius: 50% 50% 30% 30%;
         position: absolute;
-        top: 18px;
-        left: 32px;
+        top: 20px;
+        left: 40px;
         border: 2px solid #000;
       }
       
       .dog-eyes {
-        width: 6px;
-        height: 10px;
-        background: #000;
-        border-radius: 60% 60% 40% 40%;
-        position: absolute;
-        top: 6px;
-      }
-      
-      .dog-eye-left { left: 10px; }
-      .dog-eye-right { left: 24px; }
-      
-      .dog-nose {
         width: 8px;
-        height: 6px;
-        background: #000;
-        border-radius: 60% 60% 20% 20%;
-        position: absolute;
-        top: 24px;
-        left: 43px;
-      }
-      
-      .dog-mouth {
-        width: 12px;
-        height: 4px;
+        height: 8px;
         background: #000;
         border-radius: 50%;
         position: absolute;
-        top: 32px;
-        left: 39px;
+        top: 8px;
+      }
+      
+      .dog-eye-left { left: 12px; }
+      .dog-eye-right { left: 28px; }
+      
+      .dog-nose {
+        width: 6px;
+        height: 5px;
+        background: #000;
+        border-radius: 50% 50% 30% 30%;
+        position: absolute;
+        top: 28px;
+        left: 54px;
+      }
+      
+      .dog-mouth {
+        width: 8px;
+        height: 3px;
+        background: #000;
+        border-radius: 0 0 50% 50%;
+        position: absolute;
+        top: 35px;
+        left: 52px;
       }
       
       .dog-ears {
-        width: 18px;
-        height: 25px;
-        background: linear-gradient(45deg, #FF8C00, #FFA500);
-        border-radius: 80% 80% 20% 20%;
+        width: 15px;
+        height: 30px;
+        background: linear-gradient(180deg, #8B4513, #D2691E);
+        border-radius: 50% 50% 20% 20%;
         position: absolute;
-        top: -8px;
+        top: -15px;
         border: 2px solid #000;
       }
       
+      .dog-ear-left { 
+        left: 5px; 
+        transform: rotate(-15deg);
+      }
+      .dog-ear-right { 
+        right: 5px; 
+        transform: rotate(15deg);
+      }
       
       .dog-legs {
-        width: 12px;
-        height: 25px;
-        background: linear-gradient(180deg, #FFA500, #FF8C00);
+        width: 15px;
+        height: 30px;
+        background: linear-gradient(180deg, #D2691E, #8B4513);
         position: absolute;
-        bottom: -25px;
+        bottom: -30px;
         border-radius: 5px;
         border: 2px solid #000;
       }
       
-      .dog-leg1 { left: 8px; }
-      .dog-leg2 { left: 30px; }
       
       .dog-tail {
-        width: 20px;
-        height: 8px;
-        background: linear-gradient(90deg, #FF8C00, #FFA500);
-        border-radius: 4px;
+        width: 25px;
+        height: 10px;
+        background: linear-gradient(90deg, #8B4513, #D2691E);
+        border-radius: 5px;
         position: absolute;
-        left: -15px;
-        top: 20px;
+        left: -20px;
+        top: 25px;
         transform-origin: right center;
         animation: tailWag 0.4s ease-in-out infinite alternate;
         border: 2px solid #000;
       }
       
       .baseball-bat {
-        width: 50px;
-        height: 15px;
+        width: 60px;
+        height: 12px;
         background: linear-gradient(90deg, #D2691E, #8B4513);
-        border-radius: 2px;
+        border-radius: 6px;
         position: absolute;
-        top: 10px;
-        right: -45px;
+        top: 15px;
+        right: -50px;
         transform-origin: left center;
         animation: baseballSwing 2s ease-in-out infinite;
-        border: 3px solid #000;
+        border: 2px solid #000;
       }
       
       .baseball-bat::before {
         content: '';
-        width: 10px;
-        height: 10px;
+        width: 8px;
+        height: 8px;
         background: linear-gradient(90deg, #8B4513, #654321);
-        border-radius: 2px;
+        border-radius: 4px;
         position: absolute;
-        left: -5px;
-        top: 2.5px;
+        left: -4px;
+        top: 2px;
         border: 2px solid #000;
       }
       
       .baseball-bat::after {
         content: '';
-        width: 18px;
-        height: 18px;
+        width: 22px;
+        height: 22px;
         background: radial-gradient(circle, #D2691E, #8B4513);
         border-radius: 50%;
         position: absolute;
-        right: -9px;
-        top: -1.5px;
+        right: -11px;
+        top: -5px;
         border: 2px solid #000;
       }
       
@@ -509,8 +515,8 @@
       /* Green Pills from Cannon */
       .baseball {
         position: absolute;
-        width: 20px;
-        height: 20px;
+        width: 25px;
+        height: 25px;
         background: radial-gradient(circle, #FFFFFF, #F0F0F0, #DCDCDC);
         border-radius: 50%;
         border: 2px solid #000;
@@ -520,11 +526,11 @@
       .baseball::before {
         content: '';
         position: absolute;
-        width: 16px;
+        width: 20px;
         height: 2px;
         background: #FF0000;
-        top: 9px;
-        left: 2px;
+        top: 11px;
+        left: 2.5px;
         border-radius: 1px;
       }
       
@@ -532,10 +538,10 @@
         content: '';
         position: absolute;
         width: 2px;
-        height: 16px;
+        height: 20px;
         background: #FF0000;
-        top: 2px;
-        left: 9px;
+        top: 2.5px;
+        left: 11px;
         border-radius: 1px;
       }
       
