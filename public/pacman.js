@@ -1288,7 +1288,7 @@ var PACMAN = (function () {
         // Create new pills from ghosts
         for (var i = 0; i < ghosts.length; i++) {
             var newPill = ghosts[i].createPill();
-            if (newPill) {
+            if (newPill && newPill.x !== undefined && newPill.y !== undefined) {
                 ghostPills.push(newPill);
             }
         }
@@ -1296,6 +1296,12 @@ var PACMAN = (function () {
         // Update existing pills
         for (var i = ghostPills.length - 1; i >= 0; i--) {
             var pill = ghostPills[i];
+            
+            // Skip if pill is undefined or invalid
+            if (!pill || pill.x === undefined || pill.y === undefined) {
+                ghostPills.splice(i, 1);
+                continue;
+            }
             
             // Move pill
             switch(pill.direction) {
