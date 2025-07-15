@@ -344,19 +344,6 @@ var speed = Math.min(Math.round(levelSpeed), 2);
         };
     }
     
-    return {
-        "eat"         : eat,
-        "isVunerable" : isVunerable,
-        "isDangerous" : isDangerous,
-        "makeEatable" : makeEatable,
-        "reset"       : reset,
-        "move"        : move,
-        "draw"        : draw
-    };
-};
-
-Pacman.User = function (game, map) {
-    
     var position  = null,
         direction = null,
         eaten     = null,
@@ -428,33 +415,10 @@ Pacman.User = function (game, map) {
 	}
 
     function getNewCoord(dir, current) {   
-        var levelSpeedMultiplier = getPacmanLevelSpeedMultiplier();
-        var baseSpeed = 2;
-        var calculatedSpeed = baseSpeed * levelSpeedMultiplier;
-        
-        // Cap maximum speed to prevent wall clipping
-        // Speed should never exceed 5 pixels per frame to maintain collision detection
-        var speed = Math.min(Math.round(calculatedSpeed), 5);
-        
-        return {
-            "x": current.x + (dir === LEFT && -speed || dir === RIGHT && speed || 0),
-            "y": current.y + (dir === DOWN && speed || dir === UP && -speed || 0)
-        };
+        // Keep Pacman speed constant at 2 pixels per frame for all levels
+        var speed = 2;
     }
     
-    function getPacmanLevelSpeedMultiplier() {
-    var currentLevel = game.getLevel();
-
-    if (currentLevel <= 5) {
-        return 1.0 + ((currentLevel - 1) * 0.1); // Levels 1–5: 1.0–1.4
-    } else if (currentLevel <= 10) {
-        return 1.4 + ((currentLevel - 5) * 0.05); // Levels 6–10: 1.45–1.65
-    } else if (currentLevel <= 20) {
-        return 1.65 + ((currentLevel - 10) * 0.015); // Levels 11–20: 1.665–1.8
-    } else {
-        return 1.8; // Levels 21–30: hard cap
-    }
-}
 
 
     function onWholeSquare(x) {
