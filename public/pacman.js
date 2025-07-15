@@ -720,6 +720,7 @@ Pacman.User = function (game, map) {
         "newLevel"      : newLevel,
         "reset"         : reset,
         "resetPosition" : resetPosition
+        "getPosition"   : function() { return position; }
     };
 };
 
@@ -1285,6 +1286,9 @@ var PACMAN = (function () {
             return;
         }
         
+        // Get current user position
+        var currentUserPos = user.getPosition ? user.getPosition() : {"x": 90, "y": 120};
+        
         // Create new pills from ghosts
         for (var i = 0; i < ghosts.length; i++) {
             var newPill = ghosts[i].createPill();
@@ -1330,8 +1334,8 @@ var PACMAN = (function () {
             
             // Check collision with user
             var distance = Math.sqrt(
-                Math.pow(pill.x - userPos.x, 2) + 
-                Math.pow(pill.y - userPos.y, 2)
+                Math.pow(pill.x - currentUserPos.x, 2) + 
+                Math.pow(pill.y - currentUserPos.y, 2)
             );
             
             if (distance < 15) {
