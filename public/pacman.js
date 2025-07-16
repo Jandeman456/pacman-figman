@@ -189,6 +189,10 @@ var speed = Math.min(Math.round(levelSpeed), 2);
         // Check if fright time has expired
         if (eatable && game.getTick() >= eatable) {
             eatable = null;
+            // Resume background music after powermode ends
+            if (game.getState && game.getState() === PLAYING) {
+                game.resumeBackgroundMusic();
+            }
         }
         
         
@@ -862,7 +866,8 @@ Pacman.Audio = function(game) {
     var files          = [], 
         endEvents      = [],
         progressEvents = [],
-        playing        = [];
+        playing        = [],
+        backgroundMusic = null;
     
     function load(name, path, cb) { 
 
@@ -874,6 +879,12 @@ Pacman.Audio = function(game) {
         f.setAttribute("preload", "true");
         f.setAttribute("autobuffer", "true");
         f.setAttribute("src", path);
+        
+        // Set loop for gameplay music
+        if (name === "gameplay") {
+            f.loop = true;
+        }
+        
         f.pause();        
     }
 
@@ -918,17 +929,48 @@ Pacman.Audio = function(game) {
             files[name].play();
         }
     }
+    
+    function playBackgroundMusic() {
+        if (!game.soundDisabled() && files["gameplay"]) {
+            backgroundMusic = files["gameplay"];
+            backgroundMusic.volume = 0.3;
+            backgroundMusic.currentTime = 0;
+            backgroundMusic.play();
+        }
+    }
+    
+    function stopBackgroundMusic() {
+        if (backgroundMusic) {
+            backgroundMusic.pause();
+            backgroundMusic.currentTime = 0;
+            backgroundMusic = null;
+        }
+    }
+    
+    function pauseBackgroundMusic() {
+        if (backgroundMusic) {
+            backgroundMusic.pause();
+        }
+    }
+    
+    function resumeBackgroundMusic() {
+        if (backgroundMusic && !game.soundDisabled()) {
+            backgroundMusic.play();
+        }
+    }
 
     function pause() { 
         for (var i = 0; i < playing.length; i++) {
             files[playing[i]].pause();
         }
+        pauseBackgroundMusic();
     }
     
     function resume() { 
         for (var i = 0; i < playing.length; i++) {
             files[playing[i]].play();
-        }        
+        }
+        resumeBackgroundMusic();
     }
     
     return {
@@ -936,7 +978,11 @@ Pacman.Audio = function(game) {
         "load"         : load,
         "play"         : play,
         "pause"        : pause,
-        "resume"       : resume
+        "resume"       : resume,
+        "playBackgroundMusic" : playBackgroundMusic,
+        "stopBackgroundMusic" : stopBackgroundMusic,
+        "pauseBackgroundMusic" : pauseBackgroundMusic,
+        "resumeBackgroundMusic" : resumeBackgroundMusic
     };
 };
 
@@ -1410,6 +1456,8 @@ var PACMAN = (function () {
                     user.addScore(nScore);                    
                     // No pause needed - ghost is just gone for this level
                 } else if (ghosts[i].isDangerous()) {
+                    // Stop background music when dying
+                    audio.stopBackgroundMusic();
                     audio.play("die");
                     setState(DYING);
                     timerStart = tick;
@@ -1476,6 +1524,8 @@ var PACMAN = (function () {
             if (diff === 0) {
                 map.draw(ctx);
                 setState(PLAYING);
+                // Start background music when gameplay begins
+                audio.playBackgroundMusic();
             } else {
                 if (diff !== lastTime) { 
                     lastTime = diff;
@@ -1492,6 +1542,8 @@ var PACMAN = (function () {
     }
 
     function eatenPill() {
+        // Stop background music during powermode
+        audio.stopBackgroundMusic();
         audio.play("powermode");
         audio.play("eatpill");
         timerStart = tick;
@@ -1664,7 +1716,8 @@ var PACMAN = (function () {
             ["eating", root + "audio/eating.short." + extension],
             ["eating2", root + "audio/eating.short." + extension],
             ["powermode", root + "audio/powermode." + extension],
-            ["victory", root + "audio/victory." + extension]
+            ["victory", root + "audio/victory." + extension],
+            ["gameplay", root + "audio/gameplay." + extension]
         ];
 
         load(audio_files, function() { loaded(); });
@@ -1693,7 +1746,9 @@ var PACMAN = (function () {
     
     return {
         "init" : init,
-        "showLeaderboard" : showLeaderboard
+        "showLeaderboard" : showLeaderboard,
+        "getState" : function() { return state; },
+        "resumeBackgroundMusic" : function() { audio.resumeBackgroundMusic(); }
     };
     
 }());
