@@ -1556,6 +1556,8 @@ var PACMAN = (function () {
     }
     
     function completedLevel() {
+        // Stop background music when level is completed
+        audio.stopBackgroundMusic();
         level += 1;
         
         if (level > 30) {
