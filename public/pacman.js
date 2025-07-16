@@ -921,7 +921,14 @@ Pacman.Audio = function(game) {
             endEvents[name] = function() { ended(name); };
             playing.push(name);
             files[name].addEventListener("ended", endEvents[name], true);
-            files[name].volume = (name === 'die') ? 0.7 : 0.5;
+            // Set volume based on sound type
+            if (name === 'die') {
+                files[name].volume = 0.7;
+            } else if (name === 'powermode') {
+                files[name].volume = 0.3;
+            } else {
+                files[name].volume = 0.5;
+            }
             files[name].play();
         }
     }
@@ -929,7 +936,7 @@ Pacman.Audio = function(game) {
     function playBackgroundMusic() {
         if (!game.soundDisabled() && files["gameplay"]) {
             backgroundMusic = files["gameplay"];
-            backgroundMusic.volume = 0.3;
+            backgroundMusic.volume = 0.5;
             backgroundMusic.currentTime = 0;
             backgroundMusic.play();
         }
@@ -1428,34 +1435,6 @@ var PACMAN = (function () {
         
         updateBullets();
         
-        // Check if powermode has ended and resume background music
-        var anyGhostEatable = false;
-        for (i = 0, len = ghosts.length; i < len; i += 1) {
-            if (ghosts[i].isVunerable()) {
-                anyGhostEatable = true;
-                break;
-            }
-        }
-        
-        // If no ghosts are eatable anymore and we're in playing state, resume background music
-        if (!anyGhostEatable && state === PLAYING) {
-            audio.resumeBackgroundMusic();
-        }
-        
-        // Check if any ghosts are still eatable
-        var anyGhostEatable = false;
-        for (i = 0; i < ghosts.length; i++) {
-            if (ghosts[i].isVunerable()) {
-                anyGhostEatable = true;
-                break;
-            }
-        }
-        
-        // If no ghosts are eatable anymore, resume background music
-        if (!anyGhostEatable && state === PLAYING) {
-            audio.resumeBackgroundMusic();
-        }
-        
         for (i = 0, len = ghosts.length; i < len; i += 1) {
             redrawBlock(ghostPos[i].old);
         }
@@ -1566,8 +1545,7 @@ var PACMAN = (function () {
     }
 
     function eatenPill() {
-        // Stop background music during powermode
-        audio.stopBackgroundMusic();
+        // Keep background music playing during powermode
         audio.play("powermode");
         audio.play("eatpill");
         timerStart = tick;
