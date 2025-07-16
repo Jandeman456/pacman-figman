@@ -189,10 +189,6 @@ var speed = Math.min(Math.round(levelSpeed), 2);
         // Check if fright time has expired
         if (eatable && game.getTick() >= eatable) {
             eatable = null;
-            // Resume background music after powermode ends
-            if (game.getState && game.getState() === PLAYING) {
-                game.resumeBackgroundMusic();
-            }
         }
         
         
@@ -1431,6 +1427,20 @@ var PACMAN = (function () {
         u = user.move(ctx);
         
         updateBullets();
+        
+        // Check if powermode has ended and resume background music
+        var anyGhostEatable = false;
+        for (i = 0, len = ghosts.length; i < len; i += 1) {
+            if (ghosts[i].isVunerable()) {
+                anyGhostEatable = true;
+                break;
+            }
+        }
+        
+        // If no ghosts are eatable anymore and we're in playing state, resume background music
+        if (!anyGhostEatable && state === PLAYING) {
+            audio.resumeBackgroundMusic();
+        }
         
         // Check if any ghosts are still eatable
         var anyGhostEatable = false;
