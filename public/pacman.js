@@ -1432,6 +1432,20 @@ var PACMAN = (function () {
         
         updateBullets();
         
+        // Check if any ghosts are still eatable
+        var anyGhostEatable = false;
+        for (i = 0; i < ghosts.length; i++) {
+            if (ghosts[i].isVunerable()) {
+                anyGhostEatable = true;
+                break;
+            }
+        }
+        
+        // If no ghosts are eatable anymore, resume background music
+        if (!anyGhostEatable && state === PLAYING) {
+            audio.resumeBackgroundMusic();
+        }
+        
         for (i = 0, len = ghosts.length; i < len; i += 1) {
             redrawBlock(ghostPos[i].old);
         }
